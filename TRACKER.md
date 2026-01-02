@@ -23,52 +23,52 @@
 ### Models / Service / Controller
 
 - [ ] Aluno
-    - [ ] Service
+  - [ ] Service
 - [ ] Categoria
-    - [ ] Service
+  - [ ] Service
 - [ ] Contribuidor
-    - [ ] Service
-    - [ ] Controller
+  - [ ] Service
+  - [ ] Controller
 - [ ] Curso
-    - [ ] Service
-    - [ ] Controller
+  - [ ] Service
+  - [ ] Controller
 - [ ] Estado
-    - [ ] Service
+  - [ ] Service
 - [ ] Menu
-    - [ ] Service
-    - [ ] Controller
+  - [ ] Service
+  - [ ] Controller
 - [ ] Noticia
-    - [ ] Service
-    - [ ] Controller
+  - [ ] Service
+  - [ ] Controller
 - [ ] Notificacao
-    - [ ] Service
-    - [ ] Controller
+  - [ ] Service
+  - [ ] Controller
 - [ ] Professor
-    - [ ] Service
-    - [ ] Controller
+  - [ ] Service
+  - [ ] Controller
 - [ ] Professor Categoria
-    - [ ] Service
-    - [ ] Controller
+  - [ ] Service
+  - [ ] Controller
 - [ ] Projeto
-    - [ ] Service
-    - [ ] Controller
+  - [ ] Service
+  - [ ] Controller
 - [ ] Serie
-    - [ ] Service
-    - [ ] Controller
+  - [ ] Service
+  - [ ] Controller
 - [ ] Solicitação
-    - [ ] Service
-    - [ ] Controller
+  - [ ] Service
+  - [ ] Controller
 - [ ] Tipo contribuição
-    - [ ] Service
-    - [ ] Controller
+  - [ ] Service
+  - [ ] Controller
 - [ ] Tipo notificação
-    - [ ] Service
+  - [ ] Service
 - [ ] User
-    - [ ] Service
-    - [ ] Controller
+  - [ ] Service
+  - [ ] Controller
 - [ ] Usuario projeto
-    - [ ] Service
-    - [ ] Controller
+  - [ ] Service
+  - [ ] Controller
 
 ### Seeders
 
@@ -80,6 +80,3 @@
 - [ ] Tipo contribuicao
 - [ ] Tipo notificacao
 - [ ] User
-
-
-
