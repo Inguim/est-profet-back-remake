@@ -1,0 +1,49 @@
+{
+	"name": "est-profet-back-remake",
+	"version": "1.0.0",
+	"description": "Profet: Backend Remake Edition",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"dev": "tsx watch src/index.ts",
+		"lint": "eslint .",
+		"lint:fix": "eslint . --fix",
+		"format": "prettier --write .",
+		"format:check": "prettier --check .",
+		"cm": "cz"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/Inguim/est-profet-back-remake.git"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"type": "module",
+	"bugs": {
+		"url": "https://github.com/Inguim/est-profet-back-remake/issues"
+	},
+	"homepage": "https://github.com/Inguim/est-profet-back-remake#readme",
+	"dependencies": {
+		"dotenv": "^17.2.3",
+		"express": "^5.2.1"
+	},
+	"devDependencies": {
+		"@eslint/js": "^9.39.2",
+		"@types/express": "^5.0.6",
+		"@types/node": "^25.0.3",
+		"commitizen": "^4.3.1",
+		"cz-conventional-changelog": "^3.3.0",
+		"eslint": "^9.39.2",
+		"eslint-config-prettier": "^10.1.8",
+		"prettier": "^3.7.4",
+		"tsx": "^4.21.0",
+		"typescript": "^5.9.3",
+		"typescript-eslint": "^8.51.0"
+	},
+	"config": {
+		"commitizen": {
+			"path": "./node_modules/cz-conventional-changelog"
+		}
+	}
+}
