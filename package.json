@@ -10,7 +10,8 @@
 		"lint:fix": "eslint . --fix",
 		"format": "prettier --write .",
 		"format:check": "prettier --check .",
-		"cm": "cz"
+		"cm": "cz",
+		"knex": "tsx node_modules/.bin/knex --knexfile src/database/knexfile.ts"
 	},
 	"repository": {
 		"type": "git",
@@ -26,7 +27,9 @@
 	"homepage": "https://github.com/Inguim/est-profet-back-remake#readme",
 	"dependencies": {
 		"dotenv": "^17.2.3",
-		"express": "^5.2.1"
+		"express": "^5.2.1",
+		"knex": "^3.1.0",
+		"pg": "^8.16.3"
 	},
 	"devDependencies": {
 		"@eslint/js": "^9.39.2",
