@@ -1,44 +1,38 @@
 import type { Knex } from "knex";
 import dbConnection from "../database/dbConfig.js";
-import { NotFoundError } from "../erros/index.js";
+// import { NotFoundError } from "../erros/index.js";
 import { v4 as uuidV4 } from "uuid";
+import type { IBaseDTO } from "../dto/BaseDTO.js";
 
-export interface IBaseFields {
-	id?: string | null;
-	createdAt?: Date;
-	updatedAt?: Date;
+// export interface IBaseFields {
+// 	id?: string | null;
+// 	createdAt?: Date;
+// 	updatedAt?: Date;
+// }
+export interface IBasePersistable extends IBaseDTO {
+	create(): Promise<void>;
+	update(): Promise<void>;
+	delete(): Promise<void>;
+	populate(id: string): Promise<void>;
 }
-
-type TBaseModelConstructor<T> = {
-	tableName: string;
-	tableTag: string;
-	fields?: Partial<T>;
-};
-
-export abstract class BaseModel<T extends IBaseFields> {
-	id?: string | null;
+export abstract class BaseModel<T extends IBaseDTO> implements IBasePersistable {
+	id: string | null = null;
 	createdAt: Date = new Date();
 	updatedAt: Date = new Date();
 
-	protected table: string;
-	protected tableTag: string;
+	protected table = "";
+	protected tableTag = "";
 	private db: Knex.QueryBuilder;
 
-	constructor({ tableName, tableTag, fields }: TBaseModelConstructor<T>) {
-		this.table = tableName;
-		this.tableTag = tableTag;
+	constructor(fields?: Partial<T>) {
 		this.db = dbConnection(this.table);
-
-		if (fields) {
-			if (fields.id !== undefined) this.populate(fields.id as string);
-			else Object.assign(this, fields);
-		}
+		if (fields) Object.assign(this, fields);
 	}
 
-	private async populate(id: string): Promise<void> {
+	async populate(id: string): Promise<void> {
 		const data = await dbConnection(this.table).where({ id }).first();
-		if (!data) throw new NotFoundError(`${this.tableTag} com ID ${id} não encontrado`);
-		Object.assign(this, data);
+		// if (!data) throw new NotFoundError(`${this.tableTag} com ID ${id} não encontrado`);
+		if (data) Object.assign(this, data);
 	}
 
 	protected async beforeCreate(): Promise<void> {

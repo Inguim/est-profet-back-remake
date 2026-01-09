@@ -1,19 +1,11 @@
-import { BaseModel, type IBaseFields } from "./BaseModel.js";
-import { hash } from "bcrypt";
+import type { IUsuarioDTO } from "../dto/UsuarioDTO.js";
+import { PasswordService } from "../services/PasswordService.js";
+import { BaseModel } from "./BaseModel.js";
 
 export type TUsuarioTipo = "aluno" | "professor";
 export type TUsuarioStatus = "aprovado" | "analise";
 
-export interface IUsuario extends IBaseFields {
-	nome: string;
-	email: string;
-	tipo: TUsuarioTipo;
-	admin: boolean;
-	status: TUsuarioStatus;
-	password: string;
-}
-
-export class Usuario extends BaseModel<IUsuario> {
+export class Usuario extends BaseModel<IUsuarioDTO> {
 	nome = "";
 	email = "";
 	password = "";
@@ -21,17 +13,15 @@ export class Usuario extends BaseModel<IUsuario> {
 	status = "analise";
 	admin = false;
 
-	constructor(fields: Partial<IUsuario> = {}) {
-		super({ tableName: "usuarios", tableTag: "Usuário", fields });
+	private passwordService = new PasswordService();
+
+	constructor(fields: Partial<IUsuarioDTO> = {}) {
+		super(fields);
+		this.table = "usuarios";
+		this.tableTag = "Usuário";
 	}
 
 	protected async beforeCreate(): Promise<void> {
-		const { nome, email, tipo, password } = this;
-		const hashedPassword = await this.hashPassword(password);
-		Object.assign(this, { nome, email, tipo, password: hashedPassword });
-	}
-
-	private hashPassword(password: string): Promise<string> {
-		return hash(password, 8);
+		this.password = await this.passwordService.hash(this.password);
 	}
 }
