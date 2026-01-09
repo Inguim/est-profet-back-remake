@@ -5,6 +5,6 @@ import prettierConfig from 'eslint-config-prettier';
 
 export default defineConfig(eslint.configs.recommended, tseslint.configs.recommended, prettierConfig, {
 	rules: {
-		'@typescript-eslint/no-unused-vars': 'warn',
+		'@typescript-eslint/no-unused-vars': 'error',
 	},
 });
