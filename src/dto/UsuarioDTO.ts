@@ -1,7 +1,10 @@
 import type { IBaseDTO } from "./BaseDTO.js";
 
-export type TUsuarioTipo = "aluno" | "professor";
-export type TUsuarioStatus = "aprovado" | "analise";
+export const USUARIO_TIPOS = ["aluno", "professor"] as const;
+export const USUARIO_STATUS = ["aprovado", "analise"] as const;
+
+export type TUsuarioTipo = (typeof USUARIO_TIPOS)[number];
+export type TUsuarioStatus = (typeof USUARIO_STATUS)[number];
 
 export interface IUsuarioDTO extends IBaseDTO {
 	nome: string;

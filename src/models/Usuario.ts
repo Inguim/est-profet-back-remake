@@ -2,9 +2,6 @@ import type { IUsuarioDTO } from "../dto/UsuarioDTO.js";
 import { PasswordService } from "../services/PasswordService.js";
 import { BaseModel } from "./BaseModel.js";
 
-export type TUsuarioTipo = "aluno" | "professor";
-export type TUsuarioStatus = "aprovado" | "analise";
-
 export class Usuario extends BaseModel<IUsuarioDTO> {
 	nome = "";
 	email = "";
