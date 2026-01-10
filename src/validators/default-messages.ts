@@ -6,6 +6,7 @@ const defaultMessages = {
 	enum: (field: string, options: readonly string[]) =>
 		`O campo ${field} deve ser um dos seguintes valores: ${options.join(", ")}.`,
 	boolean: (field: string) => `O campo ${field} deve ser verdadeiro ou falso.`,
+	confirmPassword: "As senhas não coincidem.",
 };
 
 export { defaultMessages };
