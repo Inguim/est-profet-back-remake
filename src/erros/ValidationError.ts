@@ -5,7 +5,6 @@ export class ValidationError extends BaseError {
 	constructor(error: ZodError | string) {
 		super({ message: "Erro de validação", status: 400 });
 		this.name = "ValidationError";
-		console.log("Validation error:", error);
 		if (error instanceof ZodError) this.createMessage(error);
 	}
 
