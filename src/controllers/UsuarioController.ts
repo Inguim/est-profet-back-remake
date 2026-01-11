@@ -1,6 +1,7 @@
 import type { Request, Response, NextFunction } from "express";
 import { UsuarioService } from "../services/UsuarioService.js";
 import type { TUsuarioTipo } from "../dto/UsuarioDTO.js";
+import { STATUS_CODE } from "../utils/constansts/status-code.js";
 
 type CreateDTO = {
 	nome: string;
@@ -30,7 +31,7 @@ export class UsuarioController {
 		try {
 			const usuario = await this.usuarioService.create({ nome, email, tipo, password });
 
-			res.status(201).json({
+			res.status(STATUS_CODE.CREATED).json({
 				message: "Usuário criado com sucesso",
 				data: {
 					id: usuario.id,
