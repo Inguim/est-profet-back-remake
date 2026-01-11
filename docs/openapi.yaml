@@ -1,0 +1,18 @@
+openapi: 3.0.0
+
+info:
+  title: Profet
+  version: 1.0.0
+  description: API Node.js
+
+servers:
+  - url: http://localhost:3000
+
+paths:
+  /usuarios:
+    $ref: "./paths/usuarios.yaml"
+
+components:
+  schemas:
+    Usuario:
+      $ref: "./components/schemas/usuario/usuario.yaml"
