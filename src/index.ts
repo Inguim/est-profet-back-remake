@@ -1,5 +1,7 @@
 import "dotenv/config";
 import express from "express";
+import { routes } from "./routes/index.js";
+import { errorHandlingMiddleware } from "./middlewares/index.js";
 interface AppConfig {
 	port: number;
 }
@@ -9,6 +11,10 @@ const config: AppConfig = {
 };
 
 const app = express();
+
+routes(app);
+
+app.use(errorHandlingMiddleware);
 
 app.get("/", (req, res) => {
 	res.send("Hello, World!");

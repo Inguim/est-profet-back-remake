@@ -1,0 +1,8 @@
+import type { Express } from "express";
+import express from "express";
+import { router as usuarioRoutes } from "./usuarioRoutes.js";
+
+export const routes = (app: Express) => {
+	app.use(express.json());
+	app.use(usuarioRoutes);
+};
