@@ -1,7 +1,7 @@
 import type { TUsuarioTipo } from "../dto/index.js";
 import type { Request, Response, NextFunction } from "express";
 import { userValidator } from "../validators/index.js";
-import { ValidationError } from "../erros/ValidationError.js";
+import { ValidationError } from "../errors/ValidationError.js";
 import type { ZodError } from "zod";
 
 type CreateDTO = {
