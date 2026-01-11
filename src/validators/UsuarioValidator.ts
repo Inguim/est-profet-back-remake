@@ -1,7 +1,8 @@
-import type { IBaseValidator } from "./BaseValidator.js";
+import type { IBaseValidator, IBaseValidatorResponse } from "./BaseValidator.js";
 import * as z from "zod";
+import type { ZodSafeParseResult } from "zod";
 import { defaultMessages as dm } from "./default-messages.js";
-import { USUARIO_TIPOS, USUARIO_STATUS } from "../dto/index.js";
+import { USUARIO_TIPOS } from "../dto/index.js";
 
 const createSchema = z
 	.object({
@@ -12,8 +13,6 @@ const createSchema = z
 			.string()
 			.min(6, { error: ({ minimum }) => dm.minLength(minimum as number, "confirmação de senha") }),
 		tipo: z.enum(USUARIO_TIPOS, { error: () => dm.enum("tipo", USUARIO_TIPOS) }),
-		status: z.enum(USUARIO_STATUS, { error: () => dm.enum("status", USUARIO_STATUS) }),
-		admin: z.boolean(dm.boolean("admin")),
 	})
 	.check(
 		z.refine((data) => data.password === data.confirm_password, {
@@ -23,9 +22,12 @@ const createSchema = z
 	);
 
 class CreateValidator implements IBaseValidator {
-	validate(data: any): boolean {
+	validate(data: any): IBaseValidatorResponse<ZodSafeParseResult<any>> {
 		const result = createSchema.safeParse(data);
-		return result.success;
+		return {
+			success: result.success,
+			extra: result,
+		};
 	}
 }
 
