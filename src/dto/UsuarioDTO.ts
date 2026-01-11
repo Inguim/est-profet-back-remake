@@ -15,12 +15,12 @@ export interface IUsuarioDTO extends IBaseDTO {
 	password: string;
 }
 
-type TFields = Partial<Omit<IUsuarioDTO, "id" | "createdAt" | "updatedAt">>;
+type TFields = Partial<Omit<IUsuarioDTO, "id" | "created_at" | "updated_at">>;
 
 export class UsuarioDTO implements IUsuarioDTO {
 	id: string | null = null;
-	createdAt: Date = new Date();
-	updatedAt: Date = new Date();
+	created_at: Date = new Date();
+	updated_at: Date = new Date();
 	nome = "";
 	email = "";
 	admin: boolean = false;
