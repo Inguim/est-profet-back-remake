@@ -6,11 +6,16 @@ import { USUARIO_TIPOS } from "../dto/index.js";
 
 const createSchema = z
 	.object({
-		nome: z.string().min(3, { error: ({ minimum }) => dm.minLength(minimum as number, "nome") }),
+		nome: z
+			.string(dm.required("nome"))
+			.min(3, { error: ({ minimum }) => dm.minLength(minimum as number, "nome") })
+			.nonempty("campo obrigatorio"),
 		email: z.email(dm.invalidEmail),
-		password: z.string().min(6, { error: ({ minimum }) => dm.minLength(minimum as number, "senha") }),
+		password: z
+			.string(dm.required("password"))
+			.min(6, { error: ({ minimum }) => dm.minLength(minimum as number, "senha") }),
 		confirm_password: z
-			.string()
+			.string(dm.required("confirm_password"))
 			.min(6, { error: ({ minimum }) => dm.minLength(minimum as number, "confirmação de senha") }),
 		tipo: z.enum(USUARIO_TIPOS, { error: () => dm.enum("tipo", USUARIO_TIPOS) }),
 	})
