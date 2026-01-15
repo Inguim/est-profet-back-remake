@@ -1,6 +1,7 @@
 import { ZodError } from "zod";
 import { BaseError } from "./BaseError.js";
 import { STATUS_CODE } from "../utils/constansts/status-code.js";
+import { formatErrorZod } from "../utils/helpers/formatErrorZod.js";
 
 export class ValidationError extends BaseError {
 	constructor(error: ZodError | string) {
@@ -10,9 +11,6 @@ export class ValidationError extends BaseError {
 	}
 
 	createMessage(error: ZodError) {
-		error.issues.forEach((issue) => {
-			const path = issue.path[0] || "unknown_field";
-			Object.assign(this.errors, { [path]: issue.message });
-		});
+		this.errors = formatErrorZod(error);
 	}
 }
