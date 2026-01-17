@@ -10,17 +10,27 @@ const __dirname = path.dirname(__filename);
 
 /** @type {import('knex').Knex.Config} */
 
+const communConfig = {
+	client: "postgresql",
+	migrations: {
+		directory: path.join(__dirname, "migrations"),
+	},
+	seeds: {
+		directory: path.join(__dirname, "seeds"),
+	},
+	useNullAsDefault: true,
+};
+
 const knexConfig = {
 	development: {
+		...communConfig,
 		client: "postgresql",
 		connection: dbPgConfig,
-		migrations: {
-			directory: path.join(__dirname, "migrations"),
-		},
-		seeds: {
-			directory: path.join(__dirname, "seeds"),
-		},
-		useNullAsDefault: true,
+	},
+	test: {
+		...communConfig,
+		client: "postgresql",
+		connection: dbPgConfig,
 	},
 };
 

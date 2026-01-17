@@ -25,5 +25,12 @@ export async function up(knex: Knex): Promise<void> {
 }
 
 export async function down(knex: Knex): Promise<void> {
-	await knex.schema.dropTableIfExists("users");
+	await knex.schema.dropTableIfExists("usuarios");
+
+	await knex.raw(`
+		DROP TYPE IF EXISTS user_status;
+	`);
+	await knex.raw(`
+		DROP TYPE IF EXISTS user_tipo;
+	`);
 }
