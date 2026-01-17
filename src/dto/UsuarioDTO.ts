@@ -1,7 +1,10 @@
 import type { IBaseDTO } from "./BaseDTO.js";
 
-export type TUsuarioTipo = "aluno" | "professor";
-export type TUsuarioStatus = "aprovado" | "analise";
+export const USUARIO_TIPOS = ["aluno", "professor"] as const;
+export const USUARIO_STATUS = ["aprovado", "analise"] as const;
+
+export type TUsuarioTipo = (typeof USUARIO_TIPOS)[number];
+export type TUsuarioStatus = (typeof USUARIO_STATUS)[number];
 
 export interface IUsuarioDTO extends IBaseDTO {
 	nome: string;
@@ -12,12 +15,12 @@ export interface IUsuarioDTO extends IBaseDTO {
 	password: string;
 }
 
-type TFields = Partial<Omit<IUsuarioDTO, "id" | "createdAt" | "updatedAt">>;
+type TFields = Partial<Omit<IUsuarioDTO, "id" | "created_at" | "updated_at">>;
 
 export class UsuarioDTO implements IUsuarioDTO {
 	id: string | null = null;
-	createdAt: Date = new Date();
-	updatedAt: Date = new Date();
+	created_at: Date = new Date();
+	updated_at: Date = new Date();
 	nome = "";
 	email = "";
 	admin: boolean = false;

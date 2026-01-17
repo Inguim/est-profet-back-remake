@@ -1,60 +1,57 @@
 import type { Knex } from "knex";
 import dbConnection from "../database/dbConfig.js";
-// import { NotFoundError } from "../erros/index.js";
 import { v4 as uuidV4 } from "uuid";
 import type { IBaseDTO } from "../dto/BaseDTO.js";
 
-// export interface IBaseFields {
-// 	id?: string | null;
-// 	createdAt?: Date;
-// 	updatedAt?: Date;
-// }
-export interface IBasePersistable extends IBaseDTO {
-	create(): Promise<void>;
-	update(): Promise<void>;
+export interface IBasePersistable<TDTO> {
+	create(): Promise<TDTO>;
+	update(): Promise<TDTO>;
 	delete(): Promise<void>;
-	populate(id: string): Promise<void>;
+	populate(id: string): Promise<TDTO>;
 }
-export abstract class BaseModel<T extends IBaseDTO> implements IBasePersistable {
-	id: string | null = null;
-	createdAt: Date = new Date();
-	updatedAt: Date = new Date();
+
+export abstract class BaseModel<T extends IBaseDTO> implements IBasePersistable<T> {
+	protected dto: T;
 
 	protected table = "";
 	protected tableTag = "";
-	private db: Knex.QueryBuilder;
-
-	constructor(fields?: Partial<T>) {
-		this.db = dbConnection(this.table);
-		if (fields) Object.assign(this, fields);
+	private get db(): Knex.QueryBuilder {
+		return dbConnection.table(this.table);
 	}
 
-	async populate(id: string): Promise<void> {
-		const data = await dbConnection(this.table).where({ id }).first();
-		// if (!data) throw new NotFoundError(`${this.tableTag} com ID ${id} não encontrado`);
-		if (data) Object.assign(this, data);
+	constructor(dto: T) {
+		this.dto = dto;
+	}
+
+	async populate(id: string): Promise<T> {
+		const data = await this.db.where({ id }).first();
+		if (data) Object.assign(this.dto, data);
+		return this.dto;
 	}
 
 	protected async beforeCreate(): Promise<void> {
-		this.id = uuidV4();
+		return;
 	}
 
-	async create(): Promise<void> {
-		if (!this.id) {
+	async create(): Promise<T> {
+		if (!this.dto.id) {
+			this.dto.id = uuidV4();
 			await this.beforeCreate();
-			const [newRecord] = await this.db.insert(this).returning("*");
-			Object.assign(this, newRecord);
+			const [newRecord] = await this.db.insert(this.dto).returning("*");
+			Object.assign(this.dto, newRecord);
 		}
+		return this.dto;
 	}
 
-	async update(): Promise<void> {
-		this.updatedAt = new Date();
-		const [updatedRecord] = await this.db.where({ id: this.id }).update(this).returning("*");
-		Object.assign(this, updatedRecord);
+	async update(): Promise<T> {
+		this.dto.updated_at = new Date();
+		const [updatedRecord] = await this.db.where({ id: this.dto.id }).update(this.dto).returning("*");
+		Object.assign(this.dto, updatedRecord);
+		return this.dto;
 	}
 
 	async delete(): Promise<void> {
-		await this.db.where({ id: this.id }).del();
-		this.id = null;
+		await this.db.where({ id: this.dto.id }).del();
+		this.dto.id = null;
 	}
 }

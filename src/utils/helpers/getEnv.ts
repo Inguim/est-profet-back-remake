@@ -1,7 +1,7 @@
 import dotenv from "dotenv";
 dotenv.config({ path: "../../.env" });
 
-import { EnvConfigError } from "../../erros/index.js";
+import { EnvConfigError } from "../../errors/index.js";
 
 export function getEnv(name: string): string {
 	const value = process.env[name];

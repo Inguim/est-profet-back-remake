@@ -1,0 +1,15 @@
+type: object
+required:
+  - nome
+  - email
+  - tipo
+properties:
+  nome:
+    type: string
+  email:
+    type: string
+  tipo:
+    type: string
+    enum:
+      - aluno
+      - professor

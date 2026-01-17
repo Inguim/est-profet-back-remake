@@ -1,0 +1,20 @@
+allOf:
+  - $ref: "./base.yaml"
+
+type: object
+example:
+  nome: teste
+  email: teste@gmail.com
+  tipo: aluno
+  password: "123456"
+  confirm_password: "123456"
+required:
+  - password
+  - confirm_password
+properties:
+  password:
+    type: string
+    example: "123456"
+  confirm_password:
+    type: string
+    example: "123456"
