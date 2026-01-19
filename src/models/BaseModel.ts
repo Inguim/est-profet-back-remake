@@ -1,17 +1,20 @@
 import type { Knex } from "knex";
 import dbConnection from "../database/dbConfig.js";
 import { v4 as uuidV4 } from "uuid";
-import type { IBaseDTO } from "../dto/BaseDTO.js";
+import type { DTOConstructor, IBaseDTO } from "../dto/BaseDTO.js";
 
-export interface IBasePersistable<TDTO> {
-	create(): Promise<TDTO>;
-	update(): Promise<TDTO>;
-	delete(): Promise<void>;
-	populate(id: string): Promise<TDTO>;
+export interface IBasePersistable {
+	create(dto: any): Promise<any>;
+	update(id: string, dto: any): Promise<any>;
+	delete(id: string): Promise<any>;
+	populate(id: string): Promise<any>;
 }
 
-export abstract class BaseModel<T extends IBaseDTO> implements IBasePersistable<T> {
-	protected dto: T;
+export type TUpdateModelDTO<T> = Partial<Omit<T, "id" | "created_at" | "updated_at">>;
+export type TCreateModelDTO<T> = Partial<Omit<T, "id" | "created_at" | "updated_at">>;
+
+export abstract class BaseModel<T extends IBaseDTO> implements IBasePersistable {
+	protected abstract dto: DTOConstructor<T>;
 
 	protected table = "";
 	protected tableTag = "";
@@ -19,39 +22,40 @@ export abstract class BaseModel<T extends IBaseDTO> implements IBasePersistable<
 		return dbConnection.table(this.table);
 	}
 
-	constructor(dto: T) {
-		this.dto = dto;
-	}
-
 	async populate(id: string): Promise<T> {
 		const data = await this.db.where({ id }).first();
-		if (data) Object.assign(this.dto, data);
-		return this.dto;
+		return new this.dto(data);
 	}
 
-	protected async beforeCreate(): Promise<void> {
-		return;
+	protected async beforeCreate(dto: TCreateModelDTO<T>): Promise<TCreateModelDTO<T>> {
+		return { ...dto };
 	}
 
-	async create(): Promise<T> {
-		if (!this.dto.id) {
-			this.dto.id = uuidV4();
-			await this.beforeCreate();
-			const [newRecord] = await this.db.insert(this.dto).returning("*");
-			Object.assign(this.dto, newRecord);
-		}
-		return this.dto;
+	protected async beforeUpdate(dto: TUpdateModelDTO<T>): Promise<TUpdateModelDTO<T>> {
+		return { ...dto };
 	}
 
-	async update(): Promise<T> {
-		this.dto.updated_at = new Date();
-		const [updatedRecord] = await this.db.where({ id: this.dto.id }).update(this.dto).returning("*");
-		Object.assign(this.dto, updatedRecord);
-		return this.dto;
+	async create(dto: TCreateModelDTO<T>): Promise<T> {
+		const hookedDto = await this.beforeCreate(dto);
+		const entity = new this.dto({ id: uuidV4(), ...hookedDto });
+		const [newRecord] = await this.db.insert(entity).returning("*");
+		Object.assign(entity, newRecord);
+		return entity;
 	}
 
-	async delete(): Promise<void> {
-		await this.db.where({ id: this.dto.id }).del();
-		this.dto.id = null;
+	async update(id: string, dto: TUpdateModelDTO<T>): Promise<T> {
+		const hookedDto = await this.beforeUpdate(dto);
+		const [updatedRecord] = await this.db
+			.where({ id })
+			.update({ ...hookedDto, updated_at: new Date() })
+			.returning("*");
+		return new this.dto(updatedRecord);
+	}
+
+	async delete(id: string): Promise<T> {
+		const entity = await this.populate(id);
+		await this.db.where({ id: entity.id }).del();
+		entity.id = null;
+		return entity;
 	}
 }

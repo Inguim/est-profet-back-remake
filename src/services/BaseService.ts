@@ -1,5 +1,5 @@
 import type { IBaseDTO } from "../dto/index.js";
-import { BaseModel } from "../models/index.js";
+import { BaseModel, type TCreateModelDTO, type TUpdateModelDTO } from "../models/index.js";
 
 export interface IBaseService<BaseModel> {
 	create(fields: object): Promise<BaseModel>;
@@ -11,35 +11,34 @@ export interface IBaseService<BaseModel> {
 export type ModelConstructor<I> = new (fields?: any) => I;
 export type DTOConstructor<I> = new (fields?: any) => I;
 
-export abstract class BaseService<IDTO extends IBaseDTO, M extends BaseModel<IDTO>, TCREATE_DTO, TUPDATE_DTO> {
+export abstract class BaseService<
+	IDTO extends IBaseDTO,
+	M extends BaseModel<IDTO>,
+	TCREATE_DTO extends TCreateModelDTO<IDTO>,
+	TUPDATE_DTO extends TUpdateModelDTO<IDTO>,
+> {
 	protected abstract model: ModelConstructor<M>;
 	protected abstract dto: DTOConstructor<IDTO>;
 
 	async create(dto: TCREATE_DTO): Promise<IDTO> {
-		const entity = new this.model(dto);
-		return await entity.create();
+		const model = new this.model();
+		return await model.create(dto);
 	}
 
 	async get(id: string): Promise<IDTO | null> {
-		const entity = new this.model();
-		const data = await entity.populate(id);
-		return data.id ? data : null;
+		const model = new this.model();
+		const entity = await model.populate(id);
+		return entity.id ? entity : null;
 	}
 
 	async update(id: string, fields: TUPDATE_DTO): Promise<IDTO | null> {
-		const entity = new this.model();
-		const data = await entity.populate(id);
-		if (!data.id) return null;
-		Object.assign(data, fields);
-		await entity.update();
-		return data;
+		const model = new this.model();
+		return model.update(id, fields);
 	}
 
 	async delete(id: string): Promise<boolean> {
-		const entity = new this.model();
-		const data = await entity.populate(id);
-		if (!data.id) return false;
-		await entity.delete();
-		return data.id === null;
+		const model = new this.model();
+		const entity = await model.delete(id);
+		return !!entity.id;
 	}
 }
