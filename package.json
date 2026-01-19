@@ -12,7 +12,8 @@
 		"format": "prettier --write .",
 		"format:check": "prettier --check .",
 		"cm": "cz",
-		"knex": "tsx node_modules/.bin/knex --knexfile src/database/knexfile.ts"
+		"knex": "tsx node_modules/.bin/knex --knexfile src/database/knexfile.ts",
+		"prepare": "husky"
 	},
 	"repository": {
 		"type": "git",
@@ -39,6 +40,8 @@
 		"zod": "^4.3.5"
 	},
 	"devDependencies": {
+		"@commitlint/cli": "^20.3.1",
+		"@commitlint/config-conventional": "^20.3.1",
 		"@eslint/js": "^9.39.2",
 		"@faker-js/faker": "^10.2.0",
 		"@types/bcrypt": "^6.0.0",
@@ -51,6 +54,7 @@
 		"cz-conventional-changelog": "^3.3.0",
 		"eslint": "^9.39.2",
 		"eslint-config-prettier": "^10.1.8",
+		"husky": "^9.1.7",
 		"prettier": "^3.7.4",
 		"tsx": "^4.21.0",
 		"typescript": "^5.9.3",
