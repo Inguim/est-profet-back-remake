@@ -4,7 +4,8 @@
 	"description": "Profet: Backend Remake Edition",
 	"main": "index.js",
 	"scripts": {
-		"test": "vitest watch",
+		"test": "vitest run",
+		"test:watch": "vitest watch",
 		"dev": "tsx watch src/index.ts",
 		"lint": "eslint .",
 		"lint:fix": "eslint . --fix",
