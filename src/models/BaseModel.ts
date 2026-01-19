@@ -2,6 +2,7 @@ import type { Knex } from "knex";
 import dbConnection from "../database/dbConfig.js";
 import { v4 as uuidV4 } from "uuid";
 import type { DTOConstructor, IBaseDTO } from "../dto/BaseDTO.js";
+import { NotFoundError } from "../errors/NotFoundError.js";
 
 export interface IBasePersistable {
 	create(dto: any): Promise<any>;
@@ -51,7 +52,9 @@ export abstract class BaseModel<T extends IBaseDTO> implements IBasePersistable 
 			.where({ id })
 			.update({ ...hookedDto, updated_at: new Date() })
 			.returning("*");
-		return new this.dto(updatedRecord);
+		const entity = new this.dto(updatedRecord);
+		if (entity.id == null) throw new NotFoundError(`${this.tableTag} de ${id} não encontrado`);
+		return entity;
 	}
 
 	async delete(id: string): Promise<T> {
