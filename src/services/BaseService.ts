@@ -1,5 +1,5 @@
 import type { IBaseDTO } from "../dto/index.js";
-import { BaseModel, type TCreateModelDTO, type TUpdateModelDTO } from "../models/index.js";
+import { BaseModel, type ModelConstructor, type TCreateModelDTO, type TUpdateModelDTO } from "../models/index.js";
 
 export interface IBaseService<BaseModel> {
 	create(fields: object): Promise<BaseModel>;
@@ -8,7 +8,6 @@ export interface IBaseService<BaseModel> {
 	get(id: string): Promise<BaseModel | null>;
 }
 
-export type ModelConstructor<I> = new (fields?: any) => I;
 export type DTOConstructor<I> = new (fields?: any) => I;
 
 export abstract class BaseService<

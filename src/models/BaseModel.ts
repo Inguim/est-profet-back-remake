@@ -10,6 +10,8 @@ export interface IBasePersistable {
 	populate(id: string): Promise<any>;
 }
 
+export type ModelConstructor<I> = new (fields?: any) => I;
+
 export type TUpdateModelDTO<T> = Partial<Omit<T, "id" | "created_at" | "updated_at">>;
 export type TCreateModelDTO<T> = Partial<Omit<T, "id" | "created_at" | "updated_at">>;
 
