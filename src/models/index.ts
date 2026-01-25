@@ -1,2 +1,2 @@
 export * from "./BaseModel.js";
-export * from "./Usuario.js";
+export * from "./UsuarioModel.js";

@@ -6,20 +6,23 @@ import { USUARIO_TIPOS } from "../dto/index.js";
 
 const createSchema = z
 	.object({
-		nome: z.string().min(3, { error: ({ minimum }) => dm.minLength(minimum as number, "nome") }),
+		nome: z
+			.string(dm.required("nome"))
+			.min(3, { error: ({ minimum }) => dm.minLength(minimum as number, "nome") })
+			.nonempty("campo obrigatorio"),
 		email: z.email(dm.invalidEmail),
-		password: z.string().min(6, { error: ({ minimum }) => dm.minLength(minimum as number, "senha") }),
+		password: z
+			.string(dm.required("password"))
+			.min(6, { error: ({ minimum }) => dm.minLength(minimum as number, "password") }),
 		confirm_password: z
-			.string()
-			.min(6, { error: ({ minimum }) => dm.minLength(minimum as number, "confirmação de senha") }),
+			.string(dm.required("confirm_password"))
+			.min(6, { error: ({ minimum }) => dm.minLength(minimum as number, "confirm_password") }),
 		tipo: z.enum(USUARIO_TIPOS, { error: () => dm.enum("tipo", USUARIO_TIPOS) }),
 	})
-	.check(
-		z.refine((data) => data.password === data.confirm_password, {
-			message: dm.confirmPassword,
-			path: ["confirm_password"],
-		}),
-	);
+	.refine((data) => data.password === data.confirm_password, {
+		message: "As senhas não coincidem.",
+		path: ["confirm_password"],
+	});
 
 class CreateValidator implements IBaseValidator {
 	validate(data: any): IBaseValidatorResponse<ZodSafeParseResult<any>> {
