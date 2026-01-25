@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { UsuarioService } from "./UsuarioService.js";
+import { type TFindOneDTO, UsuarioService } from "./UsuarioService.js";
 import { faker as f } from "@faker-js/faker";
 import { USUARIO_TIPOS, UsuarioDTO } from "../dto/index.js";
 import { v4 as uuidV4 } from "uuid";
@@ -8,6 +8,7 @@ import { NotFoundError } from "../errors/index.js";
 describe("UsuarioService", () => {
 	const service = new UsuarioService();
 	const TIPOS = [...USUARIO_TIPOS];
+	const WHERE_PARAMS = ["email"];
 
 	it("deve criar um usuário", async () => {
 		const output = await service.create({
@@ -67,4 +68,21 @@ describe("UsuarioService", () => {
 		const output = await service.delete(input.id as string);
 		expect(output).toBeTruthy();
 	});
+
+	it.each(WHERE_PARAMS.map((param, index) => [param, index]))(
+		"deve encontrar um usuário pelo campo: %s",
+		async (campo, index) => {
+			const input = {
+				email: `email${index}@mail.com`,
+				password: `password${index}`,
+			};
+			await service.create({
+				nome: f.person.firstName(),
+				...input,
+			});
+			const filter = { [String(campo)]: input[campo as keyof TFindOneDTO] };
+			const output = await service.findOne(filter);
+			expect(output.id).not.toBeNull();
+		},
+	);
 });
