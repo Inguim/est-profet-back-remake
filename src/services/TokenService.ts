@@ -1,4 +1,4 @@
-import { decode, sign, TokenExpiredError, verify } from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 import { getEnv } from "../utils/helpers/getEnv.js";
 import { ExpiredTokenError, InvalidTokenError } from "../errors/index.js";
 
@@ -19,20 +19,20 @@ export class TokenService implements ITokenService {
 	constructor(private expiresIn: number = ENV_EXPIRES) {}
 
 	create(payload: object): string {
-		const token = sign(payload, ENV_SECRET, { expiresIn: this.expiresIn });
+		const token = jwt.sign(payload, ENV_SECRET, { expiresIn: this.expiresIn });
 		return token;
 	}
 
 	decode<T>(token: string): T {
-		const decoded = decode(token);
+		const decoded = jwt.decode(token);
 		return decoded as T;
 	}
 
 	validate(token: string): void {
 		try {
-			verify(token, ENV_SECRET);
+			jwt.verify(token, ENV_SECRET);
 		} catch (error) {
-			if (error instanceof TokenExpiredError) throw new ExpiredTokenError();
+			if (error instanceof Error && error.name === "TokenExpiredError") throw new ExpiredTokenError();
 			throw new InvalidTokenError();
 		}
 	}
