@@ -13,10 +13,11 @@ describe("AuthService", async () => {
 		password: "12345678",
 	});
 
-	it("deve retornar um token JWT ao logar", async () => {
+	it("deve retornar um token JWT é o usuário ao logar", async () => {
 		const input = { email: "authemail@mail.com", password: "12345678" };
 		const output = await authService.login(input);
-		expect(output).toBeDefined();
+		expect(output.token).toBeDefined();
+		expect(output.usuario).toBeDefined();
 	});
 
 	it("deve lançar execeção para ValidationError credencias inválidas", async () => {

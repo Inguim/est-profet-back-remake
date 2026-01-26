@@ -1,14 +1,20 @@
 import { PasswordService, TokenService, UsuarioService, type IPasswordService, type ITokenService } from "./index.js";
 import { ValidationError } from "../errors/index.js";
 import { defaultMessages as dm } from "../validators/index.js";
+import type { UsuarioDTO } from "../dto/UsuarioDTO.js";
 
 type TDTOLogin = {
 	email: string;
 	password: string;
 };
 
-interface IAuthService {
-	login(dto: TDTOLogin): Promise<string>;
+type TAuthenticated = {
+	token: string;
+	usuario: UsuarioDTO;
+};
+
+export interface IAuthService {
+	login(dto: TDTOLogin): Promise<TAuthenticated>;
 }
 
 export class AuthService implements IAuthService {
@@ -17,14 +23,15 @@ export class AuthService implements IAuthService {
 		private tokenService: ITokenService = new TokenService(),
 	) {}
 
-	async login(dto: TDTOLogin): Promise<string> {
+	async login(dto: TDTOLogin): Promise<TAuthenticated> {
 		const usuarioService = new UsuarioService();
-		const { id, email, admin, password } = await usuarioService.findOne({ email: dto.email });
+		const usuario = await usuarioService.findOne({ email: dto.email });
+		const { id, email, admin, password } = usuario;
 		const senhasIguais = await this.passwordService.compare(dto.password, password);
 		if (!senhasIguais) {
 			throw new ValidationError({ credencias_invalidas: dm.credencias_invalidas });
 		}
 		const token = this.tokenService.create({ id, email, admin });
-		return token;
+		return { token, usuario };
 	}
 }
