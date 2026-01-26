@@ -5,5 +5,6 @@ import { router as authRoutes } from "./authRoutes.js";
 
 export const routes = (app: Express) => {
 	app.use(express.json());
-	app.use(usuarioRoutes, authRoutes);
+	app.use("/auth", authRoutes);
+	app.use("/usuarios", usuarioRoutes);
 };

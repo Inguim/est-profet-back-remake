@@ -8,6 +8,6 @@ const { create: createMiddleware } = ValidateUsuarioMiddleware;
 const router = Router();
 const usuarioController = new UsuarioController({ usuarioService: new UsuarioService() });
 
-router.post("/usuarios", createMiddleware, (req, res, next) => usuarioController.create(req, res, next));
+router.post("/", createMiddleware, (req, res, next) => usuarioController.create(req, res, next));
 
 export { router };
