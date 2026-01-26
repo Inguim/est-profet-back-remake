@@ -1,0 +1,43 @@
+post:
+  tags: [Auth]
+  summary: Efetua login
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            email:
+              type: string
+              example: "example@mail.com"
+            password:
+              type: string
+              example: "12345678"
+  responses:
+    "200":
+      description: Login efetuado com sucesso!
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+              token:
+                type: string
+              usuario:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  nome:
+                    type: string
+                  admin:
+                    type: boolean
+                  status:
+                    type: string
+                  tipo:
+                    type: string
+    "400":
+      $ref: "../components/responses/400_validacao.yaml"
