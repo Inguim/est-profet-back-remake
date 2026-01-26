@@ -1,0 +1,15 @@
+description: Erro de validação
+content:
+  application/json:
+    schema:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Erro de validação
+        errors:
+          type: object
+          additionalProperties:
+            type: string
+          example:
+            campo: "formato inválido"

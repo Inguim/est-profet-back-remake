@@ -21,3 +21,5 @@ post:
                 example: Usuário criado com sucesso
               data:
                 $ref: "../components/schemas/usuario/usuario.yaml"
+    "400":
+      $ref: "../components/responses/400_validacao.yaml"
