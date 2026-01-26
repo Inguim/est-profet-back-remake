@@ -2,14 +2,18 @@ import { decode, sign, TokenExpiredError, verify } from "jsonwebtoken";
 import { getEnv } from "../utils/helpers/getEnv.js";
 import { ExpiredTokenError, InvalidTokenError } from "../errors/index.js";
 
+const ENV_EXPIRES = parseInt(getEnv("TOKEN_EXPIRES"));
+const ENV_SECRET = getEnv("TOKEN_SECRET");
 export interface ITokenService {
 	create(payload: any): string;
 	decode<T>(token: string): T;
 	validate(token: string): void;
 }
-
-const ENV_EXPIRES = parseInt(getEnv("TOKEN_EXPIRES"));
-const ENV_SECRET = getEnv("TOKEN_SECRET");
+export interface ITokenPayload {
+	id: string;
+	email: string;
+	admin: boolean;
+}
 
 export class TokenService implements ITokenService {
 	constructor(private expiresIn: number = ENV_EXPIRES) {}
