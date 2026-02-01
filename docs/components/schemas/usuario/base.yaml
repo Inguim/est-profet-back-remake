@@ -13,3 +13,8 @@ properties:
     enum:
       - aluno
       - professor
+  status:
+    type: string
+    enum:
+      - analise
+      - aprovado

@@ -4,10 +4,11 @@ import { STATUS_CODE } from "../utils/constansts/status-code.js";
 import { formatErrorZod } from "../utils/helpers/formatErrorZod.js";
 
 export class ValidationError extends BaseError {
-	constructor(error: ZodError | string) {
+	constructor(error: ZodError | object) {
 		super({ message: "Erro de validação", status: STATUS_CODE.BAD_REQUEST });
 		this.name = "ValidationError";
 		if (error instanceof ZodError) this.createMessage(error);
+		else this.errors = error;
 	}
 
 	createMessage(error: ZodError) {

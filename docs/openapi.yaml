@@ -9,10 +9,15 @@ servers:
   - url: http://localhost:3000
 
 paths:
+  /auth:
+    $ref: "./paths/auth.yaml"
   /usuarios:
     $ref: "./paths/usuarios.yaml"
 
 components:
+  responses:
+    "400Validacao":
+      $ref: "./components/responses/400_validacao.yaml"
   schemas:
     Usuario:
       $ref: "./components/schemas/usuario/usuario.yaml"

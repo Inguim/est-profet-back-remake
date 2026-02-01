@@ -3,7 +3,7 @@ import { UsuarioService } from "../services/UsuarioService.js";
 import type { TUsuarioTipo } from "../dto/UsuarioDTO.js";
 import { STATUS_CODE } from "../utils/constansts/status-code.js";
 
-type CreateDTO = {
+type TCreateDTO = {
 	nome: string;
 	email: string;
 	tipo: TUsuarioTipo;
@@ -12,7 +12,7 @@ type CreateDTO = {
 };
 
 interface IRequestCreate extends Request {
-	body: CreateDTO;
+	body: TCreateDTO;
 }
 
 interface IControllerConstructor {

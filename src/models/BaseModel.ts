@@ -9,12 +9,14 @@ export interface IBasePersistable {
 	update(id: string, dto: any): Promise<any>;
 	delete(id: string): Promise<any>;
 	populate(id: string): Promise<any>;
+	findOne(params: any): Promise<any>;
 }
 
 export type ModelConstructor<I> = new (fields?: any) => I;
 
 export type TUpdateModelDTO<T> = Partial<Omit<T, "id" | "created_at" | "updated_at">>;
 export type TCreateModelDTO<T> = Partial<Omit<T, "id" | "created_at" | "updated_at">>;
+export type TFindOneModelDTO<T> = Partial<Omit<T, "id" | "created_at" | "updated_at">>;
 
 export abstract class BaseModel<T extends IBaseDTO> implements IBasePersistable {
 	protected abstract dto: DTOConstructor<T>;
@@ -61,6 +63,13 @@ export abstract class BaseModel<T extends IBaseDTO> implements IBasePersistable 
 		const entity = await this.populate(id);
 		await this.db.where({ id: entity.id }).del();
 		entity.id = null;
+		return entity;
+	}
+
+	async findOne(params: TFindOneModelDTO<T>): Promise<T> {
+		const data = await this.db.where(params).first();
+		const entity = new this.dto(data);
+		if (entity.id == null) throw new NotFoundError(`${this.tableTag} não encontrado`);
 		return entity;
 	}
 }
