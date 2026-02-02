@@ -4,7 +4,7 @@ import { userValidator } from "../validators/index.js";
 import { ValidationError } from "../errors/ValidationError.js";
 import type { ZodError } from "zod";
 
-type CreateDTO = {
+export type CreateDTO = {
 	nome: string;
 	email: string;
 	tipo: TUsuarioTipo;
