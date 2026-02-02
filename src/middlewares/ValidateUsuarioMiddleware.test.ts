@@ -15,7 +15,7 @@ function createTestApp(middleware: RequestHandler) {
 	return app;
 }
 
-describe("ValideUsuarioMiddlware", async () => {
+describe("ValidateUsuarioMiddleware", async () => {
 	let app: ReturnType<typeof createTestApp>;
 
 	const makeRequest = <T>(data: T) => {
