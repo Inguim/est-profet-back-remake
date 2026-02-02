@@ -2,7 +2,7 @@
 
 ### Migrations
 
-- [ ] Users
+- [x] Users
 - [ ] Cursos
 - [ ] Series
 - [ ] Alunos
@@ -63,8 +63,8 @@
   - [ ] Controller
 - [ ] Tipo notificação
   - [ ] Service
-- [ ] User
-  - [ ] Service
+- [] User
+  - [x] Service
   - [ ] Controller
 - [ ] Usuario projeto
   - [ ] Service
