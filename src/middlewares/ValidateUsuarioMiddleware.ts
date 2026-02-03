@@ -12,12 +12,23 @@ export type CreateDTO = {
 	confirm_password: string;
 };
 
-interface IRequestCreate extends Request {
-	body: CreateDTO;
+export type UpdateDTO = {
+	nome: string;
+};
+
+type TRequestCreate = Request<any, any, CreateDTO>;
+
+type RequestUpdate = Request<{ id: string }, any, UpdateDTO>;
+
+function create(req: TRequestCreate, res: Response, next: NextFunction) {
+	const validator = new userValidator.CreateValidator();
+	const result = validator.validate(req.body);
+	if (!result.success) throw new ValidationError(result.extra?.error as ZodError);
+	next();
 }
 
-function create(req: IRequestCreate, res: Response, next: NextFunction) {
-	const validator = new userValidator.CreateValidator();
+function update(req: RequestUpdate, res: Response, next: NextFunction) {
+	const validator = new userValidator.UpdateValidator();
 	const result = validator.validate(req.body);
 	if (!result.success) throw new ValidationError(result.extra?.error as ZodError);
 	next();
@@ -25,4 +36,5 @@ function create(req: IRequestCreate, res: Response, next: NextFunction) {
 
 export const ValidateUsuarioMiddleware = {
 	create,
+	update,
 };

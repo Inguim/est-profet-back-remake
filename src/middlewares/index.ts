@@ -1,7 +1,8 @@
 import { type Request } from "express";
+
 export interface IAuthRequest extends Request {
-	usuarioId: string;
-	usuarioAdmin: boolean;
+	usuarioId?: string;
+	usuarioAdmin?: boolean;
 }
 
 export * from "./ValidateUsuarioMiddleware.js";
