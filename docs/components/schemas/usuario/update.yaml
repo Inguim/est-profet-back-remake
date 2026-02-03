@@ -1,0 +1,7 @@
+type: object
+example:
+  nome: teste
+required:
+  - nome
+properties:
+  nome: string

@@ -23,3 +23,34 @@ post:
                 $ref: "../components/schemas/usuario/usuario.yaml"
     "400":
       $ref: "../components/responses/400_validacao.yaml"
+
+patch:
+  tags: [Usuarios]
+  summary: Atualiza um usuário existente
+  parameters:
+    - name: id
+      in: path
+      required: true
+      description: ID do usuário
+      schema:
+        type: string
+        example: "123"
+
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: "../components/schemas/usuario/update.yaml"
+
+  responses:
+    "200":
+      description: Usuário atualizado com sucesso
+      content:
+        application/json:
+          schema:
+            $ref: "../components/schemas/usuario/usuario.yaml"
+    "400":
+      $ref: "../components/responses/400_validacao.yaml"
+    "404":
+      $ref: "../components/responses/404_not_found.yaml"

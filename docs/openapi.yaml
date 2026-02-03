@@ -18,6 +18,8 @@ components:
   responses:
     "400Validacao":
       $ref: "./components/responses/400_validacao.yaml"
+    "404NotFound":
+      $ref: "./components/responses/404_not_found.yaml"
   schemas:
     Usuario:
       $ref: "./components/schemas/usuario/usuario.yaml"
