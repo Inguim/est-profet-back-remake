@@ -7,7 +7,7 @@ import { USUARIO_TIPOS } from "../dto/index.js";
 describe("UsuarioValidator", () => {
 	const TIPOS = [...USUARIO_TIPOS];
 
-	describe("CreateValidator", () => {
+	describe("Create", () => {
 		const validator = new userValidator.CreateValidator();
 
 		it("deve requerir os campos obrigatórios", () => {
@@ -83,6 +83,22 @@ describe("UsuarioValidator", () => {
 			const outputErrors = formatErrorZod(output.extra?.error as any);
 			expect(outputErrors).includes({
 				tipo: "O campo tipo deve ser um dos seguintes valores: aluno, professor.",
+			});
+		});
+	});
+
+	describe("Update", () => {
+		const validator = new userValidator.UpdateValidator();
+
+		it("deve validar o tamanho mínimo dos campos", () => {
+			const input = {
+				nome: "jo",
+			};
+			const output = validator.validate(input);
+			expect(output.success).toBe(false);
+			const outputErrors = formatErrorZod(output.extra?.error as any);
+			expect(outputErrors).includes({
+				nome: "O campo nome deve ter no mínimo 3 caracteres.",
 			});
 		});
 	});
