@@ -4,7 +4,7 @@ export interface ICursoDTO extends IBaseDTO {
 	curso: string;
 }
 
-type TFields = Omit<ICursoDTO, "id" | "created_at" | "updated_at">;
+type TFields = Partial<ICursoDTO>;
 
 export class CursoDTO implements ICursoDTO {
 	id?: string | null;
@@ -12,7 +12,7 @@ export class CursoDTO implements ICursoDTO {
 	updated_at?: Date = new Date();
 	curso: string = "";
 
-	constructor(fields: TFields = { curso: "" }) {
+	constructor(fields: TFields = {}) {
 		Object.assign(this, fields);
 	}
 }
