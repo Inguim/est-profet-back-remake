@@ -12,7 +12,9 @@ paths:
   /auth:
     $ref: "./paths/auth.yaml"
   /usuarios:
-    $ref: "./paths/usuarios.yaml"
+    $ref: "./paths/usuarios/collection.yaml"
+  /usuarios/{id}:
+    $ref: "./paths/usuarios/item.yaml"
 
 components:
   responses:
