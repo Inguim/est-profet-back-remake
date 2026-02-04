@@ -3,6 +3,7 @@ import type { TUsuarioTipo } from "../dto/UsuarioDTO.js";
 import { STATUS_CODE } from "../utils/constansts/status-code.js";
 import type { IUsuarioService } from "../services/UsuarioService.js";
 import { NotFoundError } from "../errors/index.js";
+import type { IAuthRequest } from "../middlewares/index.js";
 
 type TCreateDTO = {
 	nome: string;
@@ -19,6 +20,8 @@ type TUpdateDTO = {
 type TRequestCreate = Request<any, any, TCreateDTO>;
 
 type TRequestUpdate = Request<{ id: string }, any, TUpdateDTO>;
+
+type TRequestGet = IAuthRequest<{ id: string }>;
 
 type TControllerConstructor = {
 	usuarioService: IUsuarioService;
@@ -66,6 +69,27 @@ export class UsuarioController {
 					email: updatedUsuario.email,
 					tipo: updatedUsuario.tipo,
 					status: updatedUsuario.status,
+				},
+			});
+		} catch (error) {
+			next(error);
+		}
+	}
+
+	async get(req: TRequestGet, res: Response, next: NextFunction): Promise<void> {
+		try {
+			const usuario = await this.usuarioService.get(req.params.id);
+			if (!usuario) throw new NotFoundError("Usuário não encontrado");
+			const { id, nome, email, tipo, status } = usuario;
+			res.status(STATUS_CODE.OK).json({
+				message: "Usuário encontrado com sucesso",
+				data: {
+					id,
+					nome,
+					email,
+					tipo,
+					status,
+					// adicionar categorias (professor) / curso (aluno)
 				},
 			});
 		} catch (error) {
