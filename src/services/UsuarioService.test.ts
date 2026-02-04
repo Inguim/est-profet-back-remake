@@ -30,6 +30,17 @@ describe("UsuarioService", () => {
 		expect(output.tipo).toBe(tipo);
 	});
 
+	it("deve encontrar um usuário pelo ID", async () => {
+		const input = await service.create({
+			nome: f.person.firstName(),
+			email: f.internet.email(),
+			password: f.internet.password(),
+		});
+
+		const output = await service.get(input.id as string);
+		expect(output?.id).toEqual(output?.id);
+	});
+
 	it("deve atualizar as informações do usuário", async () => {
 		const input = await service.create({
 			nome: f.person.firstName(),
