@@ -1,7 +1,15 @@
-import type { NextFunction, Response } from "express";
+import type { NextFunction, Response, Request } from "express";
 import { InvalidTokenError } from "../errors/index.js";
 import { TokenService, type ITokenPayload } from "../services/index.js";
-import type { IAuthRequest } from "./index.js";
+
+export interface IAuthRequest<P = Record<string, any>, ResBody = any, ReqBody = any> extends Request<
+	P,
+	ResBody,
+	ReqBody
+> {
+	usuarioId?: string;
+	usuarioAdmin?: boolean;
+}
 
 export function ensureAuthMiddleware(req: IAuthRequest, _res: Response, next: NextFunction): void {
 	const authorization = req.headers?.authorization || "";
