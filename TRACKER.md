@@ -3,7 +3,7 @@
 ### Migrations
 
 - [x] Users
-- [ ] Cursos
+- [x] Cursos
 - [ ] Series
 - [ ] Alunos
 - [ ] Noticias
@@ -29,9 +29,9 @@
 - [ ] Contribuidor
   - [ ] Service
   - [ ] Controller
-- [ ] Curso
-  - [ ] Service
-  - [ ] Controller
+- [x] Curso
+  - [x] Service
+  - [x] Controller
 - [ ] Estado
   - [ ] Service
 - [ ] Menu
@@ -73,7 +73,7 @@
 ### Seeders
 
 - [ ] Categoria
-- [ ] Curso
+- [x] Curso
 - [ ] Estado
 - [ ] Menu
 - [ ] Serie
