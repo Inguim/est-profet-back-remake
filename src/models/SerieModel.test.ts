@@ -1,0 +1,21 @@
+import { describe, expect, it } from "vitest";
+import { SerieModel } from "./index.js";
+import { SerieDTO } from "../dto/index.js";
+
+describe("CursoModel", () => {
+	it("deve listar os cursos", async () => {
+		const model = new SerieModel();
+		const output = await model.list();
+		expect(output).toBeInstanceOf(Array);
+		expect(output.at(0)).toBeInstanceOf(SerieDTO);
+	});
+
+	it("deve trazer apenas as propriedades id e serie", async () => {
+		const model = new SerieModel();
+		const output = (await model.list()).at(0);
+		expect(output?.id).not.toBeNull();
+		expect(output?.serie).not.toEqual("");
+		expect(output?.created_at).toBeUndefined();
+		expect(output?.updated_at).toBeUndefined();
+	});
+});
