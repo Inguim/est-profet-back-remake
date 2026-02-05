@@ -5,4 +5,4 @@ properties:
   results:
     type: array
     items:
-      $ref: "./curso.yaml"
+      $ref: "./item.yaml"

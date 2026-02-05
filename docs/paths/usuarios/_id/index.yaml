@@ -44,7 +44,7 @@ patch:
       content:
         application/json:
           schema:
-            $ref: "../../../components/schemas/usuario/usuario.yaml"
+            $ref: "../../../components/schemas/usuario/item.yaml"
     "400":
       $ref: "../../../components/responses/400_validacao.yaml"
     "404":

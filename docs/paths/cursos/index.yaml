@@ -13,4 +13,4 @@ get:
                 type: string
                 example: Cursos buscados com sucesso
               data:
-                $ref: "../../components/schemas/curso/list.yaml"
+                $ref: "../../components/schemas/curso/collection.yaml"

@@ -26,6 +26,6 @@ components:
       $ref: "./components/responses/404_not_found.yaml"
   schemas:
     Usuario:
-      $ref: "./components/schemas/usuario/usuario.yaml"
+      $ref: "./components/schemas/usuario/item.yaml"
     Curso:
-      $ref: "./components/schemas/curso/curso.yaml"
+      $ref: "./components/schemas/curso/item.yaml"
