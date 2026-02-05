@@ -4,7 +4,7 @@
 
 - [x] Users
 - [x] Cursos
-- [ ] Series
+- [x] Series
 - [ ] Alunos
 - [ ] Noticias
 - [ ] Contribuidores - contribuidors
@@ -52,9 +52,9 @@
 - [ ] Projeto
   - [ ] Service
   - [ ] Controller
-- [ ] Serie
-  - [ ] Service
-  - [ ] Controller
+- [x] Serie
+  - [x] Service
+  - [x] Controller
 - [ ] Solicitação
   - [ ] Service
   - [ ] Controller
@@ -76,7 +76,7 @@
 - [x] Curso
 - [ ] Estado
 - [ ] Menu
-- [ ] Serie
+- [x] Serie
 - [ ] Tipo contribuicao
 - [ ] Tipo notificacao
 - [ ] User
