@@ -25,3 +25,5 @@ components:
   schemas:
     Usuario:
       $ref: "./components/schemas/usuario/usuario.yaml"
+    Curso:
+      $ref: "./components/schemas/curso/curso.yaml"

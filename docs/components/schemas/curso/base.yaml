@@ -1,0 +1,7 @@
+type: object
+required:
+  - curso
+properties:
+  curso:
+    type: string
+    example: "Engenharia"
