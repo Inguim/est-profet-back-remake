@@ -3,7 +3,7 @@ import { SerieModel } from "./index.js";
 import { SerieDTO } from "../dto/index.js";
 
 describe("CursoModel", () => {
-	it("deve listar os cursos", async () => {
+	it("deve listar as series", async () => {
 		const model = new SerieModel();
 		const output = await model.list();
 		expect(output).toBeInstanceOf(Array);
