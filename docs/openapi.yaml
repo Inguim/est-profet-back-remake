@@ -12,11 +12,11 @@ paths:
   /auth:
     $ref: "./paths/auth.yaml"
   /cursos:
-    $ref: "./paths/cursos/collection.yaml"
+    $ref: "./paths/cursos/index.yaml"
   /usuarios:
-    $ref: "./paths/usuarios/collection.yaml"
+    $ref: "./paths/usuarios/index.yaml"
   /usuarios/{id}:
-    $ref: "./paths/usuarios/item.yaml"
+    $ref: "./paths/usuarios/_id/index.yaml"
 
 components:
   responses:

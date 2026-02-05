@@ -15,9 +15,9 @@ get:
       content:
         application/json:
           schema:
-            $ref: "../../components/schemas/usuario/get.yaml"
+            $ref: "../../../components/schemas/usuario/get.yaml"
     "404":
-      $ref: "../../components/responses/404_not_found.yaml"
+      $ref: "../../../components/responses/404_not_found.yaml"
 
 patch:
   tags: [Usuarios]
@@ -36,7 +36,7 @@ patch:
     content:
       application/json:
         schema:
-          $ref: "../../components/schemas/usuario/update.yaml"
+          $ref: "../../../components/schemas/usuario/update.yaml"
 
   responses:
     "200":
@@ -44,8 +44,8 @@ patch:
       content:
         application/json:
           schema:
-            $ref: "../../components/schemas/usuario/usuario.yaml"
+            $ref: "../../../components/schemas/usuario/usuario.yaml"
     "400":
-      $ref: "../../components/responses/400_validacao.yaml"
+      $ref: "../../../components/responses/400_validacao.yaml"
     "404":
-      $ref: "../../components/responses/404_not_found.yaml"
+      $ref: "../../../components/responses/404_not_found.yaml"
