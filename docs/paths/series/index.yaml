@@ -1,0 +1,16 @@
+get:
+  tags: [Series]
+  summary: Retorna uma lista de Series
+  responses:
+    "200":
+      description: "Retorna uma lista de Series"
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Series buscadas com sucesso
+              data:
+                $ref: "../../components/schemas/serie/collection.yaml"

@@ -1,0 +1,7 @@
+type: object
+required:
+  - serie
+properties:
+  serie:
+    type: number
+    example: 1
