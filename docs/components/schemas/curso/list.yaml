@@ -1,0 +1,8 @@
+type: object
+properties:
+  count:
+    type: number
+  results:
+    type: array
+    items:
+      $ref: "./curso.yaml"

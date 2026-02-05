@@ -11,6 +11,8 @@ servers:
 paths:
   /auth:
     $ref: "./paths/auth.yaml"
+  /cursos:
+    $ref: "./paths/cursos/collection.yaml"
   /usuarios:
     $ref: "./paths/usuarios/collection.yaml"
   /usuarios/{id}:

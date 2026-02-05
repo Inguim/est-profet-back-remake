@@ -1,0 +1,16 @@
+get:
+  tags: [Cursos]
+  summary: Retorna uma lista de Cursos
+  responses:
+    "200":
+      description: "Retorna uma lista de Cursos"
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Cursos buscados com sucesso
+              data:
+                $ref: "../../components/schemas/curso/list.yaml"
