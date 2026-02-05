@@ -15,7 +15,7 @@ export class CursoModel implements ICursoModel {
 	}
 
 	async list(): Promise<CursoDTO[]> {
-		const rows = await this.db.select<CursoDTO[]>().orderBy("curso", "asc");
+		const rows = await this.db.select<CursoDTO[]>("id", "curso").orderBy("curso", "asc");
 		return rows.map((row) => new CursoDTO(row));
 	}
 }

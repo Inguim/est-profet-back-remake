@@ -8,8 +8,8 @@ type TFields = Partial<ICursoDTO>;
 
 export class CursoDTO implements ICursoDTO {
 	id?: string | null;
-	created_at?: Date = new Date();
-	updated_at?: Date = new Date();
+	created_at?: Date;
+	updated_at?: Date;
 	curso: string = "";
 
 	constructor(fields: TFields = {}) {
