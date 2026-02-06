@@ -10,7 +10,7 @@ export class CursoService implements ICursoService {
 	protected dto = CursoDTO;
 
 	async list(): Promise<CursoDTO[]> {
-		const model = new CursoModel();
+		const model = new this.model();
 		const results = await model.list();
 		return results;
 	}

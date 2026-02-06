@@ -10,7 +10,7 @@ export class SerieService implements ISerieService {
 	protected dto = SerieDTO;
 
 	async list(): Promise<SerieDTO[]> {
-		const model = new SerieModel();
+		const model = new this.model();
 		const results = await model.list();
 		return results;
 	}
