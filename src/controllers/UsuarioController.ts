@@ -1,17 +1,14 @@
 import type { Request, Response, NextFunction } from "express";
-import type { TUsuarioTipo } from "../dto/UsuarioDTO.js";
 import { STATUS_CODE } from "../utils/constansts/status-code.js";
-import type { IUsuarioService } from "../services/UsuarioService.js";
+import type { IUsuarioService, TCreateDTO as TCreateDTOUsuarioService } from "../services/UsuarioService.js";
 import { NotFoundError } from "../errors/index.js";
 import type { IAuthRequest } from "../middlewares/index.js";
 
-type TCreateDTO = {
-	nome: string;
-	email: string;
-	tipo: TUsuarioTipo;
-	password: string;
+type TCreateDTOBase = {
 	confirm_password: string;
 };
+
+type TCreateDTO = TCreateDTOBase & TCreateDTOUsuarioService;
 
 type TUpdateDTO = {
 	nome: string;
@@ -37,8 +34,14 @@ export class UsuarioController {
 	async create(req: TRequestCreate, res: Response, next: NextFunction): Promise<void> {
 		const { nome, email, tipo, password } = req.body;
 		try {
-			const usuario = await this.usuarioService.create({ nome, email, tipo, password });
-
+			let usuario;
+			if (tipo === "aluno") {
+				const { curso_id, serie_id } = req.body;
+				usuario = await this.usuarioService.create({ nome, email, tipo, password, curso_id, serie_id });
+			} else {
+				// const { } = req.body; // ajustar caso professor
+				usuario = await this.usuarioService.create({ nome, email, tipo, password });
+			}
 			res.status(STATUS_CODE.CREATED).json({
 				message: "Usuário criado com sucesso",
 				data: {
