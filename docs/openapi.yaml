@@ -21,6 +21,11 @@ paths:
     $ref: "./paths/usuarios/_id/index.yaml"
 
 components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
   responses:
     "400Validacao":
       $ref: "./components/responses/400_validacao.yaml"
