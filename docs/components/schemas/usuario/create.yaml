@@ -1,20 +1,9 @@
-allOf:
-  - $ref: "./base.yaml"
+discriminator:
+  propertyName: tipo
+  mapping:
+    aluno: "./create-aluno.yaml"
+    professor: "./create-professor.yaml"
 
-type: object
-example:
-  nome: teste
-  email: teste@gmail.com
-  tipo: aluno
-  password: "123456"
-  confirm_password: "123456"
-required:
-  - password
-  - confirm_password
-properties:
-  password:
-    type: string
-    example: "123456"
-  confirm_password:
-    type: string
-    example: "123456"
+oneOf:
+  - $ref: "./create-aluno.yaml"
+  - $ref: "./create-professor.yaml"

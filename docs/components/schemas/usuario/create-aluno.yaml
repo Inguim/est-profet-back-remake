@@ -1,0 +1,23 @@
+allOf:
+  - $ref: "./base.yaml"
+
+type: object
+required:
+  - password
+  - confirm_password
+properties:
+  tipo:
+    type: string
+    enum: [aluno]
+  password:
+    type: string
+    example: "1234567"
+  confirm_password:
+    type: string
+    example: "1234567"
+  curso_id:
+    type: string
+    example: "uuid"
+  serie_id:
+    type: string
+    example: "uuid"

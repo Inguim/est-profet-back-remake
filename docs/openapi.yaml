@@ -27,9 +27,23 @@ components:
     "404NotFound":
       $ref: "./components/responses/404_not_found.yaml"
   schemas:
-    Usuario:
-      $ref: "./components/schemas/usuario/item.yaml"
     Curso:
       $ref: "./components/schemas/curso/item.yaml"
     Serie:
       $ref: "./components/schemas/serie/item.yaml"
+    Usuario:
+      $ref: "./components/schemas/usuario/item.yaml"
+    UsuarioCreate:
+      type: object
+      oneOf:
+        - $ref: "#/components/schemas/UsuarioCreateAluno"
+        - $ref: "#/components/schemas/UsuarioCreateProfessor"
+      discriminator:
+        propertyName: tipo
+        mapping:
+          aluno: "#/components/schemas/UsuarioCreateAluno"
+          professor: "#/components/schemas/UsuarioCreateProfessor"
+    UsuarioCreateAluno:
+      $ref: "./components/schemas/usuario/create-aluno.yaml"
+    UsuarioCreateProfessor:
+      $ref: "./components/schemas/usuario/create-professor.yaml"
