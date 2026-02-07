@@ -5,7 +5,7 @@
 - [x] Users
 - [x] Cursos
 - [x] Series
-- [ ] Alunos
+- [x] Alunos
 - [ ] Noticias
 - [ ] Contribuidores - contribuidors
 - [ ] Tipo contribuição
@@ -22,8 +22,8 @@
 
 ### Models / Service / Controller
 
-- [ ] Aluno
-  - [ ] Service
+- [x] Aluno
+  - [x] Service
 - [ ] Categoria
   - [ ] Service
 - [ ] Contribuidor
