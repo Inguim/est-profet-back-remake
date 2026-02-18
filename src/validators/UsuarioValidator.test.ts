@@ -10,8 +10,18 @@ describe("UsuarioValidator", () => {
 	describe("Create", () => {
 		const validator = new userValidator.CreateValidator();
 
-		it("deve requerir os campos obrigatórios", () => {
+		it("deve requerir o campo 'tipo'", () => {
 			const input = {};
+			const output = validator.validate(input);
+			expect(output.success).toBe(false);
+			const outputErrors = formatErrorZod(output.extra?.error as any);
+			expect(outputErrors).includes({
+				tipo: "O campo tipo deve ser um dos seguintes valores: aluno, professor.",
+			});
+		});
+
+		it("deve requerir os campos obrigatórios para tipo 'aluno'", () => {
+			const input = { tipo: "aluno" };
 			const output = validator.validate(input);
 			expect(output.success).toBe(false);
 			const outputErrors = formatErrorZod(output.extra?.error as any);
@@ -20,7 +30,8 @@ describe("UsuarioValidator", () => {
 				email: "Por favor, insira um e-mail válido.",
 				password: "O campo password é obrigatório.",
 				confirm_password: "O campo confirm_password é obrigatório.",
-				tipo: "O campo tipo deve ser um dos seguintes valores: aluno, professor.",
+				curso_id: "O campo curso_id é obrigatório.",
+				serie_id: "O campo serie_id é obrigatório.",
 			});
 		});
 
@@ -29,6 +40,7 @@ describe("UsuarioValidator", () => {
 				nome: "jo",
 				password: "12345",
 				confirm_password: "12345",
+				tipo: "aluno",
 			};
 			const output = validator.validate(input);
 			expect(output.success).toBe(false);
@@ -43,6 +55,7 @@ describe("UsuarioValidator", () => {
 		it("deve validar o formato do e-mail", () => {
 			const input = {
 				email: "invalid-email",
+				tipo: "aluno",
 			};
 			const output = validator.validate(input);
 			expect(output.success).toBe(false);
@@ -57,6 +70,8 @@ describe("UsuarioValidator", () => {
 				nome: f.person.firstName(),
 				email: f.internet.email(),
 				tipo: "aluno",
+				curso_id: f.string.uuid(),
+				serie_id: f.string.uuid(),
 				password: "123456",
 				confirm_password: "1234567",
 			};
