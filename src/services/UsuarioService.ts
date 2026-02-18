@@ -33,7 +33,7 @@ export class UsuarioService
 	private alunoService: IAlunoService;
 	// protected professorService: IProfessorService;
 
-	constructor({ alunoService }: TContructorService) {
+	constructor({ alunoService }: TContructorService = {} as TContructorService) {
 		super();
 		this.alunoService = alunoService;
 		// this.professorService = professorService;

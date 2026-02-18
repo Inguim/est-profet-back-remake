@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { beforeAll, describe, expect, it } from "vitest";
 import {
 	type TCreateDTO,
 	type TCreateDTOAluno,
@@ -12,33 +12,37 @@ import { v4 as uuidV4 } from "uuid";
 import { NotFoundError } from "../errors/index.js";
 import { AlunoService, CursoService, SerieService } from "./index.js";
 
-describe("UsuarioService", async () => {
+describe("UsuarioService", () => {
 	let uniqueTracker = 0;
-	const service = new UsuarioService({ alunoService: new AlunoService() });
-	const TIPOS = [...USUARIO_TIPOS];
-
-	const WHERE_PARAMS = ["email"];
-
-	const cursoModel = new CursoService();
-	const serieModel = new SerieService();
-
-	const curso_id = (await cursoModel.list()).at(0)?.id as string;
-	const serie_id = (await serieModel.list()).at(0)?.id as string;
-
+	let curso_id: string;
+	let serie_id: string;
 	const TIPOS_INPUTS = {
-		aluno: { tipo: "aluno", curso_id, serie_id } as TCreateDTOAluno,
+		aluno: { tipo: "aluno", curso_id: "", serie_id: "" } as TCreateDTOAluno,
 		professor: { tipo: "professor" } as TCreateDTOProfessor,
 	};
+	const TIPOS = [...USUARIO_TIPOS];
+	const WHERE_PARAMS = ["email"];
+
+	const alunoService = new AlunoService();
+	const service = new UsuarioService({ alunoService });
 
 	const generateUsuario = (tipo: TUsuarioTipo = "aluno"): TCreateDTO => {
 		uniqueTracker++;
 		return {
 			nome: f.person.firstName(),
-			email: `email${uniqueTracker}@mail.com`,
+			email: `email${uniqueTracker}${f.phone.number()}@mail.com`,
 			password: f.internet.password(),
 			...TIPOS_INPUTS[tipo],
 		};
 	};
+
+	beforeAll(async () => {
+		const cursoService = new CursoService();
+		const serieService = new SerieService();
+		curso_id = (await cursoService.list()).at(0)?.id as string;
+		serie_id = (await serieService.list()).at(0)?.id as string;
+		TIPOS_INPUTS["aluno"] = { tipo: "aluno", curso_id, serie_id };
+	});
 
 	it("deve criar um usuário", async () => {
 		const input = generateUsuario();
