@@ -1,8 +1,8 @@
 import express, { type RequestHandler } from "express";
 import request from "supertest";
-import { errorHandlingMiddleware, ValidateUsuarioMiddleware, type CreateDTO, type UpdateDTO } from "./index.js";
+import { errorHandlingMiddleware, ValidateUsuarioMiddleware, type TCreateDTO, type TUpdateDTO } from "./index.js";
 import { beforeAll, describe, expect, it } from "vitest";
-import { faker as f, faker } from "@faker-js/faker";
+import { faker as f } from "@faker-js/faker";
 import { STATUS_CODE } from "../utils/constansts/status-code.js";
 import { v4 as uuidV4 } from "uuid";
 
@@ -21,7 +21,7 @@ function createTestApp(middleware: RequestHandler) {
 describe("ValidateUsuarioMiddleware", async () => {
 	let app: ReturnType<typeof createTestApp>;
 
-	const generateUser = (fields: Partial<CreateDTO> = {}): CreateDTO => {
+	const generateUser = (fields: Partial<TCreateDTO> = {}): TCreateDTO => {
 		const password = f.internet.password();
 		return {
 			nome: f.person.firstName(),
@@ -29,6 +29,8 @@ describe("ValidateUsuarioMiddleware", async () => {
 			tipo: "aluno",
 			password: password,
 			confirm_password: password,
+			curso_id: f.string.uuid(),
+			serie_id: f.string.uuid(),
 			...fields,
 		};
 	};
@@ -47,7 +49,7 @@ describe("ValidateUsuarioMiddleware", async () => {
 
 		it("deve retornar 201 para dados válidos", async () => {
 			const input = generateUser();
-			const output = await makeRequest<CreateDTO>(input);
+			const output = await makeRequest<TCreateDTO>(input);
 			expect(output.status).toBe(STATUS_CODE.CREATED);
 			expect(output.body.ok).toBe(true);
 		});
@@ -77,8 +79,8 @@ describe("ValidateUsuarioMiddleware", async () => {
 
 		it("deve tornar 200 para dados válidos", async () => {
 			const inputId = uuidV4();
-			const input = { nome: faker.person.firstName() };
-			const output = await makeRequest<UpdateDTO>(inputId, input);
+			const input = { nome: f.person.firstName() };
+			const output = await makeRequest<TUpdateDTO>(inputId, input);
 			expect(output.status).toBe(STATUS_CODE.OK);
 			expect(output.body.ok).toBe(true);
 		});

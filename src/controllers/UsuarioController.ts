@@ -8,9 +8,9 @@ type TCreateDTOBase = {
 	confirm_password: string;
 };
 
-type TCreateDTO = TCreateDTOBase & TCreateDTOUsuarioService;
+export type TCreateDTO = TCreateDTOBase & TCreateDTOUsuarioService;
 
-type TUpdateDTO = {
+export type TUpdateDTO = {
 	nome: string;
 };
 
