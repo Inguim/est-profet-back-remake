@@ -1,16 +1,36 @@
-import { describe, expect, it } from "vitest";
-import { AuthService, UsuarioService } from "./index.js";
+import { beforeAll, describe, expect, it } from "vitest";
+import {
+	AlunoService,
+	AuthService,
+	CursoService,
+	PasswordService,
+	SerieService,
+	TokenService,
+	UsuarioService,
+} from "./index.js";
 import { ValidationError } from "../errors/index.js";
 import { defaultMessages as dm } from "../validators/index.js";
 
-const usuarioService = new UsuarioService();
-const authService = new AuthService();
+describe("AuthService", () => {
+	const passwordService = new PasswordService();
+	const tokenService = new TokenService();
+	const alunoService = new AlunoService();
+	const usuarioService = new UsuarioService({ alunoService });
+	const authService = new AuthService({ passwordService, tokenService, usuarioService });
 
-describe("AuthService", async () => {
-	await usuarioService.create({
-		nome: "teste",
-		email: "authemail@mail.com",
-		password: "12345678",
+	beforeAll(async () => {
+		const cursoService = new CursoService();
+		const serieService = new SerieService();
+		const curso_id = (await cursoService.list()).at(0)?.id as string;
+		const serie_id = (await serieService.list()).at(0)?.id as string;
+		await usuarioService.create({
+			nome: "teste",
+			email: "authemail@mail.com",
+			password: "12345678",
+			tipo: "aluno",
+			curso_id,
+			serie_id,
+		});
 	});
 
 	it("deve retornar um token JWT é o usuário ao logar", async () => {
