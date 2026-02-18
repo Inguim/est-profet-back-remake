@@ -7,7 +7,27 @@ post:
       application/json:
         schema:
           $ref: "../../components/schemas/usuario/create.yaml"
-
+        examples:
+          aluno:
+            summary: Cria um aluno (UsuarioCreateAluno)
+            value:
+              nome: string
+              email: string
+              tipo: aluno
+              status: analise
+              password: number
+              confirm_password: number
+              curso_id: uuid
+              serie_id: uuid
+          professor:
+            summary: Cria um aluno (UsuarioCreateProfessor)
+            value:
+              nome: string
+              email: string
+              tipo: professor
+              status: analise
+              password: number
+              confirm_password: number
   responses:
     "201":
       description: Usuário criado com sucesso

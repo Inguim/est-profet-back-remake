@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { SerieModel } from "./index.js";
 import { SerieDTO } from "../dto/index.js";
 
-describe("CursoModel", () => {
+describe("SerieModel", () => {
 	it("deve listar as series", async () => {
 		const model = new SerieModel();
 		const output = await model.list();
