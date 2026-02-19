@@ -11,8 +11,10 @@ export class CursoModel implements ICursoModel {
 	protected table = "cursos";
 	protected tableTag = "Curso";
 	private get db(): Knex.QueryBuilder {
-		return dbConnection.table(this.table);
+		return this.connection.table(this.table);
 	}
+
+	constructor(private readonly connection: Knex = dbConnection) {}
 
 	async list(): Promise<CursoDTO[]> {
 		const rows = await this.db.select<CursoDTO[]>("id", "curso").orderBy("curso", "asc");

@@ -24,8 +24,10 @@ export abstract class BaseModel<T extends IBaseDTO> implements IBasePersistable 
 	protected table = "";
 	protected tableTag = "";
 	private get db(): Knex.QueryBuilder {
-		return dbConnection.table(this.table);
+		return this.connection.table(this.table);
 	}
+
+	constructor(private readonly connection: Knex = dbConnection) {}
 
 	async populate(id: string): Promise<T> {
 		const data = await this.db.where({ id }).first();

@@ -13,8 +13,10 @@ export class AlunoModel implements IAlunoModel {
 	protected table = "alunos";
 	protected tableTag = "Aluno";
 	private get db(): Knex.QueryBuilder {
-		return dbConnection.table(this.table);
+		return this.connection.table(this.table);
 	}
+
+	constructor(private readonly connection: Knex = dbConnection) {}
 
 	async create(dto: TCreateModelDTO): Promise<IAlunoDTO> {
 		const entity = new AlunoDTO({

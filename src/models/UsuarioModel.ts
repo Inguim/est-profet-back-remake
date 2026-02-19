@@ -1,3 +1,5 @@
+import type { Knex } from "knex";
+import dbConnection from "../database/dbConfig.js";
 import { UsuarioDTO, type IUsuarioDTO } from "../dto/UsuarioDTO.js";
 import { PasswordService } from "../services/PasswordService.js";
 import { BaseModel, type TCreateModelDTO, type TUpdateModelDTO } from "./BaseModel.js";
@@ -6,8 +8,8 @@ export class UsuarioModel extends BaseModel<IUsuarioDTO> {
 	protected dto = UsuarioDTO;
 	private passwordService = new PasswordService();
 
-	constructor() {
-		super();
+	constructor(connection: Knex = dbConnection) {
+		super(connection);
 		this.table = "usuarios";
 		this.tableTag = "Usuário";
 	}

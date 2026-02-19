@@ -11,8 +11,10 @@ export class SerieModel implements ISerieModel {
 	protected table = "series";
 	protected tableTag = "Serie";
 	private get db(): Knex.QueryBuilder {
-		return dbConnection.table(this.table);
+		return this.connection.table(this.table);
 	}
+
+	constructor(private readonly connection: Knex = dbConnection) {}
 
 	async list(): Promise<SerieDTO[]> {
 		const rows = await this.db.select<SerieDTO[]>("id", "serie").orderBy("serie", "asc");
