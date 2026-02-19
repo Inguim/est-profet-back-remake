@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
-import { TokenService } from "./index.js";
-import { ExpiredTokenError, InvalidTokenError } from "../errors/index.js";
+import { TokenService } from "../../src/services/index.js";
+import { ExpiredTokenError, InvalidTokenError } from "../../src/errors/index.js";
 
 interface IPayload {
 	id: string;

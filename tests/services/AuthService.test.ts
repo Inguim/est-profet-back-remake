@@ -7,9 +7,9 @@ import {
 	SerieService,
 	TokenService,
 	UsuarioService,
-} from "./index.js";
-import { ValidationError } from "../errors/index.js";
-import { defaultMessages as dm } from "../validators/index.js";
+} from "../../src/services/index.js";
+import { ValidationError } from "../../src/errors/index.js";
+import { defaultMessages as dm } from "../../src/validators/index.js";
 
 describe("AuthService", () => {
 	const passwordService = new PasswordService();

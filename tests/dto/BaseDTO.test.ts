@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import type { IBaseDTO } from "./BaseDTO.js";
+import type { IBaseDTO } from "../../src/dto/index.js";
 
 describe("BaseDTO", () => {
 	class TestDTO implements IBaseDTO {

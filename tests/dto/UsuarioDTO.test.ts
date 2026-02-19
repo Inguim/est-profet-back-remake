@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { USUARIO_STATUS, USUARIO_TIPOS, UsuarioDTO } from "./UsuarioDTO.js";
+import { USUARIO_STATUS, USUARIO_TIPOS, UsuarioDTO } from "../../src/dto/index.js";
 import { faker as f } from "@faker-js/faker";
 
 describe("UsuarioDTO", () => {

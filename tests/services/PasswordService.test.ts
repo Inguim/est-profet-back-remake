@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { PasswordService } from "./PasswordService.js";
+import { PasswordService } from "../../src/services/PasswordService.js";
 import { faker as f } from "@faker-js/faker";
 
 const passwordService = new PasswordService();

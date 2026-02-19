@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
-import { UsuarioModel } from "./index.js";
+import { UsuarioModel } from "../../src/models/index.js";
 import { faker as f } from "@faker-js/faker";
-import type { IUsuarioDTO } from "../dto/UsuarioDTO.js";
+import type { IUsuarioDTO } from "../../src/dto/UsuarioDTO.js";
 
 describe("UsuarioModel", () => {
 	let uniqueTracker = 0;

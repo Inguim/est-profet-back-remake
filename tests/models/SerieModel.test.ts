@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { SerieModel } from "./index.js";
-import { SerieDTO } from "../dto/index.js";
+import { SerieModel } from "../../src/models/index.js";
+import { SerieDTO } from "../../src/dto/index.js";
 
 describe("SerieModel", () => {
 	it("deve listar as series", async () => {

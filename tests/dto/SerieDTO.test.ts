@@ -1,30 +1,30 @@
 import { describe, expect, it } from "vitest";
-import { CursoDTO, type ICursoDTO } from "./index.js";
+import { SerieDTO, type ISerieDTO } from "../../src/dto/index.js";
 
-describe("CursoDTO", () => {
-	it("deve conter as propriedades de ICursoDTO", () => {
-		const output = new CursoDTO({ curso: "teste" });
+describe("SerieDTO", () => {
+	it("deve conter as propriedades de ISerieDTO", () => {
+		const output = new SerieDTO({ serie: "teste" });
 		expect(output).toHaveProperty("id");
-		expect(output).toHaveProperty("curso");
+		expect(output).toHaveProperty("serie");
 		expect(output).toHaveProperty("created_at");
 		expect(output).toHaveProperty("updated_at");
 	});
 
 	it("deve preencher automaticamente os campos não parciais", () => {
-		const output = new CursoDTO({ curso: "teste" });
+		const output = new SerieDTO({ serie: "teste" });
 		expect(output.id).toBeNull();
 		expect(output.created_at).toBeUndefined();
 		expect(output.updated_at).toBeUndefined();
 	});
 
 	it("deve preencher corretamente os campos", () => {
-		const input: ICursoDTO = {
+		const input: ISerieDTO = {
 			id: "id123",
-			curso: "teste",
+			serie: "teste",
 			created_at: new Date(),
 			updated_at: new Date(),
 		};
-		const output = new CursoDTO(input);
+		const output = new SerieDTO(input);
 		expect(output).toEqual(input);
 	});
 });

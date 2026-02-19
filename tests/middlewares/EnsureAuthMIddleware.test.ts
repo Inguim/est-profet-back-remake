@@ -1,8 +1,8 @@
 import express, { type RequestHandler } from "express";
 import request from "supertest";
 import { beforeAll, describe, expect, it } from "vitest";
-import { TokenService } from "../services/index.js";
-import { ensureAuthMiddleware } from "./index.js";
+import { TokenService } from "../../src/services/index.js";
+import { ensureAuthMiddleware } from "../../src/middlewares/index.js";
 
 const tokenService = new TokenService();
 

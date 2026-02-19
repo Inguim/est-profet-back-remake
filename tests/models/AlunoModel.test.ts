@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { AlunoModel, UsuarioModel, CursoModel, SerieModel } from "./index.js";
-import { AlunoDTO, type IAlunoDTO } from "../dto/index.js";
+import { AlunoModel, UsuarioModel, CursoModel, SerieModel } from "../../src/models/index.js";
+import { AlunoDTO, type IAlunoDTO } from "../../src/dto/index.js";
 import { faker as f } from "@faker-js/faker";
 
 describe("AlunoModel", async () => {

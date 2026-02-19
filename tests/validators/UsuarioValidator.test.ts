@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest";
-import { userValidator } from "./UsuarioValidator.js";
-import { formatErrorZod } from "../utils/helpers/formatErrorZod.js";
+import { userValidator } from "../../src/validators/UsuarioValidator.js";
+import { formatErrorZod } from "../../src//utils/helpers/formatErrorZod.js";
 import { faker as f } from "@faker-js/faker";
-import { USUARIO_TIPOS } from "../dto/index.js";
+import { USUARIO_TIPOS } from "../../src//dto/index.js";
 
 describe("UsuarioValidator", () => {
 	const TIPOS = [...USUARIO_TIPOS];

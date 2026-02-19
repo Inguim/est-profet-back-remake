@@ -1,9 +1,14 @@
 import express, { type RequestHandler } from "express";
 import request from "supertest";
-import { errorHandlingMiddleware, ValidateUsuarioMiddleware, type TCreateDTO, type TUpdateDTO } from "./index.js";
+import {
+	errorHandlingMiddleware,
+	ValidateUsuarioMiddleware,
+	type TCreateDTO,
+	type TUpdateDTO,
+} from "../../src/middlewares/index.js";
 import { beforeAll, describe, expect, it } from "vitest";
 import { faker as f } from "@faker-js/faker";
-import { STATUS_CODE } from "../utils/constansts/status-code.js";
+import { STATUS_CODE } from "../../src/utils/constansts/status-code.js";
 import { v4 as uuidV4 } from "uuid";
 
 const createMiddleware = ValidateUsuarioMiddleware.create;

@@ -5,12 +5,12 @@ import {
 	type TCreateDTOProfessor,
 	type TFindOneDTO,
 	UsuarioService,
-} from "./UsuarioService.js";
+} from "../../src/services/UsuarioService.js";
 import { faker as f } from "@faker-js/faker";
-import { USUARIO_TIPOS, UsuarioDTO, type TUsuarioTipo } from "../dto/index.js";
+import { USUARIO_TIPOS, UsuarioDTO, type TUsuarioTipo } from "../../src/dto/index.js";
 import { v4 as uuidV4 } from "uuid";
-import { NotFoundError } from "../errors/index.js";
-import { AlunoService, CursoService, SerieService } from "./index.js";
+import { NotFoundError } from "../../src/errors/index.js";
+import { AlunoService, CursoService, SerieService } from "../../src/services/index.js";
 
 describe("UsuarioService", () => {
 	let uniqueTracker = 0;

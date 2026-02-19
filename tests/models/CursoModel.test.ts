@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { CursoModel } from "./index.js";
-import { CursoDTO } from "../dto/index.js";
+import { CursoModel } from "../../src/models/index.js";
+import { CursoDTO } from "../../src/dto/index.js";
 
 describe("CursoModel", () => {
 	it("deve listar os cursos", async () => {

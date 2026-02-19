@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { AlunoDTO, type IAlunoDTO } from "./index.js";
+import { AlunoDTO, type IAlunoDTO } from "../../src/dto/index.js";
 
 describe("AlunoDTO", () => {
 	it("deve conter as propriedades de IAlunoDTO", () => {

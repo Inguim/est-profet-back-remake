@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { CursoDTO } from "../dto/index.js";
-import { CursoService } from "./index.js";
+import { CursoDTO } from "../../src/dto/index.js";
+import { CursoService } from "../../src/services/index.js";
 
 describe("CursoService", () => {
 	const service = new CursoService();

@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { SerieDTO } from "../dto/index.js";
-import { SerieService } from "./index.js";
+import { SerieDTO } from "../../src/dto/index.js";
+import { SerieService } from "../../src/services/index.js";
 
 describe("SerieService", () => {
 	const service = new SerieService();
