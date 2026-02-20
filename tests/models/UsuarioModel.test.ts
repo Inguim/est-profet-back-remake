@@ -1,27 +1,17 @@
 import { describe, expect, it } from "vitest";
 import { UsuarioModel } from "../../src/models/index.js";
 import { faker as f } from "@faker-js/faker";
-import type { IUsuarioDTO } from "../../src/dto/UsuarioDTO.js";
+import { UsuarioAlunoFactory, UsuarioProfessorFactory } from "../factories/index.js";
 
 describe("UsuarioModel", () => {
-	let uniqueTracker = 0;
-
-	const generateUser = (): IUsuarioDTO => {
-		uniqueTracker++;
-		return {
-			nome: f.person.firstName(),
-			email: `email${uniqueTracker}@gmail.com`,
-			password: f.internet.password(),
-		};
-	};
-
 	it("deve criar uma instância do modelo Usuario", () => {
 		const input = new UsuarioModel();
 		expect(input).toBeInstanceOf(UsuarioModel);
 	});
 
 	it("deve criar um usuário e preencher o campo ID com um UUID", async () => {
-		const input = generateUser();
+		const { nome, email, tipo, admin, status, password } = UsuarioAlunoFactory.create().build();
+		const input = { nome, email, tipo, admin, status, password };
 		const model = new UsuarioModel();
 		const output = await model.create(input);
 		expect(output.id).toBeDefined();
@@ -29,21 +19,19 @@ describe("UsuarioModel", () => {
 	});
 
 	it("deve hashear a senha antes de criar o usuário", async () => {
-		const input = generateUser();
+		const { nome, email, tipo, admin, status, password } = UsuarioAlunoFactory.create().build();
+		const input = { nome, email, tipo, admin, status, password };
 		const model = new UsuarioModel();
 		const output = await model.create(input);
 		expect(output.password).not.toEqual(input.password);
 	});
 
 	it("deve criar um usuário com os dados corretos", async () => {
-		const input: IUsuarioDTO = {
-			...generateUser(),
-			admin: true,
-			status: "aprovado",
-			tipo: "professor",
-			created_at: new Date(),
-			updated_at: new Date(),
-		};
+		const { nome, email, tipo, admin, status, password, created_at, updated_at } = UsuarioProfessorFactory.create()
+			.withStatus("aprovado")
+			.asAdmin()
+			.build();
+		const input = { nome, email, tipo, admin, status, password, created_at, updated_at };
 		const model = new UsuarioModel();
 		const output = await model.create(input);
 		expect(output.nome).toEqual(input.nome);
@@ -56,7 +44,8 @@ describe("UsuarioModel", () => {
 	});
 
 	it("deve popular o modelo com os dados do usuário existente", async () => {
-		const input = generateUser();
+		const { nome, email, tipo, admin, status, password } = UsuarioAlunoFactory.create().build();
+		const input = { nome, email, tipo, admin, status, password };
 		const model = new UsuarioModel();
 		const output = await model.create(input);
 		const outputPopulated = await model.populate(output.id as string);
@@ -67,13 +56,11 @@ describe("UsuarioModel", () => {
 	});
 
 	it("deve atualizar os dados do usuário", async () => {
-		const input: IUsuarioDTO = {
-			...generateUser(),
-			admin: true,
-			status: "aprovado",
-			tipo: "professor",
-			updated_at: new Date(),
-		};
+		const { nome, email, tipo, admin, status, password, updated_at } = UsuarioProfessorFactory.create()
+			.asAdmin()
+			.withStatus("aprovado")
+			.build();
+		const input = { nome, email, tipo, admin, status, password, updated_at };
 		const model = new UsuarioModel();
 		const { id } = await model.create(input);
 		const output = await model.update(id as string, {
@@ -88,10 +75,12 @@ describe("UsuarioModel", () => {
 		expect(input.tipo).not.toEqual(output.tipo);
 		expect(input.status).not.toEqual(output.status);
 		expect(input.admin).not.toEqual(output.admin);
+		expect(input.updated_at).not.toEqual(output.updated_at);
 	});
 
 	it("deve atualizar a senha do usuário", async () => {
-		const input = generateUser();
+		const { nome, email, tipo, admin, status, password } = UsuarioAlunoFactory.create().build();
+		const input = { nome, email, tipo, admin, status, password };
 		const model = new UsuarioModel();
 		const { id, password: oldPassword } = await model.create(input);
 		const inputNewPassword = f.internet.password();
@@ -101,7 +90,8 @@ describe("UsuarioModel", () => {
 	});
 
 	it("deve deletar um usuário", async () => {
-		const input = generateUser();
+		const { nome, email, tipo, admin, status, password } = UsuarioAlunoFactory.create().build();
+		const input = { nome, email, tipo, admin, status, password };
 		const model = new UsuarioModel();
 		const { id } = await model.create(input);
 		const output = await model.delete(id as string);

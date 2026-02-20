@@ -10,6 +10,7 @@ import { beforeAll, describe, expect, it } from "vitest";
 import { faker as f } from "@faker-js/faker";
 import { STATUS_CODE } from "../../src/utils/constansts/status-code.js";
 import { v4 as uuidV4 } from "uuid";
+import { UsuarioAlunoFactory } from "../factories/UsuarioAlunoFactory.js";
 
 const createMiddleware = ValidateUsuarioMiddleware.create;
 const updateMiddleware = ValidateUsuarioMiddleware.update;
@@ -23,22 +24,8 @@ function createTestApp(middleware: RequestHandler) {
 	return app;
 }
 
-describe("ValidateUsuarioMiddleware", async () => {
+describe("ValidateUsuarioMiddleware", () => {
 	let app: ReturnType<typeof createTestApp>;
-
-	const generateUser = (fields: Partial<TCreateDTO> = {}): TCreateDTO => {
-		const password = f.internet.password();
-		return {
-			nome: f.person.firstName(),
-			email: f.internet.email(),
-			tipo: "aluno",
-			password: password,
-			confirm_password: password,
-			curso_id: f.string.uuid(),
-			serie_id: f.string.uuid(),
-			...fields,
-		};
-	};
 
 	describe("Create", () => {
 		const makeRequest = <T>(data: T) => {
@@ -53,15 +40,15 @@ describe("ValidateUsuarioMiddleware", async () => {
 		});
 
 		it("deve retornar 201 para dados válidos", async () => {
-			const input = generateUser();
-			const output = await makeRequest<TCreateDTO>(input);
+			const input = UsuarioAlunoFactory.create().build();
+			const output = await makeRequest<TCreateDTO>({ ...input, confirm_password: input.password });
 			expect(output.status).toBe(STATUS_CODE.CREATED);
 			expect(output.body.ok).toBe(true);
 		});
 
 		it("deve retornar 400 para dados inválidos", async () => {
-			const input = generateUser({ confirm_password: "diferente" });
-			const output = await makeRequest<object>(input);
+			const input = UsuarioAlunoFactory.create().build();
+			const output = await makeRequest<TCreateDTO>({ ...input, confirm_password: "senha diferente" });
 			expect(output.body).toMatchObject({
 				message: expect.any(String),
 				status: STATUS_CODE.BAD_REQUEST,

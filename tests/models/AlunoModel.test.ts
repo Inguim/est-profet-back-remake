@@ -1,44 +1,51 @@
-import { describe, expect, it } from "vitest";
+import { beforeAll, describe, expect, it } from "vitest";
 import { AlunoModel, UsuarioModel, CursoModel, SerieModel } from "../../src/models/index.js";
 import { AlunoDTO, type IAlunoDTO } from "../../src/dto/index.js";
-import { faker as f } from "@faker-js/faker";
+import { UsuarioAlunoFactory } from "../factories/index.js";
 
-describe("AlunoModel", async () => {
+describe("AlunoModel", () => {
+	let curso_id: string;
+	let serie_id: string;
+
 	const alunoModel = new AlunoModel();
 	const usuarioModel = new UsuarioModel();
-	const cursoModel = new CursoModel();
-	const serieModel = new SerieModel();
 
-	const cursos = await cursoModel.list();
-	const series = await serieModel.list();
+	beforeAll(async () => {
+		const cursos = await new CursoModel().list();
+		const series = await new SerieModel().list();
+		curso_id = cursos.at(0)?.id as string;
+		serie_id = series.at(0)?.id as string;
+	});
 
-	it("deve criar um aluno", async () => {
+	it("deve retornar um AlunoDTO ao criar", async () => {
+		const { nome, email, tipo, password } = UsuarioAlunoFactory.create().build();
 		const usuario = await usuarioModel.create({
-			nome: f.person.firstName(),
-			email: "email1@mail.com",
-			tipo: "aluno",
-			password: f.internet.password(),
+			nome,
+			email,
+			tipo,
+			password,
 		});
 		const input: IAlunoDTO = {
-			user_id: usuario.id as string,
-			curso_id: cursos.at(0)?.id as string,
-			serie_id: series.at(0)?.id as string,
+			user_id: String(usuario.id),
+			curso_id,
+			serie_id,
 		};
 		const output = await alunoModel.create(input);
 		expect(output).toBeInstanceOf(AlunoDTO);
 	});
 
-	it("deve criar um aluno com os dados corretos", async () => {
+	it("retornar um AlunoDTO preenchido corretamente ao criar", async () => {
+		const { nome, email, tipo, password } = UsuarioAlunoFactory.create().build();
 		const usuario = await usuarioModel.create({
-			nome: f.person.firstName(),
-			email: "email2@mail.com",
-			tipo: "aluno",
-			password: f.internet.password(),
+			nome,
+			email,
+			tipo,
+			password,
 		});
 		const input: IAlunoDTO = {
 			user_id: usuario.id as string,
-			curso_id: cursos.at(0)?.id as string,
-			serie_id: series.at(0)?.id as string,
+			curso_id,
+			serie_id,
 		};
 		const output = await alunoModel.create(input);
 		expect(output.user_id).toEqual(input.user_id);
