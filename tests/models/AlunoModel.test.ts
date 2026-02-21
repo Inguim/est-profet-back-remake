@@ -43,7 +43,7 @@ describe("AlunoModel", () => {
 			password,
 		});
 		const input: IAlunoDTO = {
-			user_id: usuario.id as string,
+			user_id: String(usuario.id),
 			curso_id,
 			serie_id,
 		};
