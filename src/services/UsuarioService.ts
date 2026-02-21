@@ -4,6 +4,7 @@ import { UsuarioModel } from "../models/index.js";
 import type { IAlunoService } from "./AlunoService.js";
 import { BaseService, type IBaseService } from "./BaseService.js";
 import dbConnection from "../database/dbConfig.js";
+import type { IProfessorService } from "./ProfessorService.js";
 
 type TCreateDTOBase = Pick<UsuarioDTO, "nome" | "email" | "tipo" | "password">;
 export type TCreateDTOAluno = { tipo: "aluno" } & Pick<IAlunoDTO, "curso_id" | "serie_id">;
@@ -16,7 +17,7 @@ export type TFindOneDTO = Partial<Pick<UsuarioDTO, "email">>;
 type TContructorService = {
 	connection?: Knex;
 	alunoService: IAlunoService;
-	// professorService: IProfessorService;
+	professorService: IProfessorService;
 };
 
 export interface IUsuarioService extends IBaseService {
@@ -35,13 +36,15 @@ export class UsuarioService
 	protected dto = UsuarioDTO;
 	private alunoService: IAlunoService;
 	private connection: Knex;
-	// private professorService: IProfessorService;
+	private professorService: IProfessorService;
 
-	constructor({ alunoService, connection = dbConnection }: TContructorService = {} as TContructorService) {
+	constructor(
+		{ alunoService, professorService, connection = dbConnection }: TContructorService = {} as TContructorService,
+	) {
 		super();
 		this.alunoService = alunoService;
 		this.connection = connection;
-		// this.professorService = professorService;
+		this.professorService = professorService;
 	}
 
 	async create(dto: TCreateDTO): Promise<UsuarioDTO> {
@@ -51,12 +54,11 @@ export class UsuarioService
 			const usuario = await model.create({ nome, email, password, tipo });
 			if (tipo === "aluno") {
 				const { curso_id, serie_id } = dto;
-				await this.alunoService.create({ user_id: usuario.id as string, curso_id, serie_id }, trx);
+				await this.alunoService.create({ user_id: String(usuario.id), curso_id, serie_id }, trx);
+			} else {
+				// const {} = dto; adicionar categorias de professor
+				await this.professorService.create({ user_id: String(usuario.id) }, trx);
 			}
-			// else {
-			// 	const {} = dto;
-			// 	await this.alunoService.create({ user_id: usuario.id as string });
-			// }
 			return usuario;
 		});
 	}

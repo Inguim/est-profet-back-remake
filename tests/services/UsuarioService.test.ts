@@ -8,7 +8,7 @@ import {
 import { USUARIO_TIPOS, UsuarioDTO } from "../../src/dto/index.js";
 import { v4 as uuidV4 } from "uuid";
 import { NotFoundError } from "../../src/errors/index.js";
-import { AlunoService, CursoService, SerieService } from "../../src/services/index.js";
+import { AlunoService, CursoService, ProfessorService, SerieService } from "../../src/services/index.js";
 import { UsuarioAlunoFactory } from "../factories/UsuarioAlunoFactory.js";
 import { UsuarioProfessorFactory } from "../factories/UsuarioProfessorFactory.js";
 
@@ -17,13 +17,14 @@ describe("UsuarioService", () => {
 	let serieId: string;
 	const TIPOS_INPUTS = {
 		aluno: { tipo: "aluno", curso_id: "", serie_id: "" } as TCreateDTOAluno,
-		professor: { tipo: "professor" } as TCreateDTOProfessor,
+		professor: { tipo: "professor" } as TCreateDTOProfessor, // adicionar categorias
 	};
 	const TIPOS = [...USUARIO_TIPOS];
 	const WHERE_PARAMS = ["email"];
 
 	const alunoService = new AlunoService();
-	const service = new UsuarioService({ alunoService });
+	const professorService = new ProfessorService();
+	const service = new UsuarioService({ alunoService, professorService });
 
 	beforeAll(async () => {
 		const cursoService = new CursoService();
