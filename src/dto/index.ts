@@ -3,3 +3,4 @@ export * from "./BaseDTO.js";
 export * from "./CursoDTO.js";
 export * from "./SerieDTO.js";
 export * from "./AlunoDTO.js";
+export * from "./ProfessorDTO.js";
