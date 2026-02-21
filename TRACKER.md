@@ -14,7 +14,7 @@
 - [ ] Solicitações
 - [ ] Menu
 - [ ] Categorias
-- [ ] Professores
+- [x] Professores
 - [ ] Professor categorias
 - [ ] Projetos
 - [ ] Estados
@@ -43,9 +43,8 @@
 - [ ] Notificacao
   - [ ] Service
   - [ ] Controller
-- [ ] Professor
-  - [ ] Service
-  - [ ] Controller
+- [x] Professor
+  - [x] Service
 - [ ] Professor Categoria
   - [ ] Service
   - [ ] Controller
@@ -63,7 +62,7 @@
   - [ ] Controller
 - [ ] Tipo notificação
   - [ ] Service
-- [] User
+- [x] User
   - [x] Service
   - [ ] Controller
 - [ ] Usuario projeto
