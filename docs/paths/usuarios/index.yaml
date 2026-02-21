@@ -20,7 +20,7 @@ post:
               curso_id: uuid
               serie_id: uuid
           professor:
-            summary: Cria um aluno (UsuarioCreateProfessor)
+            summary: Cria um professor (UsuarioCreateProfessor)
             value:
               nome: string
               email: string
