@@ -5,3 +5,4 @@ export * from "./SerieDTO.js";
 export * from "./AlunoDTO.js";
 export * from "./ProfessorDTO.js";
 export * from "./CategoriaDTO.js";
+export * from "./MenuDTO.js";
