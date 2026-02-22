@@ -1,0 +1,15 @@
+type: object
+required:
+  - nome
+  - url
+properties:
+  nome:
+    type: string
+    example: "Categorias"
+  url:
+    type: string
+    example: "/"
+  categorias:
+    type: array
+    items:
+      $ref: "../categoria/item.yaml"

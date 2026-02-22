@@ -13,6 +13,8 @@ paths:
     $ref: "./paths/auth.yaml"
   /cursos:
     $ref: "./paths/cursos/index.yaml"
+  /menus:
+    $ref: "./paths/menus/index.yaml"
   /series:
     $ref: "./paths/series/index.yaml"
   /usuarios:
@@ -34,6 +36,8 @@ components:
   schemas:
     Curso:
       $ref: "./components/schemas/curso/item.yaml"
+    Menu:
+      $ref: "./components/schemas/menu/item.yaml"
     Serie:
       $ref: "./components/schemas/serie/item.yaml"
     Usuario:

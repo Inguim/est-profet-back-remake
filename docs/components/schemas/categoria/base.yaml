@@ -1,0 +1,19 @@
+type: object
+required:
+  - nome
+  - slug
+  - descricao
+  - menu_id
+properties:
+  nome:
+    type: string
+    example: "Ciências Agrárias"
+  slug:
+    type: string
+    example: "ciencias-agrarias"
+  descricao:
+    type: string
+    example: "lorem ipsum lorem ipsum lorem ipsum"
+  menu_id:
+    type: string
+    example: "123e4567-e89b-12d3-a456-426614174000"
