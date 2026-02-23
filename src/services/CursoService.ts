@@ -3,6 +3,7 @@ import { CursoModel } from "../models/CursoModel.js";
 
 export interface ICursoService {
 	list(): Promise<ICursoDTO[]>;
+	get(id: string): Promise<ICursoDTO>;
 }
 
 export class CursoService implements ICursoService {
@@ -11,7 +12,13 @@ export class CursoService implements ICursoService {
 
 	async list(): Promise<CursoDTO[]> {
 		const model = new this.model();
-		const results = await model.list();
-		return results;
+		const cursos = await model.list();
+		return cursos;
+	}
+
+	async get(id: string): Promise<ICursoDTO> {
+		const model = new this.model();
+		const curso = await model.get(id);
+		return curso;
 	}
 }
