@@ -18,4 +18,12 @@ describe("SerieModel", () => {
 		expect(output?.created_at).toBeUndefined();
 		expect(output?.updated_at).toBeUndefined();
 	});
+
+	it("deve encontrar uma serie pelo ID", async () => {
+		const model = new SerieModel();
+		const input = (await model.list()).at(0);
+		const output = await model.get(String(input?.id));
+		expect(output).toBeInstanceOf(SerieDTO);
+		expect(output?.id).toBeDefined();
+	});
 });
