@@ -1,7 +1,7 @@
 import type { ICategoriaDTO } from "./CategoriaDTO.js";
 import type { IUsuarioDTO, TUsuarioStatus, TUsuarioTipo } from "./UsuarioDTO.js";
 
-export interface IUsuarioProfessorDTO extends Omit<IUsuarioDTO, "password"> {
+export interface IUsuarioProfessorDTO extends IUsuarioDTO {
 	categorias: ICategoriaDTO[];
 }
 
@@ -14,6 +14,7 @@ export class UsuarioProfessorDTO implements IUsuarioProfessorDTO {
 	readonly admin: boolean;
 	readonly tipo: TUsuarioTipo = "professor";
 	readonly status: TUsuarioStatus;
+	readonly password: string;
 	readonly categorias: ICategoriaDTO[];
 
 	constructor({
@@ -24,6 +25,7 @@ export class UsuarioProfessorDTO implements IUsuarioProfessorDTO {
 		email,
 		admin = false,
 		status = "analise",
+		password,
 		categorias,
 	}: Omit<IUsuarioProfessorDTO, "tipo">) {
 		this.id = id;
@@ -31,6 +33,7 @@ export class UsuarioProfessorDTO implements IUsuarioProfessorDTO {
 		this.email = email;
 		this.admin = admin;
 		this.status = status;
+		this.password = password;
 		this.categorias = categorias;
 		if (created_at) this.created_at = created_at;
 		if (updated_at) this.updated_at = updated_at;

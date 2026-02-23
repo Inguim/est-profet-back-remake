@@ -8,6 +8,7 @@ describe("UsuarioAlunoDTO", () => {
 			email: "e@mail.com",
 			curso: { curso: "a" },
 			serie: { serie: "a" },
+			password: "asddas",
 		});
 		expect(output).toHaveProperty("id");
 		expect(output).toHaveProperty("email");
@@ -25,6 +26,7 @@ describe("UsuarioAlunoDTO", () => {
 			email: "e@mail.com",
 			curso: { curso: "a" },
 			serie: { serie: "a" },
+			password: "asddas",
 		});
 		expect(output.id).toBeNull();
 		expect(output.created_at).toBeUndefined();
@@ -41,6 +43,7 @@ describe("UsuarioAlunoDTO", () => {
 			status: "analise",
 			tipo: "aluno",
 			admin: false,
+			password: "asddas",
 			created_at: new Date(),
 			updated_at: new Date(),
 		};

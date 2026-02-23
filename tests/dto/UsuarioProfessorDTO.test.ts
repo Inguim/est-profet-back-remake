@@ -7,6 +7,7 @@ describe("UsuarioProfessorDTO", () => {
 			nome: "ad",
 			email: "e@mail.com",
 			categorias: [],
+			password: "asddas",
 		});
 		expect(output).toHaveProperty("id");
 		expect(output).toHaveProperty("email");
@@ -22,6 +23,7 @@ describe("UsuarioProfessorDTO", () => {
 			nome: "ad",
 			email: "e@mail.com",
 			categorias: [],
+			password: "asddas",
 		});
 		expect(output.id).toBeNull();
 		expect(output.created_at).toBeUndefined();
@@ -36,6 +38,7 @@ describe("UsuarioProfessorDTO", () => {
 			status: "analise",
 			tipo: "professor",
 			admin: false,
+			password: "asddas",
 			categorias: [
 				{
 					nome: "teste",
