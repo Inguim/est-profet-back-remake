@@ -12,8 +12,8 @@
 - [ ] Notificações
 - [ ] Tipo notificações
 - [ ] Solicitações
-- [ ] Menu
-- [ ] Categorias
+- [x] Menu
+- [x] Categorias
 - [x] Professores
 - [ ] Professor categorias
 - [ ] Projetos
@@ -24,7 +24,7 @@
 
 - [x] Aluno
   - [x] Service
-- [ ] Categoria
+- [x] Categoria
   - [ ] Service
 - [ ] Contribuidor
   - [ ] Service
@@ -34,9 +34,9 @@
   - [x] Controller
 - [ ] Estado
   - [ ] Service
-- [ ] Menu
-  - [ ] Service
-  - [ ] Controller
+- [x] Menu
+  - [x] Service
+  - [x] Controller
 - [ ] Noticia
   - [ ] Service
   - [ ] Controller
