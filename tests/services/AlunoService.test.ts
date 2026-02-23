@@ -40,4 +40,26 @@ describe("AlunoService", () => {
 		expect(output).toBeInstanceOf(AlunoDTO);
 		expect(output.id).not.toBeNullable();
 	});
+
+	it("deve encontrar um aluno pelo USER_ID", async () => {
+		const { nome, email, password, curso_id, serie_id } = UsuarioAlunoFactory.create()
+			.withCurso(cursoId)
+			.withSerie(serieId)
+			.build();
+		const usuario = await usuarioModel.create({
+			tipo: "aluno",
+			nome,
+			email,
+			password,
+		});
+		const input: IAlunoDTO = {
+			user_id: String(usuario.id),
+			curso_id,
+			serie_id,
+		};
+		await service.create(input);
+		const output = await service.getByUserId(String(usuario.id));
+		expect(output).toBeInstanceOf(AlunoDTO);
+		expect(output.id).not.toBeNullable();
+	});
 });
