@@ -52,4 +52,22 @@ describe("AlunoModel", () => {
 		expect(output.curso_id).toEqual(input.curso_id);
 		expect(output.serie_id).toEqual(input.serie_id);
 	});
+
+	it("retornar encontrar um aluno por USER_ID", async () => {
+		const { nome, email, tipo, password } = UsuarioAlunoFactory.create().build();
+		const usuario = await usuarioModel.create({
+			nome,
+			email,
+			tipo,
+			password,
+		});
+		const input: IAlunoDTO = {
+			user_id: String(usuario.id),
+			curso_id,
+			serie_id,
+		};
+		await alunoModel.create(input);
+		const output = await alunoModel.get(String(usuario.id));
+		expect(String(usuario.id)).toEqual(output.user_id);
+	});
 });

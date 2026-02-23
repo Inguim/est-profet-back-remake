@@ -7,6 +7,7 @@ type TCreateModelDTO = Omit<IAlunoDTO, "id" | "created_at" | "updated_at">;
 
 export interface IAlunoModel {
 	create(dto: TCreateModelDTO): Promise<IAlunoDTO>;
+	get(id: string): Promise<IAlunoDTO>;
 }
 
 export class AlunoModel implements IAlunoModel {
@@ -27,5 +28,10 @@ export class AlunoModel implements IAlunoModel {
 		});
 		const [newRecord] = await this.db.insert(entity).returning("*");
 		return new AlunoDTO(newRecord);
+	}
+
+	async get(user_id: string): Promise<IAlunoDTO> {
+		const data = await this.db.where({ user_id }).first();
+		return new AlunoDTO(data);
 	}
 }
