@@ -3,6 +3,7 @@ import { SerieModel } from "../models/index.js";
 
 export interface ISerieService {
 	list(): Promise<ISerieDTO[]>;
+	get(id: string): Promise<ISerieDTO>;
 }
 
 export class SerieService implements ISerieService {
@@ -13,5 +14,11 @@ export class SerieService implements ISerieService {
 		const model = new this.model();
 		const results = await model.list();
 		return results;
+	}
+
+	async get(id: string): Promise<ISerieDTO> {
+		const model = new this.model();
+		const serie = await model.get(id);
+		return serie;
 	}
 }
