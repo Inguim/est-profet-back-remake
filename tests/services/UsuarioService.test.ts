@@ -5,7 +5,7 @@ import {
 	type TFindOneDTO,
 	UsuarioService,
 } from "../../src/services/UsuarioService.js";
-import { USUARIO_TIPOS, UsuarioDTO } from "../../src/dto/index.js";
+import { USUARIO_TIPOS, UsuarioAlunoDTO, UsuarioDTO, UsuarioProfessorDTO } from "../../src/dto/index.js";
 import { v4 as uuidV4 } from "uuid";
 import { NotFoundError } from "../../src/errors/index.js";
 import { AlunoService, CursoService, ProfessorService, SerieService } from "../../src/services/index.js";
@@ -24,7 +24,9 @@ describe("UsuarioService", () => {
 
 	const alunoService = new AlunoService();
 	const professorService = new ProfessorService();
-	const service = new UsuarioService({ alunoService, professorService });
+	const cursoService = new CursoService();
+	const serieService = new SerieService();
+	const service = new UsuarioService({ alunoService, professorService, cursoService, serieService });
 
 	beforeAll(async () => {
 		const cursoService = new CursoService();
@@ -69,6 +71,25 @@ describe("UsuarioService", () => {
 		const input = await service.create(usuario);
 		const output = await service.get(input.id as string);
 		expect(output?.id).toEqual(output?.id);
+	});
+
+	it("deve retornar um UsuarioAlunoDTO pelo ID", async () => {
+		const { nome, email, tipo, password, curso_id, serie_id } = UsuarioAlunoFactory.create()
+			.withCurso(cursoId)
+			.withSerie(serieId)
+			.build();
+		const usuario = { nome, email, password, tipo, curso_id, serie_id };
+		const input = await service.create(usuario);
+		const output = await service.get(input.id as string);
+		expect(output).toBeInstanceOf(UsuarioAlunoDTO);
+	});
+
+	it("deve retornar um UsuarioProfessorDTO pelo ID", async () => {
+		const { nome, email, password } = UsuarioProfessorFactory.create().build();
+		const usuario = { nome, email, password, tipo: "professor" as const };
+		const input = await service.create(usuario);
+		const output = await service.get(input.id as string);
+		expect(output).toBeInstanceOf(UsuarioProfessorDTO);
 	});
 
 	it("deve atualizar as informações do usuário", async () => {

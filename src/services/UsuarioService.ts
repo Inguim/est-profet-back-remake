@@ -1,10 +1,12 @@
 import type { Knex } from "knex";
-import { UsuarioDTO, type IAlunoDTO } from "../dto/index.js";
+import { UsuarioAlunoDTO, UsuarioDTO, UsuarioProfessorDTO, type IAlunoDTO } from "../dto/index.js";
 import { UsuarioModel } from "../models/index.js";
 import type { IAlunoService } from "./AlunoService.js";
 import { BaseService, type IBaseService } from "./BaseService.js";
 import dbConnection from "../database/dbConfig.js";
 import type { IProfessorService } from "./ProfessorService.js";
+import type { ICursoService } from "./CursoService.js";
+import type { ISerieService } from "./SerieService.js";
 
 type TCreateDTOBase = Pick<UsuarioDTO, "nome" | "email" | "tipo" | "password">;
 export type TCreateDTOAluno = { tipo: "aluno" } & Pick<IAlunoDTO, "curso_id" | "serie_id">;
@@ -14,17 +16,21 @@ export type TCreateDTO = TCreateDTOBase & (TCreateDTOAluno | TCreateDTOProfessor
 type TUpdateDTO = Partial<Pick<UsuarioDTO, "nome" | "email" | "tipo">>;
 export type TFindOneDTO = Partial<Pick<UsuarioDTO, "email">>;
 
+type TUsuarioPorTipo = UsuarioAlunoDTO | UsuarioProfessorDTO;
+
 type TContructorService = {
 	connection?: Knex;
 	alunoService: IAlunoService;
 	professorService: IProfessorService;
+	cursoService: ICursoService;
+	serieService: ISerieService;
 };
 
 export interface IUsuarioService extends IBaseService {
 	create(fields: TCreateDTO): Promise<UsuarioDTO>;
 	update(id: string, fields: TUpdateDTO): Promise<UsuarioDTO>;
 	delete(id: string): Promise<boolean>;
-	get(id: string): Promise<UsuarioDTO | null>;
+	get(id: string): Promise<TUsuarioPorTipo | null>;
 	findOne(where: TFindOneDTO): Promise<UsuarioDTO>;
 }
 
@@ -34,17 +40,29 @@ export class UsuarioService
 {
 	protected model = UsuarioModel;
 	protected dto = UsuarioDTO;
-	private alunoService: IAlunoService;
+	private dtoUsuarioAluno = UsuarioAlunoDTO;
+	private dtoUsuarioProfessor = UsuarioProfessorDTO;
 	private connection: Knex;
+	private alunoService: IAlunoService;
 	private professorService: IProfessorService;
+	private cursoService: ICursoService;
+	private serieService: ISerieService;
 
 	constructor(
-		{ alunoService, professorService, connection = dbConnection }: TContructorService = {} as TContructorService,
+		{
+			alunoService,
+			professorService,
+			cursoService,
+			serieService,
+			connection = dbConnection,
+		}: TContructorService = {} as TContructorService,
 	) {
 		super();
-		this.alunoService = alunoService;
 		this.connection = connection;
+		this.alunoService = alunoService;
 		this.professorService = professorService;
+		this.cursoService = cursoService;
+		this.serieService = serieService;
 	}
 
 	async create(dto: TCreateDTO): Promise<UsuarioDTO> {
@@ -61,5 +79,27 @@ export class UsuarioService
 			}
 			return usuario;
 		});
+	}
+
+	async get(id: string): Promise<TUsuarioPorTipo | null> {
+		const model = new this.model();
+		const entity = await model.populate(id);
+		if (entity.id) {
+			if (entity.tipo === "aluno") return this.getAluno(entity);
+			return this.getProfessor(entity);
+		}
+		return null;
+	}
+
+	private async getAluno(usuario: UsuarioDTO): Promise<UsuarioAlunoDTO> {
+		const aluno = await this.alunoService.getByUserId(String(usuario.id));
+		const curso = await this.cursoService.get(aluno.curso_id);
+		const serie = await this.serieService.get(aluno.serie_id);
+		return new this.dtoUsuarioAluno({ ...usuario, curso, serie });
+	}
+
+	private async getProfessor(usuario: UsuarioDTO): Promise<UsuarioProfessorDTO> {
+		// adicionar busca de categorias
+		return new this.dtoUsuarioProfessor({ ...usuario, categorias: [] });
 	}
 }
