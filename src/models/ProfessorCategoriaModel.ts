@@ -40,9 +40,4 @@ export class ProfessorCategoriaModel implements IProfessorCategoriaModel {
 			.where({ professor_id: professorId });
 		return categorias.map((categoria) => new this.dto(categoria));
 	}
-
-	// async list(): Promise<CursoDTO[]> {
-	// 	const rows = await this.db.select<CursoDTO[]>("id", "curso").orderBy("curso", "asc");
-	// 	return rows.map((row) => new this.dto(row));
-	// }
 }
