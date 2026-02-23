@@ -41,5 +41,5 @@
 		"skipLibCheck": true
 	},
 	"exclude": ["vitest.config.ts", "setupTests.ts"],
-	"include": ["tests"]
+	"include": ["tests", "src"]
 }
