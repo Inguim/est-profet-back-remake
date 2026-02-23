@@ -6,3 +6,4 @@ export * from "./AlunoModel.js";
 export * from "./ProfessorModel.js";
 export * from "./CategoriaModel.js";
 export * from "./MenuModel.js";
+export * from "./ProfessorCategoriaModel.js";
