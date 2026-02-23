@@ -1,13 +1,15 @@
 import { Router } from "express";
 import { UsuarioController } from "../controllers/index.js";
-import { AlunoService, ProfessorService, UsuarioService } from "../services/index.js";
+import { AlunoService, CursoService, ProfessorService, SerieService, UsuarioService } from "../services/index.js";
 import { ensureAuthMiddleware, ValidateUsuarioMiddleware } from "../middlewares/index.js";
 
 const { create: createMiddleware, update: updateMiddleware } = ValidateUsuarioMiddleware;
 
 const alunoService = new AlunoService();
 const professorService = new ProfessorService();
-const usuarioService = new UsuarioService({ alunoService, professorService });
+const cursoService = new CursoService();
+const serieService = new SerieService();
+const usuarioService = new UsuarioService({ alunoService, professorService, cursoService, serieService });
 
 const router = Router();
 const usuarioController = new UsuarioController({ usuarioService });

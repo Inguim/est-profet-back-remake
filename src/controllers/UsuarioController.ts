@@ -3,6 +3,8 @@ import { STATUS_CODE } from "../utils/constansts/status-code.js";
 import type { IUsuarioService, TCreateDTO as TCreateDTOUsuarioService } from "../services/UsuarioService.js";
 import { NotFoundError } from "../errors/index.js";
 import type { IAuthRequest } from "../middlewares/index.js";
+import type { UsuarioAlunoDTO } from "../dto/UsuarioAlunoDTO.js";
+import type { UsuarioProfessorDTO } from "../dto/UsuarioProfessorDTO.js";
 
 type TCreateDTOBase = {
 	confirm_password: string;
@@ -84,16 +86,38 @@ export class UsuarioController {
 			const usuario = await this.usuarioService.get(req.params.id);
 			if (!usuario) throw new NotFoundError("Usuário não encontrado");
 			const { id, nome, email, tipo, status } = usuario;
-			res.status(STATUS_CODE.OK).json({
-				message: "Usuário encontrado com sucesso",
-				data: {
+			let data;
+			if (tipo === "aluno") {
+				const { curso, serie } = usuario as UsuarioAlunoDTO;
+				data = {
 					id,
 					nome,
 					email,
 					tipo,
 					status,
-					// adicionar categorias (professor) / curso (aluno)
-				},
+					curso: {
+						id: curso.id,
+						curso: curso.curso,
+					},
+					serie: {
+						id: serie.id,
+						serie: serie.serie,
+					},
+				};
+			} else {
+				const { categorias } = usuario as UsuarioProfessorDTO;
+				data = {
+					id,
+					nome,
+					email,
+					tipo,
+					status,
+					categorias: categorias.map(({ id, nome }) => ({ id, nome })),
+				};
+			}
+			res.status(STATUS_CODE.OK).json({
+				message: "Usuário encontrado com sucesso",
+				data,
 			});
 		} catch (error) {
 			next(error);
