@@ -1,22 +1,17 @@
-import type { TUsuarioStatus, TUsuarioTipo } from "../../src/dto/index.js";
-import { UsuarioFactory } from "./UsuarioFactory.js";
+import { UsuarioFactory, type IUsuarioFactory } from "./UsuarioFactory.js";
+import { faker as f } from "@faker-js/faker";
 
-export interface IUsuarioProfessorFactory {
-	nome: string;
-	email: string;
-	tipo: TUsuarioTipo;
-	status: TUsuarioStatus;
-	admin: boolean;
-	password: string;
-	created_at: Date;
-	updated_at: Date;
-	// adicionar campos professor
+export interface IUsuarioProfessorFactory extends IUsuarioFactory {
+	categorias: string[];
 }
 
 export class UsuarioProfessorFactory extends UsuarioFactory {
+	private categorias: string[];
+
 	private constructor() {
 		super();
 		this.tipo = "professor";
+		this.categorias = f.helpers.multiple(() => f.string.uuid(), { count: 2 });
 	}
 
 	public static create(): UsuarioProfessorFactory {
@@ -24,7 +19,7 @@ export class UsuarioProfessorFactory extends UsuarioFactory {
 	}
 
 	build(): IUsuarioProfessorFactory {
-		const { nome, email, password, tipo, status, admin, created_at, updated_at } = this;
+		const { nome, email, password, tipo, status, admin, categorias, created_at, updated_at } = this;
 		return {
 			nome,
 			email,
@@ -32,8 +27,14 @@ export class UsuarioProfessorFactory extends UsuarioFactory {
 			admin,
 			tipo,
 			status,
+			categorias,
 			created_at,
 			updated_at,
 		};
+	}
+
+	withCategorias(categorias_ids: string[]) {
+		this.categorias = categorias_ids;
+		return this;
 	}
 }
