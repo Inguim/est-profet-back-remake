@@ -8,3 +8,4 @@ export * from "./CategoriaDTO.js";
 export * from "./MenuDTO.js";
 export * from "./UsuarioAlunoDTO.js";
 export * from "./UsuarioProfessorDTO.js";
+export * from "./ProfessorCategoriaDTO.js";
