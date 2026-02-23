@@ -52,7 +52,21 @@ components:
         mapping:
           aluno: "#/components/schemas/UsuarioCreateAluno"
           professor: "#/components/schemas/UsuarioCreateProfessor"
+    UsuarioGet:
+      type: object
+      oneOf:
+        - $ref: "#/components/schemas/UsuarioGetAluno"
+        - $ref: "#/components/schemas/UsuarioGetProfessor"
+      discriminator:
+        propertyName: tipo
+        mapping:
+          aluno: "#/components/schemas/UsuarioGetAluno"
+          professor: "#/components/schemas/UsuarioGetProfessor"
     UsuarioCreateAluno:
       $ref: "./components/schemas/usuario/create-aluno.yaml"
     UsuarioCreateProfessor:
       $ref: "./components/schemas/usuario/create-professor.yaml"
+    UsuarioGetAluno:
+      $ref: "./components/schemas/usuario/get-aluno.yaml"
+    UsuarioGetProfessor:
+      $ref: "./components/schemas/usuario/get-professor.yaml"

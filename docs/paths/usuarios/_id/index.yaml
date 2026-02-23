@@ -15,7 +15,39 @@ get:
       content:
         application/json:
           schema:
-            $ref: "../../../components/schemas/usuario/get.yaml"
+            type: object
+            properties:
+              message:
+                type: string
+                example: Usuário criado com sucesso
+              data:
+                $ref: "../../../components/schemas/usuario/get.yaml"
+          examples:
+            aluno:
+              summary: Aluno (UsuarioGetAluno)
+              value:
+                message: Usuario encontrado com sucesso
+                data:
+                  nome: string
+                  email: string
+                  tipo: aluno
+                  status: analise
+                  curso:
+                    id: string
+                    curso: string
+                  serie:
+                    id: string
+                    serie: number
+            professor:
+              summary: Professor (UsuarioGetProfessor)
+              value:
+                message: Usuario encontrado com sucesso
+                data:
+                  nome: string
+                  email: string
+                  tipo: aluno
+                  status: analise
+                  categorias: [{ id: "1232", nome: "Engenharia" }]
     "404":
       $ref: "../../../components/responses/404_not_found.yaml"
 

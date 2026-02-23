@@ -1,0 +1,24 @@
+allOf:
+  - $ref: "./base.yaml"
+
+type: object
+properties:
+  tipo:
+    type: string
+    enum: [aluno]
+  curso:
+    allOf:
+      - $ref: "../curso/base.yaml"
+    type: object
+    properties:
+      id:
+        type: string
+        example: "12323"
+  serie:
+    allOf:
+      - $ref: "../serie/base.yaml"
+    type: object
+    properties:
+      id:
+        type: string
+        example: "12323"

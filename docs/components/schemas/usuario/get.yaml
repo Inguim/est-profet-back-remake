@@ -1,4 +1,9 @@
-allOf:
-  - $ref: "./item.yaml"
+discriminator:
+  propertyName: tipo
+  mapping:
+    aluno: "./get-aluno.yaml"
+    professor: "./get-professor.yaml"
 
-type: object
+oneOf:
+  - $ref: "./get-aluno.yaml"
+  - $ref: "./get-professor.yaml"
