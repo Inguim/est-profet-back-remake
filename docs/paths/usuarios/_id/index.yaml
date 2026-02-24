@@ -54,6 +54,8 @@ get:
 patch:
   tags: [Usuarios]
   summary: Atualiza um usuário existente
+  security:
+    - BearerAuth: []
   parameters:
     - name: id
       in: path

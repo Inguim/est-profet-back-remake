@@ -9,10 +9,12 @@ servers:
   - url: http://localhost:3000
 
 paths:
-  /auth:
+  /auth/login:
     $ref: "./paths/auth.yaml"
   /cursos:
     $ref: "./paths/cursos/index.yaml"
+  /estados:
+    $ref: "./paths/estados/index.yaml"
   /menus:
     $ref: "./paths/menus/index.yaml"
   /series:
@@ -36,6 +38,8 @@ components:
   schemas:
     Curso:
       $ref: "./components/schemas/curso/item.yaml"
+    Estado:
+      $ref: "./components/schemas/estado/item.yaml"
     Menu:
       $ref: "./components/schemas/menu/item.yaml"
     Serie:

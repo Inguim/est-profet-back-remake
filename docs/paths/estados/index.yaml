@@ -1,0 +1,18 @@
+get:
+  tags: [Estados]
+  summary: Retorna uma lista de Estados
+  security:
+    - BearerAuth: []
+  responses:
+    "200":
+      description: "Retorna uma lista de Estados"
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Estados buscados com sucesso
+              data:
+                $ref: "../../components/schemas/estado/collection.yaml"
