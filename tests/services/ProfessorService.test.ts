@@ -23,4 +23,21 @@ describe("ProfessorService", () => {
 		expect(output).toBeInstanceOf(ProfessorDTO);
 		expect(output.id).not.toBeNullable();
 	});
+
+	it("deve encontrar um professor pelo USER_ID", async () => {
+		const { nome, email, password } = UsuarioProfessorFactory.create().build();
+		const usuario = await usuarioModel.create({
+			tipo: "professor",
+			nome,
+			email,
+			password,
+		});
+		const input: IProfessorDTO = {
+			user_id: String(usuario.id),
+		};
+		await service.create(input);
+		const output = await service.getByUserId(String(usuario.id));
+		expect(output).toBeInstanceOf(ProfessorDTO);
+		expect(output.id).not.toBeNullable();
+	});
 });

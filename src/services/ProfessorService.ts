@@ -6,6 +6,7 @@ type TCreateDTO = Pick<IProfessorDTO, "user_id">;
 
 export interface IProfessorService {
 	create(dto: TCreateDTO, transaction?: Knex): Promise<IProfessorDTO>;
+	getByUserId(userId: string): Promise<IProfessorDTO>;
 }
 
 export class ProfessorService implements IProfessorService {
@@ -15,6 +16,12 @@ export class ProfessorService implements IProfessorService {
 	async create(dto: TCreateDTO, transaction?: Knex): Promise<IProfessorDTO> {
 		const model = new this.model(transaction);
 		const professor = await model.create(dto);
+		return professor;
+	}
+
+	async getByUserId(userId: string): Promise<ProfessorDTO> {
+		const model = new this.model();
+		const professor = await model.get(userId);
 		return professor;
 	}
 }
