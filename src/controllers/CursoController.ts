@@ -16,7 +16,7 @@ export class CursoController {
 	async list(req: Request, res: Response, next: NextFunction): Promise<void> {
 		try {
 			const cursos = await this.cursoService.list();
-			res.status(STATUS_CODE.CREATED).json({
+			res.status(STATUS_CODE.OK).json({
 				message: "Cursos buscados com sucesso",
 				data: {
 					count: cursos.length,

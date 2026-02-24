@@ -16,7 +16,7 @@ export class MenuController {
 	async list(req: Request, res: Response, next: NextFunction): Promise<void> {
 		try {
 			const menus = await this.menuService.list();
-			res.status(STATUS_CODE.CREATED).json({
+			res.status(STATUS_CODE.OK).json({
 				message: "Menus buscados com sucesso",
 				data: {
 					count: menus.length,

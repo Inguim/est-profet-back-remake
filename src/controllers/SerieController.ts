@@ -16,7 +16,7 @@ export class SerieController {
 	async list(req: Request, res: Response, next: NextFunction): Promise<void> {
 		try {
 			const cursos = await this.serieService.list();
-			res.status(STATUS_CODE.CREATED).json({
+			res.status(STATUS_CODE.OK).json({
 				message: "Series buscadas com sucesso",
 				data: {
 					count: cursos.length,
