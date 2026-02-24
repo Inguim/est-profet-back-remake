@@ -7,3 +7,4 @@ export * from "./ProfessorModel.js";
 export * from "./CategoriaModel.js";
 export * from "./MenuModel.js";
 export * from "./ProfessorCategoriaModel.js";
+export * from "./EstadoModel.js";
