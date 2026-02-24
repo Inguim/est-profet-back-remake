@@ -17,7 +17,7 @@
 - [x] Professores
 - [x] Professor categorias
 - [ ] Projetos
-- [ ] Estados
+- [x] Estados
 - [ ] Usuario projetos
 
 ### Models / Service / Controller
@@ -32,8 +32,9 @@
 - [x] Curso
   - [x] Service
   - [x] Controller
-- [ ] Estado
-  - [ ] Service
+- [x] Estado
+  - [x] Model
+  - [x] Service
 - [x] Menu
   - [x] Service
   - [x] Controller
@@ -73,7 +74,7 @@
 
 - [x] Categoria
 - [x] Curso
-- [ ] Estado
+- [x] Estado
 - [ ] Menu
 - [x] Serie
 - [ ] Tipo contribuicao
