@@ -7,10 +7,11 @@ import dbConnection from "../database/dbConfig.js";
 import type { IProfessorService } from "./ProfessorService.js";
 import type { ICursoService } from "./CursoService.js";
 import type { ISerieService } from "./SerieService.js";
+import type { IProfessorCategoriaService } from "./ProfessorCategoriaService.js";
 
 type TCreateDTOBase = Pick<UsuarioDTO, "nome" | "email" | "tipo" | "password">;
 export type TCreateDTOAluno = { tipo: "aluno" } & Pick<IAlunoDTO, "curso_id" | "serie_id">;
-export type TCreateDTOProfessor = { tipo: "professor" }; // ajustar para ProfessorDTO
+export type TCreateDTOProfessor = { tipo: "professor" } & { categoriaIds: string[] };
 
 export type TCreateDTO = TCreateDTOBase & (TCreateDTOAluno | TCreateDTOProfessor);
 type TUpdateDTO = Partial<Pick<UsuarioDTO, "nome" | "email" | "tipo">>;
@@ -22,6 +23,7 @@ type TContructorService = {
 	connection?: Knex;
 	alunoService: IAlunoService;
 	professorService: IProfessorService;
+	professorCategoriaService: IProfessorCategoriaService;
 	cursoService: ICursoService;
 	serieService: ISerieService;
 };
@@ -45,6 +47,7 @@ export class UsuarioService
 	private connection: Knex;
 	private alunoService: IAlunoService;
 	private professorService: IProfessorService;
+	private professorCategoriaService: IProfessorCategoriaService;
 	private cursoService: ICursoService;
 	private serieService: ISerieService;
 
@@ -52,6 +55,7 @@ export class UsuarioService
 		{
 			alunoService,
 			professorService,
+			professorCategoriaService,
 			cursoService,
 			serieService,
 			connection = dbConnection,
@@ -61,6 +65,7 @@ export class UsuarioService
 		this.connection = connection;
 		this.alunoService = alunoService;
 		this.professorService = professorService;
+		this.professorCategoriaService = professorCategoriaService;
 		this.cursoService = cursoService;
 		this.serieService = serieService;
 	}
@@ -74,8 +79,9 @@ export class UsuarioService
 				const { curso_id, serie_id } = dto;
 				await this.alunoService.create({ user_id: String(usuario.id), curso_id, serie_id }, trx);
 			} else {
-				// const {} = dto; adicionar categorias de professor
-				await this.professorService.create({ user_id: String(usuario.id) }, trx);
+				const { categoriaIds } = dto;
+				const professor = await this.professorService.create({ user_id: String(usuario.id) }, trx);
+				await this.professorCategoriaService.create({ professorId: String(professor.id), categoriaIds }, trx);
 			}
 			return usuario;
 		});
@@ -99,7 +105,9 @@ export class UsuarioService
 	}
 
 	private async getProfessor(usuario: UsuarioDTO): Promise<UsuarioProfessorDTO> {
-		// adicionar busca de categorias
-		return new this.dtoUsuarioProfessor({ ...usuario, categorias: [] });
+		const professor = await this.professorService.getByUserId(String(usuario.id));
+		const categorias = await this.professorCategoriaService.list(String(professor.id));
+		console.log(categorias);
+		return new this.dtoUsuarioProfessor({ ...usuario, categorias });
 	}
 }

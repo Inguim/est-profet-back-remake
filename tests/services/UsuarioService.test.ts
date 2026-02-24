@@ -5,14 +5,23 @@ import {
 	type TFindOneDTO,
 	UsuarioService,
 } from "../../src/services/UsuarioService.js";
-import { USUARIO_TIPOS, UsuarioAlunoDTO, UsuarioDTO, UsuarioProfessorDTO } from "../../src/dto/index.js";
+import { CategoriaDTO, USUARIO_TIPOS, UsuarioAlunoDTO, UsuarioDTO, UsuarioProfessorDTO } from "../../src/dto/index.js";
 import { v4 as uuidV4 } from "uuid";
 import { NotFoundError } from "../../src/errors/index.js";
-import { AlunoService, CursoService, ProfessorService, SerieService } from "../../src/services/index.js";
+import {
+	AlunoService,
+	CategoriaService,
+	CursoService,
+	ProfessorCategoriaService,
+	ProfessorService,
+	SerieService,
+} from "../../src/services/index.js";
 import { UsuarioAlunoFactory } from "../factories/UsuarioAlunoFactory.js";
 import { UsuarioProfessorFactory } from "../factories/UsuarioProfessorFactory.js";
 
 describe("UsuarioService", () => {
+	let defaultCategorias: CategoriaDTO[];
+	let duasCategoriasIds: string[];
 	let cursoId: string;
 	let serieId: string;
 	const TIPOS_INPUTS = {
@@ -23,25 +32,35 @@ describe("UsuarioService", () => {
 	const WHERE_PARAMS = ["email"];
 
 	const alunoService = new AlunoService();
+	const categoriaService = new CategoriaService();
 	const professorService = new ProfessorService();
+	const professorCategoriaService = new ProfessorCategoriaService({ categoriaService });
 	const cursoService = new CursoService();
 	const serieService = new SerieService();
-	const service = new UsuarioService({ alunoService, professorService, cursoService, serieService });
+	const service = new UsuarioService({
+		alunoService,
+		professorService,
+		cursoService,
+		serieService,
+		professorCategoriaService,
+	});
 
 	beforeAll(async () => {
 		const cursoService = new CursoService();
 		const serieService = new SerieService();
+		defaultCategorias = await categoriaService.list();
+		duasCategoriasIds = defaultCategorias.slice(0, -(defaultCategorias.length - 2)).map((c) => String(c.id));
 		cursoId = (await cursoService.list()).at(0)?.id as string;
 		serieId = (await serieService.list()).at(0)?.id as string;
 		TIPOS_INPUTS["aluno"] = { tipo: "aluno", curso_id: cursoId, serie_id: serieId };
 	});
 
 	it("deve criar um usuário", async () => {
-		const { nome, email, tipo, password, curso_id, serie_id } = UsuarioAlunoFactory.create()
+		const { nome, email, password, curso_id, serie_id } = UsuarioAlunoFactory.create()
 			.withCurso(cursoId)
 			.withSerie(serieId)
 			.build();
-		const input = { nome, email, password, tipo, curso_id, serie_id };
+		const input = { nome, email, password, curso_id, serie_id, tipo: "aluno" as const };
 		const output = await service.create(input);
 		expect(output).toBeInstanceOf(UsuarioDTO);
 		expect(output.id).not.toBeNull();
@@ -56,48 +75,52 @@ describe("UsuarioService", () => {
 				.build();
 			output = await service.create({ tipo: "aluno", nome, email, password, curso_id, serie_id });
 		} else {
-			const { nome, email, password } = UsuarioProfessorFactory.create().build();
-			output = await service.create({ tipo: "professor", nome, email, password });
+			const { nome, email, password, categorias } = UsuarioProfessorFactory.create()
+				.withCategorias(duasCategoriasIds)
+				.build();
+			output = await service.create({ tipo: "professor", nome, email, password, categoriaIds: categorias });
 		}
 		expect(output.tipo).toBe(tipo);
 	});
 
 	it("deve encontrar um usuário pelo ID", async () => {
-		const { nome, email, tipo, password, curso_id, serie_id } = UsuarioAlunoFactory.create()
+		const { nome, email, password, curso_id, serie_id } = UsuarioAlunoFactory.create()
 			.withCurso(cursoId)
 			.withSerie(serieId)
 			.build();
-		const usuario = { nome, email, password, tipo, curso_id, serie_id };
+		const usuario = { nome, email, password, curso_id, serie_id, tipo: "aluno" as const };
 		const input = await service.create(usuario);
 		const output = await service.get(input.id as string);
 		expect(output?.id).toEqual(output?.id);
 	});
 
 	it("deve retornar um UsuarioAlunoDTO pelo ID", async () => {
-		const { nome, email, tipo, password, curso_id, serie_id } = UsuarioAlunoFactory.create()
+		const { nome, email, password, curso_id, serie_id } = UsuarioAlunoFactory.create()
 			.withCurso(cursoId)
 			.withSerie(serieId)
 			.build();
-		const usuario = { nome, email, password, tipo, curso_id, serie_id };
+		const usuario = { nome, email, password, curso_id, serie_id, tipo: "aluno" as const };
 		const input = await service.create(usuario);
 		const output = await service.get(input.id as string);
 		expect(output).toBeInstanceOf(UsuarioAlunoDTO);
 	});
 
 	it("deve retornar um UsuarioProfessorDTO pelo ID", async () => {
-		const { nome, email, password } = UsuarioProfessorFactory.create().build();
-		const usuario = { nome, email, password, tipo: "professor" as const };
+		const { nome, email, password, categorias } = UsuarioProfessorFactory.create()
+			.withCategorias(duasCategoriasIds)
+			.build();
+		const usuario = { nome, email, password, tipo: "professor" as const, categoriaIds: categorias };
 		const input = await service.create(usuario);
 		const output = await service.get(input.id as string);
 		expect(output).toBeInstanceOf(UsuarioProfessorDTO);
 	});
 
 	it("deve atualizar as informações do usuário", async () => {
-		const { nome, email, tipo, password, curso_id, serie_id } = UsuarioAlunoFactory.create()
+		const { nome, email, password, curso_id, serie_id } = UsuarioAlunoFactory.create()
 			.withCurso(cursoId)
 			.withSerie(serieId)
 			.build();
-		const usuario = { nome, email, password, tipo, curso_id, serie_id };
+		const usuario = { nome, email, password, curso_id, serie_id, tipo: "aluno" as const };
 		const input = await service.create(usuario);
 		const output = await service.update(input.id as string, {
 			nome: "nome alterado",
@@ -117,11 +140,11 @@ describe("UsuarioService", () => {
 	});
 
 	it("deve deletar usuário", async () => {
-		const { nome, email, tipo, password, curso_id, serie_id } = UsuarioAlunoFactory.create()
+		const { nome, email, password, curso_id, serie_id } = UsuarioAlunoFactory.create()
 			.withCurso(cursoId)
 			.withSerie(serieId)
 			.build();
-		const usuario = { nome, email, password, tipo, curso_id, serie_id };
+		const usuario = { nome, email, password, curso_id, serie_id, tipo: "aluno" as const };
 		const input = await service.create(usuario);
 		const output = await service.delete(input.id as string);
 		expect(output).toBeTruthy();
@@ -133,12 +156,12 @@ describe("UsuarioService", () => {
 			const input = {
 				email: `emailusuarioservice${index}@mail.com`,
 			};
-			const { nome, email, tipo, password, curso_id, serie_id } = UsuarioAlunoFactory.create()
+			const { nome, email, password, curso_id, serie_id } = UsuarioAlunoFactory.create()
 				.withEmail(input["email"])
 				.withCurso(cursoId)
 				.withSerie(serieId)
 				.build();
-			await service.create({ nome, email, tipo, password, curso_id, serie_id });
+			await service.create({ nome, email, password, curso_id, serie_id, tipo: "aluno" as const });
 			const filter = { [String(campo)]: input[campo as keyof TFindOneDTO] };
 			const output = await service.findOne(filter);
 			expect(output.id).not.toBeNull();
