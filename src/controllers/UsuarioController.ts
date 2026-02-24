@@ -41,8 +41,8 @@ export class UsuarioController {
 				const { curso_id, serie_id } = req.body;
 				usuario = await this.usuarioService.create({ nome, email, tipo, password, curso_id, serie_id });
 			} else {
-				// const { } = req.body; // ajustar caso professor
-				usuario = await this.usuarioService.create({ nome, email, tipo, password });
+				const { categoriaIds } = req.body;
+				usuario = await this.usuarioService.create({ nome, email, tipo, password, categoriaIds });
 			}
 			res.status(STATUS_CODE.CREATED).json({
 				message: "Usuário criado com sucesso",
