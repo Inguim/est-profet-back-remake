@@ -15,7 +15,7 @@
 - [x] Menu
 - [x] Categorias
 - [x] Professores
-- [ ] Professor categorias
+- [x] Professor categorias
 - [ ] Projetos
 - [ ] Estados
 - [ ] Usuario projetos
@@ -45,9 +45,9 @@
   - [ ] Controller
 - [x] Professor
   - [x] Service
-- [ ] Professor Categoria
-  - [ ] Service
-  - [ ] Controller
+- [x] Professor Categoria
+  - [x] Service
+  - [x] Controller
 - [ ] Projeto
   - [ ] Service
   - [ ] Controller
@@ -71,7 +71,7 @@
 
 ### Seeders
 
-- [ ] Categoria
+- [x] Categoria
 - [x] Curso
 - [ ] Estado
 - [ ] Menu
