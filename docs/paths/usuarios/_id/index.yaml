@@ -76,7 +76,13 @@ patch:
       content:
         application/json:
           schema:
-            $ref: "../../../components/schemas/usuario/item.yaml"
+            type: object
+            properties:
+              message:
+                type: string
+                example: Usuário atualizado com sucesso
+              data:
+                $ref: "../../../components/schemas/usuario/item.yaml"
     "400":
       $ref: "../../../components/responses/400_validacao.yaml"
     "404":
