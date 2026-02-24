@@ -7,6 +7,7 @@ type TCreateModelDTO = Omit<IProfessorDTO, "id" | "created_at" | "updated_at">;
 
 export interface IProfessorModel {
 	create(dto: TCreateModelDTO): Promise<IProfessorDTO>;
+	get(user_id: string): Promise<IProfessorDTO>;
 }
 
 export class ProfessorModel implements IProfessorModel {
@@ -27,5 +28,10 @@ export class ProfessorModel implements IProfessorModel {
 		});
 		const [newRecord] = await this.db.insert(entity).returning("*");
 		return new ProfessorDTO(newRecord);
+	}
+
+	async get(user_id: string): Promise<ProfessorDTO> {
+		const data = await this.db.where({ user_id }).first();
+		return new ProfessorDTO(data);
 	}
 }

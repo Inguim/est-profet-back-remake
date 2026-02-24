@@ -36,4 +36,20 @@ describe("ProfessorModel", () => {
 		const output = await professorModel.create(input);
 		expect(output.user_id).toEqual(input.user_id);
 	});
+
+	it("retornar encontrar um professor por USER_ID", async () => {
+		const { nome, email, tipo, password } = UsuarioProfessorFactory.create().build();
+		const usuario = await usuarioModel.create({
+			nome,
+			email,
+			tipo,
+			password,
+		});
+		const input: IProfessorDTO = {
+			user_id: String(usuario.id),
+		};
+		await professorModel.create(input);
+		const output = await professorModel.get(String(usuario.id));
+		expect(String(usuario.id)).toEqual(output.user_id);
+	});
 });
