@@ -19,7 +19,7 @@ describe("CategoriaService", () => {
 	it("deve permitir filtrar por ID", async () => {
 		const input = String(categoria?.id);
 		const output = await service.list();
-		const outputFiltred = await service.list({ id: input });
+		const outputFiltred = await service.list({ id: [input] });
 		expect(output.length).not.toEqual(outputFiltred.length);
 	});
 

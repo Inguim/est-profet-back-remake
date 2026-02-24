@@ -4,7 +4,7 @@ import { CategoriaDTO } from "../dto/CategoriaDTO.js";
 import dbConnection from "../database/dbConfig.js";
 
 export type TListWhere = {
-	id?: string;
+	id?: string[];
 	nome__ilike?: string;
 	descricao__ilike?: string;
 	slug?: string;
@@ -31,7 +31,7 @@ export class CategoriaModel implements ICategoriaModel {
 		return query.where((qb) => {
 			Object.entries(where).forEach(([key, value]) => {
 				if (LIST_WHERE_KEYS.includes(key as keyof TListWhere)) {
-					if (key === "id") qb.where("id", value);
+					if (key === "id") qb.whereIn("id", value as string[]);
 					else if (key === "nome__ilike") qb.whereILike("nome", `%${value}%`);
 					else if (key === "descricao__ilike") qb.whereILike("descricao", `%${value}%`);
 					else if (key === "slug") qb.where("slug", value);

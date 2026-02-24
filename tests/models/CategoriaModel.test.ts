@@ -20,7 +20,7 @@ describe("CategoriaModel", () => {
 
 	it("deve retornar valores com o mesmo valor de ID", async () => {
 		const input = defaultCategorias.at(0)?.id;
-		const output = await model.list({ id: String(input) });
+		const output = await model.list({ id: [String(input)] });
 		expect(output.length).toEqual(1);
 		expect(output.map((categoria) => categoria.id)).toContain(input);
 	});
