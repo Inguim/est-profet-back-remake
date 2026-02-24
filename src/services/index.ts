@@ -10,3 +10,4 @@ export * from "./ProfessorService.js";
 export * from "./CategoriaService.js";
 export * from "./MenuService.js";
 export * from "./ProfessorCategoriaService.js";
+export * from "./EstadoService.js";
