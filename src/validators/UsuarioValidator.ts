@@ -7,16 +7,16 @@ import { USUARIO_TIPOS } from "../dto/UsuarioDTO.js";
 const BASE_SCHEMA = z.object({
 	nome: z
 		.string(dm.required("nome"))
-		.min(3, { error: ({ minimum }) => dm.minLength(minimum as number, "nome") })
+		.min(3, { error: ({ minimum }) => dm.minLength(Number(minimum), "nome") })
 		.nonempty("campo obrigatorio")
 		.trim(),
 	email: z.email(dm.invalidEmail),
 	password: z
 		.string(dm.required("password"))
-		.min(6, { error: ({ minimum }) => dm.minLength(minimum as number, "password") }),
+		.min(6, { error: ({ minimum }) => dm.minLength(Number(minimum), "password") }),
 	confirm_password: z
 		.string(dm.required("confirm_password"))
-		.min(6, { error: ({ minimum }) => dm.minLength(minimum as number, "confirm_password") }),
+		.min(6, { error: ({ minimum }) => dm.minLength(Number(minimum), "confirm_password") }),
 });
 
 const createSchemaAluno = BASE_SCHEMA.extend({
@@ -31,7 +31,10 @@ const createSchemaProfessor = BASE_SCHEMA.extend({
 	tipo: z.literal("professor", {
 		error: () => dm.enum("tipo", USUARIO_TIPOS),
 	}),
-	// adicionar campos professor
+	categoriaIds: z
+		.array(z.uuidv4({ error: () => dm.invalidUUID("categoriaIds") }), { error: () => dm.required("categoriaIds") })
+		.min(1, { error: ({ minimum }) => dm.arrayMin(Number(minimum), "categoriaIds") })
+		.refine((items) => new Set(items).size === items.length, { message: dm.arrayUnique("categoriaIds") }),
 });
 
 const createSchema = z

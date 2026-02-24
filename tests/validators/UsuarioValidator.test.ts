@@ -35,6 +35,55 @@ describe("UsuarioValidator", () => {
 			});
 		});
 
+		it("deve requerir os campos obrigatórios para tipo 'professor'", () => {
+			const input = { tipo: "professor" };
+			const output = validator.validate(input);
+			expect(output.success).toBe(false);
+			const outputErrors = formatErrorZod(output.extra?.error as any);
+			expect(outputErrors).toStrictEqual({
+				nome: "O campo nome é obrigatório.",
+				email: "Por favor, insira um e-mail válido.",
+				password: "O campo password é obrigatório.",
+				confirm_password: "O campo confirm_password é obrigatório.",
+				categoriaIds: "O campo categoriaIds é obrigatório.",
+			});
+		});
+
+		it("deve requerir ao menos um ID em categorIds", () => {
+			const input = { tipo: "professor", categoriaIds: [] };
+			const output = validator.validate(input);
+			expect(output.success).toBe(false);
+			const outputErrors = formatErrorZod(output.extra?.error as any);
+			expect(outputErrors).toStrictEqual({
+				nome: "O campo nome é obrigatório.",
+				email: "Por favor, insira um e-mail válido.",
+				password: "O campo password é obrigatório.",
+				confirm_password: "O campo confirm_password é obrigatório.",
+				categoriaIds: "O campo categoriaIds deve conter no minímo 1 valor informado",
+			});
+		});
+
+		it("deve requerir validar ID como UUID em categoriaIds", () => {
+			const input = { tipo: "professor", categoriaIds: ["naoUUId"] };
+			const output = validator.validate(input);
+			expect(output.success).toBe(false);
+			const outputErrors = formatErrorZod(output.extra?.error as any);
+			expect(outputErrors).includes({
+				categoriaIds: "O campo categoriaIds deve ser um UUID.",
+			});
+		});
+
+		it("deve requerir apenas ID não repetidos em categoriaIds", () => {
+			const id = f.string.uuid();
+			const input = { tipo: "professor", categoriaIds: [id, id] };
+			const output = validator.validate(input);
+			expect(output.success).toBe(false);
+			const outputErrors = formatErrorZod(output.extra?.error as any);
+			expect(outputErrors).includes({
+				categoriaIds: "O campo categoriaIds deve conter apenas valores únicos",
+			});
+		});
+
 		it("deve validar o tamanho mínimo dos campos", () => {
 			const input = {
 				nome: "jo",
