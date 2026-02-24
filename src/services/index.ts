@@ -9,3 +9,4 @@ export * from "./AlunoService.js";
 export * from "./ProfessorService.js";
 export * from "./CategoriaService.js";
 export * from "./MenuService.js";
+export * from "./ProfessorCategoriaService.js";
