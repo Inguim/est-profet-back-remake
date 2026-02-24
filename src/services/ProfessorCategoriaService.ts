@@ -1,3 +1,4 @@
+import type { Knex } from "knex";
 import { CategoriaDTO, type ICategoriaDTO } from "../dto/CategoriaDTO.js";
 import { ProfessorCategoriaDTO, type IProfessorCategoriaDTO } from "../dto/ProfessorCategoriaDTO.js";
 import { ProfessorCategoriaModel } from "../models/ProfessorCategoriaModel.js";
@@ -13,7 +14,7 @@ type TConstructorService = {
 };
 
 export interface IProfessorCategoriaService {
-	create(dto: TCreateDTO): Promise<IProfessorCategoriaDTO[]>;
+	create(dto: TCreateDTO, transaction?: Knex): Promise<IProfessorCategoriaDTO[]>;
 	list(professorId: string): Promise<ICategoriaDTO[]>;
 }
 
@@ -26,16 +27,16 @@ export class ProfessorCategoriaService implements IProfessorCategoriaService {
 		this.categoriaService = categoriaService;
 	}
 
-	async create(dto: TCreateDTO): Promise<ProfessorCategoriaDTO[]> {
+	async create(dto: TCreateDTO, transaction?: Knex): Promise<ProfessorCategoriaDTO[]> {
 		const { professorId, categoriaIds } = dto;
-		const model = new this.model();
+		const model = new this.model(transaction);
 		const categorias = await model.create(professorId, categoriaIds);
 		return categorias;
 	}
 
 	async list(professorId: string): Promise<CategoriaDTO[]> {
 		const model = new this.model();
-		const categoriaIds = (await model.list(professorId)).map((categoria) => String(categoria.id));
+		const categoriaIds = (await model.list(professorId)).map((categoria) => String(categoria.categoria_id));
 		const categorias = await this.categoriaService.list({ id: categoriaIds });
 		return categorias;
 	}
