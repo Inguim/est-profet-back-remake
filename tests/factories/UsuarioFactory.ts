@@ -24,7 +24,6 @@ export abstract class UsuarioFactory {
 	protected password: string;
 	protected created_at: Date;
 	protected updated_at: Date;
-	// adicionar campos professor
 
 	protected constructor() {
 		this.nome = f.person.firstName();
