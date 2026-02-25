@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { ProjetoDTO, type IProjetoDTO } from "../../src/dto/index.js";
+import { PROJETO_STATUS, PROJETO_STATUS_VALUES, ProjetoDTO, type IProjetoDTO } from "../../src/dto/index.js";
 
 describe("ProjetoDTO", () => {
 	it("deve conter as propriedades de IProjetoDTO", () => {
@@ -64,5 +64,22 @@ describe("ProjetoDTO", () => {
 		};
 		const output = new ProjetoDTO(input);
 		expect(output).toEqual(input);
+	});
+
+	it.each(PROJETO_STATUS_VALUES)("deve retornar o label correto para o status: %s", async (status) => {
+		const input = new ProjetoDTO({
+			nome: "a",
+			resumo: "a",
+			introducao: "a",
+			objetivo: "a",
+			metodologia: "a",
+			result_disc: "a",
+			conclusao: "a",
+			categoria_id: "123",
+			estado_id: "123",
+			status,
+		});
+		const output = input.getStatusLabel();
+		expect(output).toEqual(PROJETO_STATUS[status]);
 	});
 });
