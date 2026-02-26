@@ -13,6 +13,7 @@ export interface IProjetoFactory {
 	status: TProjetoStatus;
 	categoria_id: string;
 	estado_id: string;
+	usuarios: string[];
 }
 
 export class ProjetoFactory {
@@ -28,6 +29,7 @@ export class ProjetoFactory {
 	private status: TProjetoStatus;
 	private categoria_id: string;
 	private estado_id: string;
+	private usuarios: string[];
 
 	private constructor() {
 		this.nome = this.generateUniqueNome();
@@ -40,6 +42,7 @@ export class ProjetoFactory {
 		this.status = f.helpers.objectKey(PROJETO_STATUS);
 		this.categoria_id = f.string.uuid();
 		this.estado_id = f.string.uuid();
+		this.usuarios = f.helpers.multiple(() => f.string.uuid(), { count: 4 });
 	}
 
 	static create() {
@@ -102,6 +105,11 @@ export class ProjetoFactory {
 		return this;
 	}
 
+	withUsuarios(user_ids: string[]) {
+		this.usuarios = user_ids;
+		return this;
+	}
+
 	build(): IProjetoFactory {
 		return {
 			nome: this.nome,
@@ -114,6 +122,7 @@ export class ProjetoFactory {
 			status: this.status,
 			categoria_id: this.categoria_id,
 			estado_id: this.estado_id,
+			usuarios: this.usuarios,
 		};
 	}
 }
