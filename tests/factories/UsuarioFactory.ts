@@ -27,7 +27,7 @@ export abstract class UsuarioFactory {
 
 	protected constructor() {
 		this.nome = f.person.firstName();
-		this.email = this.generateUniqueEmail();
+		this.email = this.nome.toLowerCase() + this.generateUniqueEmail();
 		this.tipo = "professor";
 		this.status = "analise";
 		this.admin = false;
