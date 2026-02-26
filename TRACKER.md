@@ -16,9 +16,9 @@
 - [x] Categorias
 - [x] Professores
 - [x] Professor categorias
-- [ ] Projetos
+- [x] Projetos
 - [x] Estados
-- [ ] Usuario projetos
+- [x] Usuario projetos
 
 ### Models / Service / Controller
 
@@ -49,7 +49,8 @@
 - [x] Professor Categoria
   - [x] Service
   - [x] Controller
-- [ ] Projeto
+- [x] Projeto
+  - [x] Model
   - [ ] Service
   - [ ] Controller
 - [x] Serie
@@ -66,16 +67,16 @@
 - [x] User
   - [x] Service
   - [ ] Controller
-- [ ] Usuario projeto
+- [x] Usuario projeto
+  - [x] Model
   - [ ] Service
-  - [ ] Controller
 
 ### Seeders
 
 - [x] Categoria
 - [x] Curso
 - [x] Estado
-- [ ] Menu
+- [x] Menu
 - [x] Serie
 - [ ] Tipo contribuicao
 - [ ] Tipo notificacao
