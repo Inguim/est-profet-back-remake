@@ -11,3 +11,4 @@ export * from "./CategoriaService.js";
 export * from "./MenuService.js";
 export * from "./ProfessorCategoriaService.js";
 export * from "./EstadoService.js";
+export * from "./UsuarioProjetoService.js";
