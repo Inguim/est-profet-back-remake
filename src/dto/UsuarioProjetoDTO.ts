@@ -8,13 +8,13 @@ export const USUARIO_PROJETO_STATUS = {
 	voluntario: "Voluntário",
 } as const;
 
-export const USUARIO_PROJETO_STATUS_VALUES = Object.keys(USUARIO_PROJETO_STATUS) as TUsuarioProjetoStatus[];
+export const USUARIO_PROJETO_STATUS_VALUES = Object.keys(USUARIO_PROJETO_STATUS) as TUsuarioProjetoRelacao[];
 
-export type TUsuarioProjetoStatus = keyof typeof USUARIO_PROJETO_STATUS;
-export type TUsuarioProjetoStatusLabel = (typeof USUARIO_PROJETO_STATUS)[TUsuarioProjetoStatus];
+export type TUsuarioProjetoRelacao = keyof typeof USUARIO_PROJETO_STATUS;
+export type TUsuarioProjetoRelacaoLabel = (typeof USUARIO_PROJETO_STATUS)[TUsuarioProjetoRelacao];
 
 export interface IUsuarioProjetoDTO extends IBaseDTO {
-	relacao: TUsuarioProjetoStatus;
+	relacao: TUsuarioProjetoRelacao;
 	user_id: string;
 	projeto_id: string;
 }
@@ -25,7 +25,7 @@ export class UsuarioProjetoDTO implements IUsuarioProjetoDTO {
 	readonly id?: string | null;
 	readonly created_at?: Date;
 	readonly updated_at?: Date;
-	readonly relacao: TUsuarioProjetoStatus;
+	readonly relacao: TUsuarioProjetoRelacao;
 	readonly user_id: string;
 	readonly projeto_id: string;
 
@@ -38,7 +38,7 @@ export class UsuarioProjetoDTO implements IUsuarioProjetoDTO {
 		if (updated_at) this.updated_at = updated_at;
 	}
 
-	getRelacaoLabel(): TUsuarioProjetoStatusLabel {
+	getRelacaoLabel(): TUsuarioProjetoRelacaoLabel {
 		return USUARIO_PROJETO_STATUS[this.relacao];
 	}
 }
