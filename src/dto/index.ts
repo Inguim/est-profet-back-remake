@@ -12,3 +12,4 @@ export * from "./ProfessorCategoriaDTO.js";
 export * from "./EstadoDTO.js";
 export * from "./ProjetoDTO.js";
 export * from "./UsuarioProjetoDTO.js";
+export * from "./ProjetoCompletoDTO.js";
