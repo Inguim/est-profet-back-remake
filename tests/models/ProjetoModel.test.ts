@@ -100,6 +100,29 @@ describe("ProjetoModel", () => {
 		expect(output.id).toBeNull();
 	});
 
+	it("deve retornar uma lista paginada", async () => {
+		const { nome, resumo, introducao, objetivo, metodologia, result_disc, conclusao, status, categoria_id, estado_id } =
+			ProjetoFactory.create().withCategoria(defaultCategoriaId).withEstado(defaultEstadoId).build();
+		await projetoModel.create({
+			nome,
+			resumo,
+			introducao,
+			objetivo,
+			metodologia,
+			result_disc,
+			conclusao,
+			status,
+			categoria_id,
+			estado_id,
+		});
+		const output = await projetoModel.list();
+		expect(output).toHaveProperty("data");
+		expect(output).toHaveProperty("page");
+		expect(output).toHaveProperty("perPage");
+		expect(output).toHaveProperty("count");
+		expect(output).toHaveProperty("totalPages");
+	});
+
 	it("deve retornar uma lista de ProjetoDTO", async () => {
 		const { nome, resumo, introducao, objetivo, metodologia, result_disc, conclusao, status, categoria_id, estado_id } =
 			ProjetoFactory.create().withCategoria(defaultCategoriaId).withEstado(defaultEstadoId).build();
@@ -116,8 +139,8 @@ describe("ProjetoModel", () => {
 			estado_id,
 		});
 		const output = await projetoModel.list();
-		expect(output).toBeInstanceOf(Array);
-		expect(output.every((projeto) => projeto instanceof ProjetoDTO)).toBeTruthy();
+		expect(output.data).instanceOf(Array);
+		expect(output.data.every((projeto) => projeto instanceof ProjetoDTO)).toBeTruthy();
 	});
 
 	it.each(PROJETO_STATUS_VALUES)("deve retornar apenas projetos com o STATUS: %s", async (status) => {
@@ -136,8 +159,7 @@ describe("ProjetoModel", () => {
 			estado_id,
 		});
 		const output = await projetoModel.list({ status });
-		expect(output).toBeInstanceOf(Array);
-		expect(output.every((projeto) => projeto.status === status)).toBeTruthy();
+		expect(output.data.every((projeto) => projeto.status === status)).toBeTruthy();
 	});
 
 	it("deve retornar apenas projetos com a mesma CATEGORIA_ID", async () => {
@@ -156,8 +178,7 @@ describe("ProjetoModel", () => {
 			estado_id,
 		});
 		const output = await projetoModel.list({ categoria_id: defaultRandomCategoriaId });
-		expect(output).toBeInstanceOf(Array);
-		expect(output.every((projeto) => projeto.categoria_id === defaultRandomCategoriaId)).toBeTruthy();
+		expect(output.data.every((projeto) => projeto.categoria_id === defaultRandomCategoriaId)).toBeTruthy();
 	});
 
 	it("deve retornar apenas projetos com o mesmo ESTADO_ID", async () => {
@@ -176,7 +197,6 @@ describe("ProjetoModel", () => {
 			estado_id,
 		});
 		const output = await projetoModel.list({ estado_id: defaultRandomEstadoId });
-		expect(output).toBeInstanceOf(Array);
-		expect(output.every((projeto) => projeto.estado_id === defaultRandomEstadoId)).toBeTruthy();
+		expect(output.data.every((projeto) => projeto.estado_id === defaultRandomEstadoId)).toBeTruthy();
 	});
 });

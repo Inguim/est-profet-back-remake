@@ -4,6 +4,7 @@ import { ProjetoDTO, type IProjetoDTO, type TProjetoStatus } from "../dto/Projet
 import { v4 as uuidV4 } from "uuid";
 import { formatOrderBy } from "../utils/helpers/formatOrderBy.js";
 import { NotFoundError } from "../errors/NotFoundError.js";
+import { PagePaginator, type TPagePagination, type TPagePaginatedResponse } from "../utils/helpers/pagePaginator.js";
 
 export type TListOrderBy = "updated_at__asc" | "created_at__asc" | "created_at__desc";
 
@@ -16,6 +17,8 @@ export type TProjetoListWhere = {
 type TCreateModelDTO = Omit<IProjetoDTO, "id" | "created_at" | "updated_at">;
 type TUpdateModelDTO = Pick<IProjetoDTO, "status">;
 
+type TListModelResponse = TPagePaginatedResponse<IProjetoDTO>;
+
 const LIST_WHERE_KEYS = ["status", "categoria_id", "estado_id", "orderBy"] as const;
 
 export interface IProjetoModel {
@@ -23,7 +26,7 @@ export interface IProjetoModel {
 	update(id: string, dto: TUpdateModelDTO): Promise<IProjetoDTO>;
 	delete(id: string): Promise<IProjetoDTO>;
 	get(id: string): Promise<IProjetoDTO>;
-	list(where?: TProjetoListWhere, orderBy?: TListOrderBy): Promise<IProjetoDTO[]>;
+	list(where?: TProjetoListWhere, pagination?: TPagePagination, orderBy?: TListOrderBy): Promise<TListModelResponse>;
 }
 
 export class ProjetoModel implements IProjetoModel {
@@ -32,6 +35,7 @@ export class ProjetoModel implements IProjetoModel {
 	protected dto = ProjetoDTO;
 
 	private DEFAULT_ORDERING: TListOrderBy = "updated_at__asc";
+	private paginationHandler = new PagePaginator();
 	private get db(): Knex.QueryBuilder {
 		return this.connection.table(this.table);
 	}
@@ -62,11 +66,26 @@ export class ProjetoModel implements IProjetoModel {
 		});
 	}
 
-	async list(where?: TProjetoListWhere, orderBy: TListOrderBy = this.DEFAULT_ORDERING): Promise<ProjetoDTO[]> {
+	async list(
+		where?: TProjetoListWhere,
+		pagination: TPagePagination = { page: 1, perPage: 5 },
+		orderBy: TListOrderBy = this.DEFAULT_ORDERING,
+	): Promise<TListModelResponse> {
 		const { column, sort } = formatOrderBy<TListOrderBy>(orderBy);
-		const query = this.db.select<IProjetoDTO[]>("*");
-		const rows = await this.applyFilters(query, where).orderBy(column, sort);
-		return rows.map((row) => new this.dto(row));
+		let query = this.db.select<IProjetoDTO[]>("*");
+		query = this.applyFilters(query, where).orderBy(column, sort);
+		const { data, count, page, perPage, totalPages } = await this.paginationHandler.execute<IProjetoDTO>(
+			query,
+			pagination.page,
+			pagination.perPage,
+		);
+		return {
+			data: data.map((projeto) => new this.dto(projeto)),
+			count,
+			page,
+			perPage,
+			totalPages,
+		};
 	}
 
 	async update(id: string, dto: TUpdateModelDTO): Promise<ProjetoDTO> {
