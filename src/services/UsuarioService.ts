@@ -107,7 +107,6 @@ export class UsuarioService
 	private async getProfessor(usuario: UsuarioDTO): Promise<UsuarioProfessorDTO> {
 		const professor = await this.professorService.getByUserId(String(usuario.id));
 		const categorias = await this.professorCategoriaService.list(String(professor.id));
-		console.log(categorias);
 		return new this.dtoUsuarioProfessor({ ...usuario, categorias });
 	}
 }
