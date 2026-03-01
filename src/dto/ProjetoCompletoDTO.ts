@@ -1,6 +1,12 @@
 import type { IProjetoDTO, TProjetoStatus, TProjetoStatusLabel } from "./ProjetoDTO.js";
 import type { TUsuarioProjetoRelacao, TUsuarioProjetoRelacaoLabel } from "./UsuarioProjetoDTO.js";
 
+export type TUsuarioProjetoRelacaoAluno = Extract<TUsuarioProjetoRelacao, "bolsista" | "voluntario">;
+export type TUsuarioProjetoRelacaoLabelAluno = Extract<TUsuarioProjetoRelacaoLabel, "Bolsista" | "Voluntário">;
+
+export type TUsuarioProjetoRelacaoProfessor = Exclude<TUsuarioProjetoRelacao, "bolsista" | "voluntario">;
+export type TUsuarioProjetoRelacaoLabelProfessor = Exclude<TUsuarioProjetoRelacaoLabel, "Bolsista" | "Voluntário">;
+
 export interface IProjetoCategoria {
 	id: string;
 	nome: string;
@@ -21,8 +27,8 @@ export interface IProjetoMembroAluno {
 	tipo: "aluno";
 	nome: string;
 	relacao: {
-		value: Extract<TUsuarioProjetoRelacao, "bolsista" | "voluntario">;
-		label: Extract<TUsuarioProjetoRelacaoLabel, "Bolsista" | "Voluntário">;
+		value: TUsuarioProjetoRelacaoAluno;
+		label: TUsuarioProjetoRelacaoLabelAluno;
 	};
 }
 
@@ -31,8 +37,8 @@ export interface IProjetoMembroProfessor {
 	nome: string;
 	tipo: "professor";
 	relacao: {
-		value: Exclude<TUsuarioProjetoRelacao, "bolsista" | "voluntario">;
-		label: Exclude<TUsuarioProjetoRelacaoLabel, "Bolsista" | "Voluntário">;
+		value: TUsuarioProjetoRelacaoProfessor;
+		label: TUsuarioProjetoRelacaoLabelProfessor;
 	};
 }
 
