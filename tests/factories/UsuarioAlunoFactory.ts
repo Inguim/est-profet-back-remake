@@ -11,8 +11,7 @@ export class UsuarioAlunoFactory extends UsuarioFactory {
 	private curso_id: string;
 
 	private constructor() {
-		super();
-		this.tipo = "aluno";
+		super("aluno");
 		this.serie_id = uuidV4();
 		this.curso_id = uuidV4();
 	}

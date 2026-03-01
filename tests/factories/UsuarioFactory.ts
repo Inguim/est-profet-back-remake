@@ -25,10 +25,10 @@ export abstract class UsuarioFactory {
 	protected created_at: Date;
 	protected updated_at: Date;
 
-	protected constructor() {
+	protected constructor(tipo: TUsuarioTipo = "professor") {
 		this.nome = f.person.firstName();
+		this.tipo = tipo;
 		this.email = this.nome.toLowerCase() + this.generateUniqueEmail();
-		this.tipo = "professor";
 		this.status = "analise";
 		this.admin = false;
 		this.password = f.internet.password();
@@ -39,7 +39,7 @@ export abstract class UsuarioFactory {
 	private generateUniqueEmail() {
 		const sequence = String(UsuarioFactory.sequence++);
 		const uniqueIdentifierEmail = `${sequence}.${generateUniqueValue()}`;
-		return `email.professor${uniqueIdentifierEmail}@test.com`;
+		return `email.${this.tipo}${uniqueIdentifierEmail}@test.com`;
 	}
 
 	withNome(nome: string) {
