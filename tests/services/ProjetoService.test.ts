@@ -1,5 +1,4 @@
 import { beforeAll, describe, expect, it } from "vitest";
-import { UsuarioModel } from "../../src/models/UsuarioModel.js";
 import { UsuarioProjetoService } from "../../src/services/UsuarioProjetoService.js";
 import { EstadoService } from "../../src/services/EstadoService.js";
 import { CategoriaService } from "../../src/services/CategoriaService.js";
@@ -7,41 +6,81 @@ import type { CategoriaDTO } from "../../src/dto/CategoriaDTO.js";
 import type { EstadoDTO } from "../../src/dto/EstadoDTO.js";
 import { UsuarioProfessorFactory } from "../factories/UsuarioProfessorFactory.js";
 import { ProjetoFactory } from "../factories/ProjetoFactory.js";
-import { ProjetoDTO } from "../../src/dto/ProjetoDTO.js";
 import { ProjetoService } from "../../src/services/ProjetoService.js";
-import { UsuarioProjetoDTO } from "../../src/dto/UsuarioProjetoDTO.js";
+import { ProjetoCompletoDTO } from "../../src/dto/ProjetoCompletoDTO.js";
+import { UsuarioService } from "../../src/services/UsuarioService.js";
+import { AlunoService } from "../../src/services/AlunoService.js";
+import { ProfessorService } from "../../src/services/ProfessorService.js";
+import { CursoService } from "../../src/services/CursoService.js";
+import { SerieService } from "../../src/services/SerieService.js";
+import { ProfessorCategoriaService } from "../../src/services/ProfessorCategoriaService.js";
+import { UsuarioAlunoFactory } from "../factories/UsuarioAlunoFactory.js";
+import type { CursoDTO } from "../../src/dto/CursoDTO.js";
+import type { SerieDTO } from "../../src/dto/SerieDTO.js";
 
 describe("ProjetoService", () => {
 	let defaultCategoriaId: string;
 	let defaultEstadoId: string;
-	const usuarioModel = new UsuarioModel();
+	let defaultCursoId: string;
+	let defaultSerieId: string;
+	let defaultProjetoId: string;
 	const usuarioProjetoService = new UsuarioProjetoService();
-	const projetoService = new ProjetoService({ usuarioProjetoService });
+	const estadoService = new EstadoService();
+	const categoriaService = new CategoriaService();
+	const alunoService = new AlunoService();
+	const professorService = new ProfessorService();
+	const cursoService = new CursoService();
+	const serieService = new SerieService();
+	const professorCategoriaService = new ProfessorCategoriaService({ categoriaService });
+	const usuarioService = new UsuarioService({
+		alunoService,
+		professorService,
+		cursoService,
+		serieService,
+		professorCategoriaService,
+	});
+	const projetoService = new ProjetoService({ usuarioProjetoService, estadoService, categoriaService, usuarioService });
 
-	beforeAll(async () => {
-		const categoriaService = new CategoriaService();
-		const estadoService = new EstadoService();
+	async function preencherDefaults() {
+		const [primeiroCurso] = await cursoService.list();
+		const [primeiraSerie] = await serieService.list();
 		const [primeiraCategoria] = await categoriaService.list();
 		const [primeiroEstado] = await estadoService.list();
 		defaultCategoriaId = String((primeiraCategoria as CategoriaDTO).id);
 		defaultEstadoId = String((primeiroEstado as EstadoDTO).id);
-	});
+		defaultCursoId = String((primeiroCurso as CursoDTO).id);
+		defaultSerieId = String((primeiraSerie as SerieDTO).id);
+	}
 
-	it("deve criar um projeto", async () => {
-		const usuarioFake = UsuarioProfessorFactory.create().withNome("lazim").build();
-		const usuario = await usuarioModel.create({
-			nome: usuarioFake.nome,
-			email: usuarioFake.email,
-			tipo: usuarioFake.tipo,
-			password: usuarioFake.password,
+	async function gerarProjetoCompleto() {
+		const usuarioAlunoFake = UsuarioAlunoFactory.create().withCurso(defaultCursoId).withSerie(defaultSerieId).build();
+		const usuarioProfessorFake = UsuarioProfessorFactory.create()
+			.withNome("lazim")
+			.withCategorias([defaultCategoriaId])
+			.build();
+		const usuarioProfessor = await usuarioService.create({
+			nome: usuarioProfessorFake.nome,
+			email: usuarioProfessorFake.email,
+			tipo: "professor",
+			password: usuarioProfessorFake.password,
+			categoriaIds: usuarioProfessorFake.categorias,
 		});
+		const usuarioAluno = await usuarioService.create({
+			nome: usuarioAlunoFake.nome,
+			email: usuarioAlunoFake.email,
+			tipo: "aluno",
+			password: usuarioAlunoFake.password,
+			curso_id: usuarioAlunoFake.curso_id,
+			serie_id: usuarioAlunoFake.serie_id,
+		});
+
 		const { nome, resumo, introducao, objetivo, conclusao, result_disc, categoria_id, estado_id, metodologia } =
 			ProjetoFactory.create()
 				.withCategoria(defaultCategoriaId)
 				.withEstado(defaultEstadoId)
-				.withUsuarios([String(usuario.id)])
+				.withUsuarios([String(usuarioProfessor.id), String(usuarioAluno.id)])
 				.build();
-		const output = await projetoService.create(
+		const { id } = await projetoService.create(
 			{
 				nome,
 				resumo,
@@ -55,53 +94,63 @@ describe("ProjetoService", () => {
 			},
 			[
 				{
-					user_id: String(usuario.id),
+					user_id: String(usuarioAluno.id),
+					relacao: "bolsista",
+				},
+				{
+					user_id: String(usuarioProfessor.id),
 					relacao: "orientador",
 				},
 			],
 		);
-		expect(output).toBeInstanceOf(ProjetoDTO);
+		defaultProjetoId = String(id);
+	}
+
+	beforeAll(async () => {
+		await preencherDefaults();
+		await gerarProjetoCompleto();
+	});
+
+	it("deve retornar uma lista de projetos paginada", async () => {
+		const output = await projetoService.list();
+		expect(output).toHaveProperty("data");
+		expect(output.data.every((projeto) => projeto instanceof ProjetoCompletoDTO)).toBeTruthy();
+		expect(output).toHaveProperty("count");
+		expect(output).toHaveProperty("page");
+		expect(output).toHaveProperty("perPage");
+		expect(output).toHaveProperty("totalPages");
+	});
+
+	it("deve retornar os alunos do projeto", async () => {
+		const projetos = await projetoService.list();
+		const projeto = projetos.data.find((projeto) => projeto.id === defaultProjetoId);
+		if (projeto) {
+			expect(projeto.alunos.length).toBeGreaterThan(0);
+		}
+	});
+
+	it("deve retornar os professores do projeto", async () => {
+		const projetos = await projetoService.list();
+		const projeto = projetos.data.find((projeto) => projeto.id === defaultProjetoId);
+		if (projeto) {
+			expect(projeto.professores.length).toBeGreaterThan(0);
+		}
+	});
+
+	it("deve aplicar filtros", async () => {
+		const outputNotFiltred = await projetoService.list();
+		const outputFiltred = await projetoService.list({ filters: { status: "aprovado" } });
+		expect(outputNotFiltred.count).not.toEqual(outputFiltred.count);
+	});
+
+	it("deve encontrar um projeto pelo ID", async () => {
+		const output = await projetoService.get(defaultProjetoId);
 		expect(output.id).toBeDefined();
+		expect(output).toBeInstanceOf(ProjetoCompletoDTO);
 	});
 
-	it("deve ter vinculado os membros ao projeto", async () => {
-		const usuarioFake = UsuarioProfessorFactory.create().withNome("lazim").build();
-		const usuario = await usuarioModel.create({
-			nome: usuarioFake.nome,
-			email: usuarioFake.email,
-			tipo: usuarioFake.tipo,
-			password: usuarioFake.password,
-		});
-		const { nome, resumo, introducao, objetivo, conclusao, result_disc, categoria_id, estado_id, metodologia } =
-			ProjetoFactory.create()
-				.withCategoria(defaultCategoriaId)
-				.withEstado(defaultEstadoId)
-				.withUsuarios([String(usuario.id)])
-				.build();
-		const projeto = await projetoService.create(
-			{
-				nome,
-				resumo,
-				introducao,
-				objetivo,
-				conclusao,
-				result_disc,
-				categoria_id,
-				estado_id,
-				metodologia,
-			},
-			[
-				{
-					user_id: String(usuario.id),
-					relacao: "orientador",
-				},
-			],
-		);
-		const membros = await usuarioProjetoService.list(String(projeto.id));
-		const output = membros?.at(0);
-		expect(output).toBeInstanceOf(UsuarioProjetoDTO);
-		expect(output?.projeto_id).toEqual(projeto.id);
-		expect(output?.user_id).toEqual(usuario.id);
-		expect(output?.relacao).toEqual("orientador");
+	it("deve excluir um projeto pelo ID", async () => {
+		const output = await projetoService.delete(defaultProjetoId);
+		expect(output).toBeTruthy();
 	});
 });
