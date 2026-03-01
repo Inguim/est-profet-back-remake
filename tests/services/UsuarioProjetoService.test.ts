@@ -1,18 +1,36 @@
 import { beforeAll, describe, expect, it } from "vitest";
-import { ProjetoModel, UsuarioModel } from "../../src/models/index.js";
+import { ProjetoModel } from "../../src/models/index.js";
 import { CategoriaDTO, EstadoDTO, UsuarioProjetoDTO } from "../../src/dto/index.js";
 import { UsuarioProfessorFactory } from "../factories/UsuarioProfessorFactory.js";
 import { CategoriaService } from "../../src/services/CategoriaService.js";
 import { EstadoService } from "../../src/services/EstadoService.js";
 import { ProjetoFactory } from "../factories/ProjetoFactory.js";
 import { UsuarioProjetoService } from "../../src/services/UsuarioProjetoService.js";
+import { UsuarioService } from "../../src/services/UsuarioService.js";
+import { AlunoService } from "../../src/services/AlunoService.js";
+import { ProfessorService } from "../../src/services/ProfessorService.js";
+import { CursoService } from "../../src/services/CursoService.js";
+import { SerieService } from "../../src/services/SerieService.js";
+import { ProfessorCategoriaService } from "../../src/services/ProfessorCategoriaService.js";
 
 describe("UsuarioProjetoService", () => {
 	let defaultCategoriaId: string;
 	let defaultEstadoId: string;
-	const usuarioModel = new UsuarioModel();
-	const projetoModel = new ProjetoModel();
 	const usuarioProjetoService = new UsuarioProjetoService();
+	const categoriaService = new CategoriaService();
+	const alunoService = new AlunoService();
+	const professorService = new ProfessorService();
+	const cursoService = new CursoService();
+	const serieService = new SerieService();
+	const professorCategoriaService = new ProfessorCategoriaService({ categoriaService });
+	const usuarioService = new UsuarioService({
+		alunoService,
+		professorService,
+		cursoService,
+		serieService,
+		professorCategoriaService,
+	});
+	const projetoModel = new ProjetoModel();
 
 	beforeAll(async () => {
 		const categoriaService = new CategoriaService();
@@ -24,12 +42,13 @@ describe("UsuarioProjetoService", () => {
 	});
 
 	it("deve vincular um usuário a um projeto", async () => {
-		const usuarioFake = UsuarioProfessorFactory.create().build();
-		const usuario = await usuarioModel.create({
+		const usuarioFake = UsuarioProfessorFactory.create().withCategorias([defaultCategoriaId]).build();
+		const usuario = await usuarioService.create({
 			nome: usuarioFake.nome,
 			email: usuarioFake.email,
-			tipo: usuarioFake.tipo,
+			tipo: "professor",
 			password: usuarioFake.password,
+			categoriaIds: usuarioFake.categorias,
 		});
 		const projetoFake = ProjetoFactory.create()
 			.withCategoria(defaultCategoriaId)
@@ -58,12 +77,13 @@ describe("UsuarioProjetoService", () => {
 	});
 
 	it("deve retornar os usuários de um projeto", async () => {
-		const usuarioFake = UsuarioProfessorFactory.create().build();
-		const usuario = await usuarioModel.create({
+		const usuarioFake = UsuarioProfessorFactory.create().withCategorias([defaultCategoriaId]).build();
+		const usuario = await usuarioService.create({
 			nome: usuarioFake.nome,
 			email: usuarioFake.email,
-			tipo: usuarioFake.tipo,
+			tipo: "professor",
 			password: usuarioFake.password,
+			categoriaIds: usuarioFake.categorias,
 		});
 		const projetoFake = ProjetoFactory.create()
 			.withCategoria(defaultCategoriaId)
