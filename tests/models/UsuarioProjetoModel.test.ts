@@ -58,6 +58,7 @@ describe("UsuarioProjetoModel", () => {
 		});
 		expect(output).toBeInstanceOf(UsuarioProjetoDTO);
 		expect(output.id).toBeDefined();
+		await projetoModel.delete(String(projeto.id));
 	});
 
 	it("deve retornar os usuarios de um projeto", async () => {
@@ -88,5 +89,6 @@ describe("UsuarioProjetoModel", () => {
 		const output = await usuarioProjetoModel.list(String(projeto.id));
 		expect(output).toBeInstanceOf(Array);
 		expect(output.every((usuario) => usuario.projeto_id === String(projeto.id))).toBeTruthy();
+		await projetoModel.delete(String(projeto.id));
 	});
 });

@@ -37,6 +37,7 @@ describe("ProjetoModel", () => {
 			estado_id,
 		});
 		expect(output).toBeInstanceOf(ProjetoDTO);
+		await projetoModel.delete(String(output.id));
 	});
 
 	it("deve encontrar um projeto pelo ID", async () => {
@@ -56,6 +57,7 @@ describe("ProjetoModel", () => {
 		});
 		const output = await projetoModel.get(String(input.id));
 		expect(output.id).toEqual(input.id);
+		await projetoModel.delete(String(output.id));
 	});
 
 	it("deve atualizar o status de um projeto", async () => {
@@ -79,6 +81,7 @@ describe("ProjetoModel", () => {
 		});
 		const output = await projetoModel.update(String(projeto.id), { status: "aprovado" });
 		expect(output.status).toEqual("aprovado");
+		await projetoModel.delete(String(output.id));
 	});
 
 	it("deve excluir um projeto pelo ID", async () => {
@@ -103,7 +106,7 @@ describe("ProjetoModel", () => {
 	it("deve retornar uma lista paginada", async () => {
 		const { nome, resumo, introducao, objetivo, metodologia, result_disc, conclusao, status, categoria_id, estado_id } =
 			ProjetoFactory.create().withCategoria(defaultCategoriaId).withEstado(defaultEstadoId).build();
-		await projetoModel.create({
+		const projeto = await projetoModel.create({
 			nome,
 			resumo,
 			introducao,
@@ -121,12 +124,13 @@ describe("ProjetoModel", () => {
 		expect(output).toHaveProperty("perPage");
 		expect(output).toHaveProperty("count");
 		expect(output).toHaveProperty("totalPages");
+		await projetoModel.delete(String(projeto.id));
 	});
 
 	it("deve retornar uma lista de ProjetoDTO", async () => {
 		const { nome, resumo, introducao, objetivo, metodologia, result_disc, conclusao, status, categoria_id, estado_id } =
 			ProjetoFactory.create().withCategoria(defaultCategoriaId).withEstado(defaultEstadoId).build();
-		await projetoModel.create({
+		const projeto = await projetoModel.create({
 			nome,
 			resumo,
 			introducao,
@@ -141,12 +145,13 @@ describe("ProjetoModel", () => {
 		const output = await projetoModel.list();
 		expect(output.data).instanceOf(Array);
 		expect(output.data.every((projeto) => projeto instanceof ProjetoDTO)).toBeTruthy();
+		await projetoModel.delete(String(projeto.id));
 	});
 
 	it.each(PROJETO_STATUS_VALUES)("deve retornar apenas projetos com o STATUS: %s", async (status) => {
 		const { nome, resumo, introducao, objetivo, metodologia, result_disc, conclusao, categoria_id, estado_id } =
 			ProjetoFactory.create().withStatus(status).withCategoria(defaultCategoriaId).withEstado(defaultEstadoId).build();
-		await projetoModel.create({
+		const projeto = await projetoModel.create({
 			nome,
 			resumo,
 			introducao,
@@ -160,12 +165,13 @@ describe("ProjetoModel", () => {
 		});
 		const output = await projetoModel.list({ status });
 		expect(output.data.every((projeto) => projeto.status === status)).toBeTruthy();
+		await projetoModel.delete(String(projeto.id));
 	});
 
 	it("deve retornar apenas projetos com a mesma CATEGORIA_ID", async () => {
 		const { nome, resumo, introducao, objetivo, metodologia, result_disc, conclusao, status, categoria_id, estado_id } =
 			ProjetoFactory.create().withCategoria(defaultRandomCategoriaId).withEstado(defaultEstadoId).build();
-		await projetoModel.create({
+		const projeto = await projetoModel.create({
 			nome,
 			resumo,
 			introducao,
@@ -179,12 +185,13 @@ describe("ProjetoModel", () => {
 		});
 		const output = await projetoModel.list({ categoria_id: defaultRandomCategoriaId });
 		expect(output.data.every((projeto) => projeto.categoria_id === defaultRandomCategoriaId)).toBeTruthy();
+		await projetoModel.delete(String(projeto.id));
 	});
 
 	it("deve retornar apenas projetos com o mesmo ESTADO_ID", async () => {
 		const { nome, resumo, introducao, objetivo, metodologia, result_disc, conclusao, status, categoria_id, estado_id } =
 			ProjetoFactory.create().withCategoria(defaultCategoriaId).withEstado(defaultRandomEstadoId).build();
-		await projetoModel.create({
+		const projeto = await projetoModel.create({
 			nome,
 			resumo,
 			introducao,
@@ -198,5 +205,6 @@ describe("ProjetoModel", () => {
 		});
 		const output = await projetoModel.list({ estado_id: defaultRandomEstadoId });
 		expect(output.data.every((projeto) => projeto.estado_id === defaultRandomEstadoId)).toBeTruthy();
+		await projetoModel.delete(String(projeto.id));
 	});
 });
