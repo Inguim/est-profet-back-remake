@@ -6,7 +6,7 @@ import { formatOrderBy } from "../utils/helpers/formatOrderBy.js";
 import { NotFoundError } from "../errors/NotFoundError.js";
 import { PagePaginator, type TPagePagination, type TPagePaginatedResponse } from "../utils/helpers/pagePaginator.js";
 
-export type TListOrderBy = "updated_at__asc" | "created_at__asc" | "created_at__desc";
+export type TProjetoListOrderBy = "updated_at__asc" | "created_at__asc" | "created_at__desc";
 
 export type TProjetoListWhere = {
 	status?: TProjetoStatus;
@@ -26,7 +26,11 @@ export interface IProjetoModel {
 	update(id: string, dto: TUpdateModelDTO): Promise<IProjetoDTO>;
 	delete(id: string): Promise<IProjetoDTO>;
 	get(id: string): Promise<IProjetoDTO>;
-	list(where?: TProjetoListWhere, pagination?: TPagePagination, orderBy?: TListOrderBy): Promise<TListModelResponse>;
+	list(
+		where?: TProjetoListWhere,
+		pagination?: TPagePagination,
+		orderBy?: TProjetoListOrderBy,
+	): Promise<TListModelResponse>;
 }
 
 export class ProjetoModel implements IProjetoModel {
@@ -34,7 +38,7 @@ export class ProjetoModel implements IProjetoModel {
 	protected tableTag = "Projeto";
 	protected dto = ProjetoDTO;
 
-	private DEFAULT_ORDERING: TListOrderBy = "updated_at__asc";
+	private DEFAULT_ORDERING: TProjetoListOrderBy = "updated_at__asc";
 	private paginationHandler = new PagePaginator();
 	private get db(): Knex.QueryBuilder {
 		return this.connection.table(this.table);
@@ -69,9 +73,9 @@ export class ProjetoModel implements IProjetoModel {
 	async list(
 		where?: TProjetoListWhere,
 		pagination: TPagePagination = { page: 1, perPage: 5 },
-		orderBy: TListOrderBy = this.DEFAULT_ORDERING,
+		orderBy: TProjetoListOrderBy = this.DEFAULT_ORDERING,
 	): Promise<TListModelResponse> {
-		const { column, sort } = formatOrderBy<TListOrderBy>(orderBy);
+		const { column, sort } = formatOrderBy<TProjetoListOrderBy>(orderBy);
 		let query = this.db.select<IProjetoDTO[]>("*");
 		query = this.applyFilters(query, where).orderBy(column, sort);
 		const { data, count, page, perPage, totalPages } = await this.paginationHandler.execute<IProjetoDTO>(
