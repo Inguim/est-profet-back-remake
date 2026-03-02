@@ -149,6 +149,11 @@ describe("ProjetoService", () => {
 		expect(output).toBeInstanceOf(ProjetoCompletoDTO);
 	});
 
+	it("deve alterar o STATUS de um projeto pelo ID", async () => {
+		const output = await projetoService.updateStatus(defaultProjetoId, "aprovado");
+		expect(output.status).toEqual("aprovado");
+	});
+
 	it("deve excluir um projeto pelo ID", async () => {
 		const output = await projetoService.delete(defaultProjetoId);
 		expect(output).toBeTruthy();

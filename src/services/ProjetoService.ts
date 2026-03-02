@@ -1,5 +1,5 @@
 import type { Knex } from "knex";
-import { ProjetoDTO, type IProjetoDTO } from "../dto/ProjetoDTO.js";
+import { ProjetoDTO, type IProjetoDTO, type TProjetoStatus } from "../dto/ProjetoDTO.js";
 import type { TUsuarioProjetoRelacao, UsuarioProjetoDTO } from "../dto/UsuarioProjetoDTO.js";
 import type { IUsuarioProjetoService } from "./UsuarioProjetoService.js";
 import dbConnection from "../database/dbConfig.js";
@@ -51,9 +51,10 @@ type TProjetosMembros = {
 
 export interface IProjetoService {
 	create(dto: TCreateDTO, membrosDTO: TCreateProjetoMembro[]): Promise<IProjetoDTO>;
-	list(filter?: TListProjetoDTO): Promise<TPagePaginatedResponse<IProjetoCompletoDTO>>;
+	updateStatus(id: string, status: TProjetoStatus): Promise<IProjetoDTO>;
 	get(id: string): Promise<IProjetoCompletoDTO>;
 	delete(id: string): Promise<boolean>;
+	list(filter?: TListProjetoDTO): Promise<TPagePaginatedResponse<IProjetoCompletoDTO>>;
 }
 
 export class ProjetoService implements IProjetoService {
@@ -99,6 +100,25 @@ export class ProjetoService implements IProjetoService {
 		});
 	}
 
+	async updateStatus(id: string, status: TProjetoStatus): Promise<ProjetoDTO> {
+		const model = new this.model();
+		const projeto = await model.update(id, { status });
+		return projeto;
+	}
+
+	async get(id: string): Promise<ProjetoCompletoDTO> {
+		const model = new this.model();
+		const projeto = await model.get(id);
+		const projetoCompleto = await this.getProjetoCompleto(projeto);
+		return projetoCompleto;
+	}
+
+	async delete(id: string): Promise<boolean> {
+		const model = new this.model();
+		const projeto = await model.delete(id);
+		return !projeto.id;
+	}
+
 	async list({
 		filters,
 		pagination = { page: 1, perPage: 5 },
@@ -119,19 +139,6 @@ export class ProjetoService implements IProjetoService {
 			perPage,
 			totalPages,
 		};
-	}
-
-	async get(id: string): Promise<ProjetoCompletoDTO> {
-		const model = new this.model();
-		const projeto = await model.get(id);
-		const projetoCompleto = await this.getProjetoCompleto(projeto);
-		return projetoCompleto;
-	}
-
-	async delete(id: string): Promise<boolean> {
-		const model = new this.model();
-		const projeto = await model.delete(id);
-		return !projeto.id;
 	}
 
 	private async getProjetoCompleto(projeto: ProjetoDTO): Promise<ProjetoCompletoDTO> {
