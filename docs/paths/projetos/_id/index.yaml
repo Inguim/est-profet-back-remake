@@ -65,3 +65,24 @@ patch:
       $ref: "../../../components/responses/401_usuario_sem_autorizacao.yaml"
     "404":
       $ref: "../../../components/responses/404_not_found.yaml"
+
+delete:
+  tags: [Projetos]
+  summary: Deleta um Projeto
+  security:
+    - BearerAuth: []
+  parameters:
+    - name: id
+      in: path
+      required: true
+      description: ID do projeto
+      schema:
+        type: string
+        example: "123"
+  responses:
+    "204":
+      $ref: "../../../components/responses/204_no_content.yaml"
+    "401":
+      $ref: "../../../components/responses/401_usuario_sem_autorizacao.yaml"
+    "404":
+      $ref: "../../../components/responses/404_not_found.yaml"
