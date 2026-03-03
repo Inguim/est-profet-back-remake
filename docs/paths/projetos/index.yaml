@@ -26,3 +26,62 @@ post:
       $ref: "../../components/responses/400_validacao.yaml"
     "401":
       $ref: "../../components/responses/401_usuario_sem_autorizacao.yaml"
+
+get:
+  tags: [Projetos]
+  summary: Retorna uma lista de Projetos
+  parameters:
+    - name: status
+      in: query
+      description: Status do projeto
+      schema:
+        type: string
+        enum:
+          - analise
+          - alteracao
+          - aprovado
+    - name: categoria_id
+      in: query
+      description: Categoria do projeto
+      schema:
+        type: string
+    - name: estado_id
+      in: query
+      description: Estado do projeto
+      schema:
+        type: string
+    - name: page
+      in: query
+      description: Página
+      schema:
+        type: number
+        example: 1
+    - name: perPage
+      in: query
+      description: Quantidade por página
+      schema:
+        type: number
+        example: 5
+    - name: ordering
+      in: query
+      description: Ordenado por
+      schema:
+        type: string
+        enum:
+          - updated_at__asc
+          - created_at__asc
+          - created_at__desc
+        example: updated_at__asc
+  responses:
+    "200":
+      description: "Retorna uma lista de Projetos"
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Projetos buscados com sucesso
+              data:
+                $ref: "../../components/schemas/projeto-completo/collection.yaml"
