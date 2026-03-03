@@ -1,25 +1,22 @@
 import express, { type RequestHandler } from "express";
 import request from "supertest";
-import {
-	errorHandlingMiddleware,
-	ValidateUsuarioMiddleware,
-	type TCreateDTO,
-	type TUpdateDTO,
-} from "../../src/middlewares/index.js";
+import { errorHandlingMiddleware, ValidateProjetoMiddleware } from "../../src/middlewares/index.js";
 import { beforeAll, describe, expect, it } from "vitest";
 import { faker as f } from "@faker-js/faker";
 import { STATUS_CODE } from "../../src/utils/constansts/status-code.js";
 import { v4 as uuidV4 } from "uuid";
-import { UsuarioAlunoFactory } from "../factories/UsuarioAlunoFactory.js";
+import { ProjetoFactory } from "../factories/ProjetoFactory.js";
+import type { TRequestCreateProjetoDTO, TRequestUpdateProjetoDTO } from "../../src/controllers/ProjetoController.js";
+import type { TCreateProjetoMembro } from "../../src/services/ProjetoService.js";
 
-const createMiddleware = ValidateUsuarioMiddleware.create;
-const updateMiddleware = ValidateUsuarioMiddleware.update;
+const createMiddleware = ValidateProjetoMiddleware.create;
+const updateMiddleware = ValidateProjetoMiddleware.update;
 
 function createTestApp(middleware: RequestHandler) {
 	const app = express();
 	app.use(express.json());
-	app.post("/usuario", middleware, (req, res) => res.status(STATUS_CODE.CREATED).json({ ok: true }));
-	app.patch("/usuario/:id", middleware, (req, res) => res.status(STATUS_CODE.OK).json({ ok: true }));
+	app.post("/projeto", middleware, (req, res) => res.status(STATUS_CODE.CREATED).json({ ok: true }));
+	app.patch("/projeto/:id", middleware, (req, res) => res.status(STATUS_CODE.OK).json({ ok: true }));
 	app.use(errorHandlingMiddleware);
 	return app;
 }
@@ -30,7 +27,7 @@ describe("ValidateUsuarioMiddleware", () => {
 	describe("Create", () => {
 		const makeRequest = <T>(data: T) => {
 			return request(app)
-				.post("/usuario")
+				.post("/projeto")
 				.set("Content-Type", "application/json")
 				.send(data as object);
 		};
@@ -40,15 +37,35 @@ describe("ValidateUsuarioMiddleware", () => {
 		});
 
 		it("deve retornar 201 para dados válidos", async () => {
-			const input = UsuarioAlunoFactory.create().build();
-			const output = await makeRequest<TCreateDTO>({ ...input, confirm_password: input.password, tipo: "aluno" });
+			const { nome, resumo, introducao, objetivo, metodologia, result_disc, conclusao, categoria_id, estado_id } =
+				ProjetoFactory.create().build();
+			const membroInput: TCreateProjetoMembro = { user_id: f.string.uuid(), relacao: "orientador" };
+			const output = await makeRequest<TRequestCreateProjetoDTO>({
+				projeto: { nome, resumo, introducao, objetivo, metodologia, result_disc, conclusao, categoria_id, estado_id },
+				membros: [membroInput],
+			});
 			expect(output.status).toBe(STATUS_CODE.CREATED);
 			expect(output.body.ok).toBe(true);
 		});
 
 		it("deve retornar 400 para dados inválidos", async () => {
-			const input = UsuarioAlunoFactory.create().build();
-			const output = await makeRequest<TCreateDTO>({ ...input, confirm_password: "senha diferente", tipo: "aluno" });
+			const { resumo, introducao, objetivo, metodologia, result_disc, conclusao, categoria_id, estado_id } =
+				ProjetoFactory.create().build();
+			const membroInput: TCreateProjetoMembro = { user_id: f.string.uuid(), relacao: "bolsista" };
+			const output = await makeRequest<TRequestCreateProjetoDTO>({
+				projeto: {
+					nome: "1",
+					resumo,
+					introducao,
+					objetivo,
+					metodologia,
+					result_disc,
+					conclusao,
+					categoria_id,
+					estado_id,
+				},
+				membros: [membroInput],
+			});
 			expect(output.body).toMatchObject({
 				message: expect.any(String),
 				status: STATUS_CODE.BAD_REQUEST,
@@ -60,7 +77,7 @@ describe("ValidateUsuarioMiddleware", () => {
 	describe("Update", () => {
 		const makeRequest = <T>(id: string, data: T) => {
 			return request(app)
-				.patch(`/usuario/${id}`)
+				.patch(`/projeto/${id}`)
 				.set("Content-Type", "application/json")
 				.send(data as object);
 		};
@@ -71,8 +88,8 @@ describe("ValidateUsuarioMiddleware", () => {
 
 		it("deve tornar 200 para dados válidos", async () => {
 			const inputId = uuidV4();
-			const input = { nome: f.person.firstName() };
-			const output = await makeRequest<TUpdateDTO>(inputId, input);
+			const { status } = ProjetoFactory.create().build();
+			const output = await makeRequest<TRequestUpdateProjetoDTO>(inputId, { status });
 			expect(output.status).toBe(STATUS_CODE.OK);
 			expect(output.body.ok).toBe(true);
 		});
