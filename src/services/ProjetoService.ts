@@ -23,7 +23,7 @@ import type { CategoriaDTO } from "../dto/CategoriaDTO.js";
 import type { EstadoDTO } from "../dto/EstadoDTO.js";
 import type { IUsuarioService } from "./UsuarioService.js";
 
-type TCreateProjetoMembro = {
+export type TCreateProjetoMembro = {
 	user_id: string;
 	relacao: TUsuarioProjetoRelacao;
 };
@@ -124,7 +124,6 @@ export class ProjetoService implements IProjetoService {
 		pagination = { page: 1, perPage: 5 },
 		ordering = "updated_at__asc",
 	}: TListProjetoDTO = {}): Promise<TPagePaginatedResponse<IProjetoCompletoDTO>> {
-		console.log(filters);
 		const model = new this.model();
 		const { data, count, page, perPage, totalPages } = await model.list(filters, pagination, ordering);
 		const projetos: ProjetoCompletoDTO[] = [];

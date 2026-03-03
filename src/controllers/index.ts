@@ -4,3 +4,4 @@ export * from "./CursoController.js";
 export * from "./SerieController.js";
 export * from "./MenuController.js";
 export * from "./EstadoController.js";
+export * from "./ProjetoController.js";
