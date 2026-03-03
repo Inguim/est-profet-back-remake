@@ -1,0 +1,12 @@
+type: object
+example:
+  status: aprovado
+required:
+  - status
+properties:
+  status:
+    type: string
+    enum:
+      - analise
+      - alteracao
+      - aprovado
