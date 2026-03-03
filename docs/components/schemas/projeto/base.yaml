@@ -1,0 +1,45 @@
+type: object
+required:
+  - nome
+  - resumo
+  - introducao
+  - objetivo
+  - metodologia
+  - result_disc
+  - conclusao
+  - categoria_id
+  - estado_id
+properties:
+  nome:
+    type: string
+    example: "Profet"
+  resumo:
+    type: string
+    example: "lorem"
+  introducao:
+    type: string
+    example: "lorem"
+  objetivo:
+    type: string
+    example: "lorem"
+  metodologia:
+    type: string
+    example: "lorem"
+  result_disc:
+    type: string
+    example: "lorem"
+  conclusao:
+    type: string
+    example: "lorem"
+  status:
+    type: string
+    enum:
+      - analise
+      - alteracao
+      - aprovado
+  categoria_id:
+    type: string
+    example: "uuid"
+  estado_id:
+    type: string
+    example: "uuid"

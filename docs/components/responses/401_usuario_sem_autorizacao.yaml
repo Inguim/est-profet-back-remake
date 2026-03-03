@@ -1,0 +1,9 @@
+description: Você não tem autorização para executar essa ação
+content:
+  application/json:
+    schema:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Você não tem autorização para executar essa ação

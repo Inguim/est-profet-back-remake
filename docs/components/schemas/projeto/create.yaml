@@ -1,0 +1,27 @@
+allOf:
+  - $ref: "./base.yaml"
+
+type: object
+required:
+  - membros
+properties:
+  membros:
+    type: array
+    items:
+      type: object
+      required:
+        - user_id
+        - relacao
+      properties:
+        user_id:
+          type: string
+          example: "uuid"
+        relacao:
+          type: string
+          enum:
+            - coordenador
+            - coorientador
+            - orientador
+            - bolsista
+            - voluntario
+          example: "bolsista"
