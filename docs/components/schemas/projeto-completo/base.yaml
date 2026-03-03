@@ -1,0 +1,134 @@
+type: object
+required:
+  - nome
+  - resumo
+  - introducao
+  - objetivo
+  - metodologia
+  - result_disc
+  - conclusao
+  - categoria
+  - estado
+  - alunos
+  - professores
+properties:
+  nome:
+    type: string
+    example: "Profet"
+  resumo:
+    type: string
+    example: "lorem"
+  introducao:
+    type: string
+    example: "lorem"
+  objetivo:
+    type: string
+    example: "lorem"
+  metodologia:
+    type: string
+    example: "lorem"
+  result_disc:
+    type: string
+    example: "lorem"
+  conclusao:
+    type: string
+    example: "lorem"
+  status:
+    type: object
+    properties:
+      value:
+        type: string
+        enum:
+          - analise
+          - alteracao
+          - aprovado
+      label:
+        type: string
+        enum:
+          - Análise
+          - Alteração
+          - Aprovado
+  categoria:
+    type: object
+    properties:
+      id:
+        type: string
+        example: "uuid"
+      nome:
+        type: string
+        example: "lorem"
+  estado:
+    type: object
+    properties:
+      id:
+        type: string
+        example: "uuid"
+      nome:
+        type: string
+        example: "lorem"
+  professores:
+    type: array
+    items:
+      type: object
+      required:
+        - id
+        - nome
+        - tipo
+        - relacao
+      properties:
+        id:
+          type: string
+          example: "uuid"
+        nome:
+          type: string
+          example: "lorem"
+        tipo:
+          type: string
+          example: "aluno"
+        relacao:
+          type: object
+          properties:
+            value:
+              type: string
+              enum:
+                - coordenador
+                - coorientador
+                - orientador
+            label:
+              type: string
+              enum:
+                - Coordenador
+                - Coorientador
+                - Orientador
+  alunos:
+    type: array
+    items:
+      type: object
+      required:
+        - id
+        - nome
+        - tipo
+        - relacao
+      properties:
+        id:
+          type: string
+          example: "uuid"
+        nome:
+          type: string
+          example: "lorem"
+        tipo:
+          type: string
+          example: "aluno"
+        relacao:
+          type: object
+          properties:
+            value:
+              type: string
+              enum:
+                - bolsista
+                - voluntario
+            label:
+              type: string
+              enum:
+                - Bolsista
+                - Voluntário

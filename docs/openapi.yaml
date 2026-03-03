@@ -19,6 +19,8 @@ paths:
     $ref: "./paths/menus/index.yaml"
   /projetos:
     $ref: "./paths/projetos/index.yaml"
+  /projetos/{id}:
+    $ref: "./paths/projetos/_id/index.yaml"
   /series:
     $ref: "./paths/series/index.yaml"
   /usuarios:
@@ -52,6 +54,8 @@ components:
       $ref: "./components/schemas/usuario/item.yaml"
     Projeto:
       $ref: "./components/schemas/projeto/item.yaml"
+    ProjetoCompleto:
+      $ref: "./components/schemas/projeto-completo/item.yaml"
     UsuarioCreate:
       type: object
       oneOf:

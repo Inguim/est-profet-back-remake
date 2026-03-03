@@ -1,0 +1,26 @@
+get:
+  tags: [Projetos]
+  summary: Busca um Projeto por ID
+  parameters:
+    - name: id
+      in: path
+      required: true
+      description: ID do Projeto
+      schema:
+        type: string
+        example: "123"
+  responses:
+    "200":
+      description: Projeto encontrado com sucesso
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Projeto encontrado com sucesso
+              data:
+                $ref: "../../../components/schemas/projeto-completo/get.yaml"
+    "404":
+      $ref: "../../../components/responses/404_not_found.yaml"
