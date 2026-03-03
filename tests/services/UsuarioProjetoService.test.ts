@@ -106,4 +106,58 @@ describe("UsuarioProjetoService", () => {
 		expect(output).toBeInstanceOf(Array);
 		expect(output.every((usuario) => usuario instanceof UsuarioProjetoDTO)).toBeTruthy();
 	});
+
+	it("deve retornar TRUE para um usuário pertencente a um projeto", async () => {
+		const usuarioFake = UsuarioProfessorFactory.create().withCategorias([defaultCategoriaId]).build();
+		const usuario = await usuarioService.create({
+			nome: usuarioFake.nome,
+			email: usuarioFake.email,
+			tipo: "professor",
+			password: usuarioFake.password,
+			categoriaIds: usuarioFake.categorias,
+		});
+		const projetoFake = ProjetoFactory.create()
+			.withCategoria(defaultCategoriaId)
+			.withEstado(defaultEstadoId)
+			.withUsuarios([String(usuario.id)])
+			.build();
+		const projeto = await projetoModel.create({
+			nome: projetoFake.nome,
+			resumo: projetoFake.resumo,
+			introducao: projetoFake.introducao,
+			objetivo: projetoFake.objetivo,
+			metodologia: projetoFake.objetivo,
+			conclusao: projetoFake.conclusao,
+			result_disc: projetoFake.conclusao,
+			categoria_id: projetoFake.categoria_id,
+			estado_id: projetoFake.estado_id,
+			status: projetoFake.status,
+		});
+		await usuarioProjetoService.create({
+			user_id: String(usuario.id),
+			projeto_id: String(projeto.id),
+			relacao: "coordenador",
+		});
+		const output = await usuarioProjetoService.pertenceAoProjeto(String(usuario.id), String(projeto.id));
+		expect(output).toBeTruthy();
+	});
+
+	it("deve retornar FALSE para um usuário não pertencente a um projeto", async () => {
+		const projetoFake = ProjetoFactory.create().withCategoria(defaultCategoriaId).withEstado(defaultEstadoId).build();
+		const [usuarioFakeId] = projetoFake.usuarios;
+		const projeto = await projetoModel.create({
+			nome: projetoFake.nome,
+			resumo: projetoFake.resumo,
+			introducao: projetoFake.introducao,
+			objetivo: projetoFake.objetivo,
+			metodologia: projetoFake.objetivo,
+			conclusao: projetoFake.conclusao,
+			result_disc: projetoFake.conclusao,
+			categoria_id: projetoFake.categoria_id,
+			estado_id: projetoFake.estado_id,
+			status: projetoFake.status,
+		});
+		const output = await usuarioProjetoService.pertenceAoProjeto(String(usuarioFakeId), String(projeto.id));
+		expect(output).toBeFalsy();
+	});
 });

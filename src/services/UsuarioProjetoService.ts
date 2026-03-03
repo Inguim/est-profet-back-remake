@@ -7,6 +7,7 @@ type TCreateDTO = Omit<IUsuarioProjetoDTO, "id" | "created_at" | "updated_at">;
 export interface IUsuarioProjetoService {
 	create(dto: TCreateDTO, transaction?: Knex): Promise<IUsuarioProjetoDTO>;
 	list(projetoId: string): Promise<IUsuarioProjetoDTO[]>;
+	pertenceAoProjeto(userId: string, projetoId: string): Promise<boolean>;
 }
 
 export class UsuarioProjetoService implements IUsuarioProjetoService {
@@ -24,5 +25,11 @@ export class UsuarioProjetoService implements IUsuarioProjetoService {
 		const model = new this.model();
 		const usuarioProjetos = await model.list(projetoId);
 		return usuarioProjetos;
+	}
+
+	async pertenceAoProjeto(userId: string, projetoId: string): Promise<boolean> {
+		const pertencentes = await this.list(projetoId);
+		const pertence = pertencentes.map((pertencente) => pertencente.user_id).includes(userId);
+		return pertence;
 	}
 }
