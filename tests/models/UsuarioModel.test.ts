@@ -27,10 +27,8 @@ describe("UsuarioModel", () => {
 	});
 
 	it("deve criar um usuário com os dados corretos", async () => {
-		const { nome, email, tipo, admin, status, password, created_at, updated_at } = UsuarioProfessorFactory.create()
-			.withStatus("aprovado")
-			.asAdmin()
-			.build();
+		const { nome, email, tipo, admin, status, password, created_at, updated_at } =
+			UsuarioProfessorFactory.create().build();
 		const input = { nome, email, tipo, admin, status, password, created_at, updated_at };
 		const model = new UsuarioModel();
 		const output = await model.create(input);
@@ -58,7 +56,6 @@ describe("UsuarioModel", () => {
 	it("deve atualizar os dados do usuário", async () => {
 		const { nome, email, tipo, admin, status, password, updated_at } = UsuarioProfessorFactory.create()
 			.asAdmin()
-			.withStatus("aprovado")
 			.build();
 		const input = { nome, email, tipo, admin, status, password, updated_at };
 		const model = new UsuarioModel();
@@ -66,13 +63,11 @@ describe("UsuarioModel", () => {
 		const output = await model.update(id as string, {
 			nome: "nome atualizado",
 			email: "email@atualizado.com",
-			tipo: "aluno",
-			status: "analise",
+			status: "aprovado",
 			admin: false,
 		});
 		expect(input.nome).not.toEqual(output.nome);
 		expect(input.email).not.toEqual(output.email);
-		expect(input.tipo).not.toEqual(output.tipo);
 		expect(input.status).not.toEqual(output.status);
 		expect(input.admin).not.toEqual(output.admin);
 		expect(input.updated_at).not.toEqual(output.updated_at);

@@ -74,7 +74,7 @@ export class UsuarioService
 		return this.connection.transaction(async (trx) => {
 			const { nome, email, password, tipo } = dto;
 			const model = new this.model(trx);
-			const usuario = await model.create({ nome, email, password, tipo });
+			const usuario = await model.create({ nome, email, password, tipo, admin: false, status: "analise" });
 			if (tipo === "aluno") {
 				const { curso_id, serie_id } = dto;
 				await this.alunoService.create({ user_id: String(usuario.id), curso_id, serie_id }, trx);

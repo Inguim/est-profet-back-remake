@@ -1,6 +1,6 @@
 import type { IBaseDTO } from "../dto/index.js";
 import {
-	BaseModel,
+	type IBaseModel,
 	type ModelConstructor,
 	type TCreateModelDTO,
 	type TFindOneModelDTO,
@@ -19,7 +19,7 @@ export type DTOConstructor<I> = new (fields?: any) => I;
 
 export abstract class BaseService<
 	IDTO extends IBaseDTO,
-	M extends BaseModel<IDTO>,
+	M extends IBaseModel,
 	TCREATE_DTO extends TCreateModelDTO<IDTO>,
 	TUPDATE_DTO extends TUpdateModelDTO<IDTO>,
 	TFINDONE_DTO extends TFindOneModelDTO<IDTO>,
