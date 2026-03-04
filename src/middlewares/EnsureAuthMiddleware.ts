@@ -2,10 +2,11 @@ import type { NextFunction, Response, Request } from "express";
 import { InvalidTokenError } from "../errors/index.js";
 import { TokenService, type ITokenPayload } from "../services/index.js";
 
-export interface IAuthRequest<P = Record<string, any>, ResBody = any, ReqBody = any> extends Request<
+export interface IAuthRequest<P = Record<string, any>, ResBody = any, ReqBody = any, ReqQuery = any> extends Request<
 	P,
 	ResBody,
-	ReqBody
+	ReqBody,
+	ReqQuery
 > {
 	usuarioId?: string;
 	usuarioAdmin?: boolean;

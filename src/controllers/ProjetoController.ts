@@ -4,6 +4,8 @@ import type { IProjetoDTO, TProjetoStatus } from "../dto/ProjetoDTO.js";
 import type { IAuthRequest } from "../middlewares/EnsureAuthMiddleware.js";
 import { STATUS_CODE } from "../utils/constansts/status-code.js";
 import { UsuarioSemAutorizacaoError } from "../errors/UsuarioSemAutorizacaoError.js";
+import type { TProjetoListOrderBy } from "../models/ProjetoModel.js";
+import type { TPagePagination } from "../utils/helpers/pagePaginator.js";
 
 export type TRequestCreateProjetoDTO = {
 	projeto: Omit<IProjetoDTO, "id" | "created_at" | "updated_at" | "status">;
@@ -14,6 +16,13 @@ export type TRequestUpdateProjetoDTO = {
 	status: TProjetoStatus;
 };
 
+export type TRequestListQueryParamsProjeto = {
+	status?: TProjetoStatus;
+	categoria_id?: string;
+	estado_id?: string;
+	ordering?: TProjetoListOrderBy;
+} & Partial<TPagePagination>;
+
 export type TRequestCreateProjeto = IAuthRequest<any, any, TRequestCreateProjetoDTO>;
 
 type TRequestGetProjeto = Request<{ id: string }>;
@@ -21,6 +30,8 @@ type TRequestGetProjeto = Request<{ id: string }>;
 export type TRequestUpdateProjeto = IAuthRequest<{ id: string }, any, TRequestUpdateProjetoDTO>;
 
 export type TRequestDeleteProjeto = IAuthRequest<{ id: string }>;
+
+export type TRequestListProjeto = Request<any, any, any, TRequestListQueryParamsProjeto>;
 
 type TControllerConstructor = {
 	projetoService: IProjetoService;
@@ -111,18 +122,41 @@ export class ProjetoController {
 		try {
 			const { id } = req.params;
 			const { usuarioId, usuarioAdmin } = req;
-			const usuarioNaoPertence = !(await this.usuarioProjetoService.pertenceAoProjeto(String(usuarioId), id));
-			if (usuarioNaoPertence || !usuarioAdmin) throw new UsuarioSemAutorizacaoError();
+			await this.validarAutorizacao(String(usuarioId), id, usuarioAdmin as boolean);
 			const foiDeletado = await this.projetoService.delete(id);
-			if (foiDeletado) res.status(STATUS_CODE.NO_CONTENT);
+			if (foiDeletado) res.status(STATUS_CODE.NO_CONTENT).send();
 			else res.status(STATUS_CODE.BAD_REQUEST).json({ message: "Erro ao deletar o projeto" });
 		} catch (error) {
 			next(error);
 		}
 	}
 
+	async list(req: TRequestListProjeto, res: Response, next: NextFunction): Promise<void> {
+		try {
+			const { ordering = "updated_at__asc", page, perPage, ...queryFilters } = req.query;
+			const pagination = { page: Number(page) || 1, perPage: Number(perPage) || 10 };
+			const filters = queryFilters || {};
+			const result = await this.projetoService.list({ pagination, filters, ordering });
+			res.status(STATUS_CODE.OK).json({
+				message: "Projetos buscados com sucesso",
+				data: {
+					results: result.data,
+					page: result.page,
+					perPage: result.perPage,
+					count: result.count,
+					totalPages: result.totalPages,
+				},
+			});
+		} catch (error) {
+			next(error);
+		}
+	}
+
 	private async validarAutorizacao(usuarioId: string, projetoId: string, usuarioAdmin: boolean) {
-		const usuarioNaoPertence = !(await this.usuarioProjetoService.pertenceAoProjeto(usuarioId, projetoId));
-		if (usuarioNaoPertence || !usuarioAdmin) throw new UsuarioSemAutorizacaoError();
+		const usuarioNaoAdmin = usuarioAdmin === false;
+		if (usuarioNaoAdmin) {
+			const usuarioNaoPertence = (await this.usuarioProjetoService.pertenceAoProjeto(usuarioId, projetoId)) === false;
+			if (usuarioNaoPertence) throw new UsuarioSemAutorizacaoError();
+		}
 	}
 }
