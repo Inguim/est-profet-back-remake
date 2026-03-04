@@ -61,7 +61,7 @@ export class ProjetoModel implements IProjetoModel {
 		if (!where) return query;
 		return query.where((qb) => {
 			Object.entries(where).forEach(([key, value]) => {
-				if (LIST_WHERE_KEYS.includes(key as keyof TProjetoListWhere)) {
+				if (LIST_WHERE_KEYS.includes(key as keyof TProjetoListWhere) && !!value) {
 					if (key === "status") qb.where("status", value);
 					else if (key === "categoria_id") qb.where("categoria_id", value);
 					else if (key === "estado_id") qb.where("estado_id", value);
