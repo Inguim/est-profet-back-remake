@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import { UsuarioModel } from "../../src/models/index.js";
 import { faker as f } from "@faker-js/faker";
 import { UsuarioAlunoFactory, UsuarioProfessorFactory } from "../factories/index.js";
+import { USUARIO_STATUS, USUARIO_TIPOS, UsuarioDTO } from "../../src/dto/UsuarioDTO.js";
 
 describe("UsuarioModel", () => {
 	it("deve criar uma instância do modelo Usuario", () => {
@@ -82,6 +83,70 @@ describe("UsuarioModel", () => {
 		const outputUpdated = await model.update(id as string, { password: inputNewPassword });
 		expect(outputUpdated.id).toEqual(id);
 		expect(outputUpdated.password).not.toEqual(oldPassword);
+	});
+
+	it("deve retornar uma lista paginada", async () => {
+		const { nome, email, tipo, admin, status, password, updated_at } = UsuarioProfessorFactory.create()
+			.asAdmin()
+			.build();
+		const input = { nome, email, tipo, admin, status, password, updated_at };
+		const model = new UsuarioModel();
+		await model.create(input);
+		const output = await model.list();
+		expect(output).toHaveProperty("data");
+		expect(output).toHaveProperty("page");
+		expect(output).toHaveProperty("perPage");
+		expect(output).toHaveProperty("count");
+		expect(output).toHaveProperty("totalPages");
+	});
+
+	it("deve retornar uma lista de UsuarioDTO", async () => {
+		const { nome, email, tipo, admin, status, password, updated_at } = UsuarioProfessorFactory.create()
+			.asAdmin()
+			.build();
+		const input = { nome, email, tipo, admin, status, password, updated_at };
+		const model = new UsuarioModel();
+		await model.create(input);
+		const output = await model.list();
+		expect(output.data).instanceOf(Array);
+		expect(output.data.every((usuario) => usuario instanceof UsuarioDTO)).toBeTruthy();
+	});
+
+	it("deve retornar uma lista de usuarios que contenham o NOME", async () => {
+		const { nome, email, tipo, admin, status, password } = UsuarioAlunoFactory.create().withNome("Teste").build();
+		const input = { nome, email, tipo, admin, status, password };
+		const model = new UsuarioModel();
+		await model.create(input);
+		const output = await model.list({ nome__ilike: "Teste" });
+		expect(output.data.map((usuario) => usuario.nome)).toContain("Teste");
+	});
+
+	it("não deve ser CASE SENSTIVIE ao busca usuarios que contenham o NOME", async () => {
+		const { nome, email, tipo, admin, status, password } = UsuarioAlunoFactory.create().withNome("Teste").build();
+		const input = { nome, email, tipo, admin, status, password };
+		const model = new UsuarioModel();
+		await model.create(input);
+		const output = await model.list({ nome__ilike: "teste" });
+		expect(output.data.map((usuario) => usuario.nome)).toContain("Teste");
+	});
+
+	it.each(USUARIO_STATUS)("deve retornar apenas usuarios com o STATUS: %s", async (status) => {
+		const { nome, email, tipo, admin, password } = UsuarioProfessorFactory.create().withStatus(status).build();
+		const input = { nome, email, tipo, admin, status, password };
+		const model = new UsuarioModel();
+		await model.create(input);
+		const output = await model.list({ status });
+		expect(output.data.every((usuario) => usuario.status === status)).toBeTruthy();
+	});
+
+	it.each(USUARIO_TIPOS)("deve retornar apenas usuarios com o TIPO: %s", async (tipo) => {
+		const factory = tipo === "aluno" ? UsuarioAlunoFactory : UsuarioProfessorFactory;
+		const { nome, email, admin, password, status } = factory.create().build();
+		const input = { nome, email, tipo, admin, password, status };
+		const model = new UsuarioModel();
+		await model.create(input);
+		const output = await model.list({ tipo });
+		expect(output.data.every((usuario) => usuario.tipo === tipo)).toBeTruthy();
 	});
 
 	it("deve deletar um usuário", async () => {
