@@ -1,5 +1,5 @@
 post:
-  tags: [Usuarios]
+  tags: [Usuários]
   summary: Cria um novo usuário
   requestBody:
     required: true
@@ -43,3 +43,62 @@ post:
                 $ref: "../../components/schemas/usuario/item.yaml"
     "400":
       $ref: "../../components/responses/400_validacao.yaml"
+
+get:
+  tags: [Usuários]
+  summary: Retorna uma lista de Usuários
+  parameters:
+    - name: status
+      in: query
+      description: Status do usuário
+      schema:
+        type: string
+        enum:
+          - analise
+          - aprovado
+    - name: tipo
+      in: query
+      description: Tipo do usuário
+      schema:
+        type: string
+        enum:
+          - aluno
+          - professor
+    - name: nome__ilike
+      in: query
+      description: Nome do usuário
+      schema:
+        type: string
+    - name: page
+      in: query
+      description: Página
+      schema:
+        type: number
+        example: 1
+    - name: perPage
+      in: query
+      description: Quantidade por página
+      schema:
+        type: number
+        example: 5
+    - name: ordering
+      in: query
+      description: Ordenado por
+      schema:
+        type: string
+        enum:
+          - updated_at__asc
+        example: updated_at__asc
+  responses:
+    "200":
+      description: "Retorna uma lista de Usuários"
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Usuários buscados com sucesso
+              data:
+                $ref: "../../components/schemas/usuario/collection.yaml"

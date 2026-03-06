@@ -1,5 +1,5 @@
 get:
-  tags: [Usuarios]
+  tags: [Usuários]
   summary: Busca um usuário por ID
   parameters:
     - name: id
@@ -52,7 +52,7 @@ get:
       $ref: "../../../components/responses/404_not_found.yaml"
 
 patch:
-  tags: [Usuarios]
+  tags: [Usuários]
   summary: Atualiza um usuário existente
   security:
     - BearerAuth: []
