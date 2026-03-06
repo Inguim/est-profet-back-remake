@@ -6,6 +6,13 @@ import {
 	type TFindOneModelDTO,
 	type TUpdateModelDTO,
 } from "../models/index.js";
+import type { TPagePaginatedResponse, TPagePagination } from "../utils/helpers/pagePaginator.js";
+
+export type TListBaseServiceDTO<TFILTERS, TORDERING> = {
+	filters?: TFILTERS;
+	pagination?: TPagePagination;
+	ordering?: TORDERING;
+};
 
 export interface IBaseService {
 	create(fields: object): Promise<any>;
@@ -13,6 +20,7 @@ export interface IBaseService {
 	delete(id: string): Promise<boolean>;
 	get(id: string): Promise<any | null>;
 	findOne(where: object): Promise<any>;
+	list(filter?: TListBaseServiceDTO<any, any>): Promise<TPagePaginatedResponse<unknown>>;
 }
 
 export type DTOConstructor<I> = new (fields?: any) => I;
@@ -23,6 +31,8 @@ export abstract class BaseService<
 	TCREATE_DTO extends TCreateModelDTO<IDTO>,
 	TUPDATE_DTO extends TUpdateModelDTO<IDTO>,
 	TFINDONE_DTO extends TFindOneModelDTO<IDTO>,
+	TLISTFILTERS_DTO,
+	TLISTORDERING,
 > implements IBaseService {
 	protected abstract model: ModelConstructor<M>;
 	protected abstract dto: DTOConstructor<IDTO>;
@@ -53,5 +63,21 @@ export abstract class BaseService<
 		const model = new this.model();
 		const entity = await model.findOne(where);
 		return entity;
+	}
+
+	async list({
+		filters,
+		pagination = { page: 1, perPage: 10 },
+		ordering,
+	}: TListBaseServiceDTO<TLISTFILTERS_DTO, TLISTORDERING> = {}): Promise<TPagePaginatedResponse<IDTO>> {
+		const model = new this.model();
+		const { data, count, page, perPage, totalPages } = await model.list(filters, pagination, ordering);
+		return {
+			data,
+			count,
+			page,
+			perPage,
+			totalPages,
+		};
 	}
 }
