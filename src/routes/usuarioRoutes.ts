@@ -31,6 +31,7 @@ const router = Router();
 const usuarioController = new UsuarioController({ usuarioService });
 
 router.post("/", createMiddleware, (req, res, next) => usuarioController.create(req as any, res, next));
+router.get("/", (req, res, next) => usuarioController.list(req, res, next));
 router.patch("/:id", ensureAuthMiddleware, updateMiddleware, (req, res, next) =>
 	usuarioController.update(req, res, next),
 );
