@@ -1,13 +1,14 @@
 import type { Knex } from "knex";
-import { UsuarioAlunoDTO, UsuarioDTO, UsuarioProfessorDTO, type IAlunoDTO } from "../dto/index.js";
-import { UsuarioModel } from "../models/index.js";
+import { UsuarioAlunoDTO, UsuarioDTO, UsuarioProfessorDTO, type IAlunoDTO, type IUsuarioDTO } from "../dto/index.js";
+import { UsuarioModel, type TListOrderingUsuario, type TListWhereUsuario } from "../models/index.js";
 import type { IAlunoService } from "./AlunoService.js";
-import { BaseService, type IBaseService } from "./BaseService.js";
+import { BaseService, type IBaseService, type TListBaseServiceDTO } from "./BaseService.js";
 import dbConnection from "../database/dbConfig.js";
 import type { IProfessorService } from "./ProfessorService.js";
 import type { ICursoService } from "./CursoService.js";
 import type { ISerieService } from "./SerieService.js";
 import type { IProfessorCategoriaService } from "./ProfessorCategoriaService.js";
+import type { TPagePaginatedResponse } from "../utils/helpers/pagePaginator.js";
 
 type TCreateDTOBase = Pick<UsuarioDTO, "nome" | "email" | "tipo" | "password">;
 export type TCreateDTOAluno = { tipo: "aluno" } & Pick<IAlunoDTO, "curso_id" | "serie_id">;
@@ -29,15 +30,26 @@ type TContructorService = {
 };
 
 export interface IUsuarioService extends IBaseService {
-	create(fields: TCreateDTO): Promise<UsuarioDTO>;
-	update(id: string, fields: TUpdateDTO): Promise<UsuarioDTO>;
+	create(fields: TCreateDTO): Promise<IUsuarioDTO>;
+	update(id: string, fields: TUpdateDTO): Promise<IUsuarioDTO>;
 	delete(id: string): Promise<boolean>;
 	get(id: string): Promise<TUsuarioPorTipo | null>;
-	findOne(where: TFindOneDTO): Promise<UsuarioDTO>;
+	findOne(where: TFindOneDTO): Promise<IUsuarioDTO>;
+	list(
+		filter?: TListBaseServiceDTO<TListWhereUsuario, TListOrderingUsuario>,
+	): Promise<TPagePaginatedResponse<IUsuarioDTO>>;
 }
 
 export class UsuarioService
-	extends BaseService<UsuarioDTO, UsuarioModel, TCreateDTO, TUpdateDTO, TFindOneDTO>
+	extends BaseService<
+		UsuarioDTO,
+		UsuarioModel,
+		TCreateDTO,
+		TUpdateDTO,
+		TFindOneDTO,
+		TListWhereUsuario,
+		TListOrderingUsuario
+	>
 	implements IUsuarioService
 {
 	protected model = UsuarioModel;

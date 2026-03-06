@@ -150,6 +150,22 @@ describe("UsuarioService", () => {
 		expect(output).toBeTruthy();
 	});
 
+	it("deve retornar uma lista de usuarios paginada", async () => {
+		const output = await service.list();
+		expect(output).toHaveProperty("data");
+		expect(output.data.every((projeto) => projeto instanceof UsuarioDTO)).toBeTruthy();
+		expect(output).toHaveProperty("count");
+		expect(output).toHaveProperty("page");
+		expect(output).toHaveProperty("perPage");
+		expect(output).toHaveProperty("totalPages");
+	});
+
+	it("deve aplicar filtros", async () => {
+		const outputNotFiltred = await service.list();
+		const outputFiltred = await service.list({ filters: { status: "aprovado" } });
+		expect(outputNotFiltred.count).not.toEqual(outputFiltred.count);
+	});
+
 	it.each(WHERE_PARAMS.map((param, index) => [param, index]))(
 		"deve encontrar um usuário pelo campo: %s",
 		async (campo, index) => {
