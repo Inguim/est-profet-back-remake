@@ -5,6 +5,9 @@ import { NotFoundError } from "../errors/index.js";
 import type { IAuthRequest } from "../middlewares/index.js";
 import type { UsuarioAlunoDTO } from "../dto/UsuarioAlunoDTO.js";
 import type { UsuarioProfessorDTO } from "../dto/UsuarioProfessorDTO.js";
+import type { TUsuarioStatus, TUsuarioTipo } from "../dto/UsuarioDTO.js";
+import type { TPagePagination } from "../utils/helpers/pagePaginator.js";
+import type { TListOrderingUsuario } from "../models/UsuarioModel.js";
 
 type TCreateDTOBase = {
 	confirm_password: string;
@@ -16,11 +19,20 @@ export type TUpdateDTO = {
 	nome: string;
 };
 
+export type TRequestListQueryParamsUsuario = {
+	nome__ilike?: string;
+	status?: TUsuarioStatus;
+	tipo?: TUsuarioTipo;
+	ordering?: TListOrderingUsuario;
+} & Partial<TPagePagination>;
+
 type TRequestCreate = Request<any, any, TCreateDTO>;
 
 type TRequestUpdate = Request<{ id: string }, any, TUpdateDTO>;
 
 type TRequestGet = IAuthRequest<{ id: string }>;
+
+export type TRequestListUsuario = Request<any, any, any, TRequestListQueryParamsUsuario>;
 
 type TControllerConstructor = {
 	usuarioService: IUsuarioService;
@@ -118,6 +130,33 @@ export class UsuarioController {
 			res.status(STATUS_CODE.OK).json({
 				message: "Usuário encontrado com sucesso",
 				data,
+			});
+		} catch (error) {
+			next(error);
+		}
+	}
+
+	async list(req: TRequestListUsuario, res: Response, next: NextFunction): Promise<void> {
+		try {
+			const { ordering = "updated_at__asc", page, perPage, ...queryFilters } = req.query;
+			const pagination = { page: Number(page) || 1, perPage: Number(perPage) || 10 };
+			const filters = queryFilters || {};
+			const result = await this.usuarioService.list({ pagination, filters, ordering });
+			res.status(STATUS_CODE.OK).json({
+				message: "Usuários buscados com sucesso",
+				data: {
+					results: result.data.map((projeto) => ({
+						id: projeto.id,
+						nome: projeto.nome,
+						email: projeto.email,
+						tipo: projeto.tipo,
+						status: projeto.status,
+					})),
+					page: result.page,
+					perPage: result.perPage,
+					count: result.count,
+					totalPages: result.totalPages,
+				},
 			});
 		} catch (error) {
 			next(error);

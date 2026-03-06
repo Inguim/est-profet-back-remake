@@ -10,13 +10,13 @@ import type { ISerieService } from "./SerieService.js";
 import type { IProfessorCategoriaService } from "./ProfessorCategoriaService.js";
 import type { TPagePaginatedResponse } from "../utils/helpers/pagePaginator.js";
 
-type TCreateDTOBase = Pick<UsuarioDTO, "nome" | "email" | "tipo" | "password">;
+type TCreateDTOBase = Pick<IUsuarioDTO, "nome" | "email" | "tipo" | "password">;
 export type TCreateDTOAluno = { tipo: "aluno" } & Pick<IAlunoDTO, "curso_id" | "serie_id">;
 export type TCreateDTOProfessor = { tipo: "professor" } & { categoriaIds: string[] };
 
 export type TCreateDTO = TCreateDTOBase & (TCreateDTOAluno | TCreateDTOProfessor);
-type TUpdateDTO = Partial<Pick<UsuarioDTO, "nome" | "email" | "tipo">>;
-export type TFindOneDTO = Partial<Pick<UsuarioDTO, "email">>;
+type TUpdateDTO = Partial<Pick<IUsuarioDTO, "nome" | "email" | "tipo">>;
+export type TFindOneDTO = Partial<Pick<IUsuarioDTO, "email">>;
 
 type TUsuarioPorTipo = UsuarioAlunoDTO | UsuarioProfessorDTO;
 
