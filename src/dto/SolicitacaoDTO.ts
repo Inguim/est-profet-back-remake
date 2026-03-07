@@ -24,6 +24,7 @@ export interface ISolicitacaoDTO extends IBaseDTO {
 	creator_id: string;
 	projeto_id: string;
 	projeto?: TSolicitacaoProjeto | null;
+	getStatusLabel(): TSolicitacaoStatusLabel;
 }
 
 type TConstructorDTO = Omit<ISolicitacaoDTO, "status" | "getStatusLabel"> & { status?: TSolicitacaoStatus };
@@ -38,7 +39,7 @@ export class SolicitacaoDTO implements ISolicitacaoDTO {
 	readonly deleted_id: string;
 	readonly creator_id: string;
 	readonly projeto_id: string;
-	readonly projeto: TSolicitacaoProjeto | null;
+	readonly projeto?: TSolicitacaoProjeto | null;
 
 	constructor({
 		id = null,
