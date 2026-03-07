@@ -58,10 +58,10 @@ export abstract class BaseModel<
 
 	async create(dto: TCREATE_DTO): Promise<TDTO> {
 		const hookedDto = await this.beforeCreate(dto);
-		const entity = new this.dto({ id: uuidV4(), ...hookedDto });
-		const [newRecord] = await this.db.insert(entity).returning("*");
-		Object.assign(entity, newRecord);
-		return entity;
+		const [newRecord] = await this.db
+			.insert({ id: uuidV4(), created_at: new Date(), updated_at: new Date(), ...hookedDto })
+			.returning("*");
+		return new this.dto(newRecord);
 	}
 
 	async update(id: string, dto: TUPDATE_DTO): Promise<TDTO> {
