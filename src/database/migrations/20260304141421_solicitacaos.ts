@@ -7,7 +7,7 @@ export async function up(knex: Knex): Promise<void> {
 		table.text("descricao");
 		table.enum("status", ["aguardando", "alterado", "aprovado", "recusado"], {
 			useNative: true,
-			enumName: "solicitacaos_relacao",
+			enumName: "solicitacaos_status",
 		});
 		table.uuid("deleted_id").nullable();
 
@@ -23,5 +23,5 @@ export async function up(knex: Knex): Promise<void> {
 
 export async function down(knex: Knex): Promise<void> {
 	await knex.schema.dropTableIfExists("solicitacaos");
-	await knex.raw(`DROP TYPE IF EXISTS solicitacaos_relacao;`);
+	await knex.raw(`DROP TYPE IF EXISTS solicitacaos_status;`);
 }
