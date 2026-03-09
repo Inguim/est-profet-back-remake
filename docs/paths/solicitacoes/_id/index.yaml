@@ -1,0 +1,30 @@
+get:
+  tags: [Solicitações]
+  summary: Busca uma solicitação por ID
+  security:
+    - BearerAuth: []
+  parameters:
+    - name: id
+      in: path
+      required: true
+      description: ID do solcitação
+      schema:
+        type: string
+        example: "123"
+  responses:
+    "200":
+      description: Solicitação encontrada com sucesso
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Solicitação criada com sucesso
+              data:
+                $ref: "../../../components/schemas/solicitacao/get.yaml"
+    "401":
+      $ref: "../../../components/responses/401_usuario_sem_autorizacao.yaml"
+    "404":
+      $ref: "../../../components/responses/404_not_found.yaml"

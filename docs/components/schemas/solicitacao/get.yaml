@@ -1,0 +1,32 @@
+allOf:
+  - $ref: "./item.yaml"
+  - type: object
+    properties:
+      projeto_id:
+        deprecated: true
+      projeto:
+        type: object
+        properties:
+          id:
+            type: string
+            example: "uuid"
+          nome:
+            type: string
+            example: "Lorem"
+      status:
+        type: object
+        properties:
+          value:
+            type: string
+            enum:
+              - aguardando
+              - alterado
+              - aprovado
+              - recusado
+          label:
+            type: string
+            enum:
+              - Aguardando
+              - Alterado
+              - Aprovado
+              - Recusado

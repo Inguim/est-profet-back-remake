@@ -25,6 +25,8 @@ paths:
     $ref: "./paths/series/index.yaml"
   /solicitacoes:
     $ref: "./paths/solicitacoes/index.yaml"
+  /solicitacoes/{id}:
+    $ref: "./paths/solicitacoes/_id/index.yaml"
   /usuarios:
     $ref: "./paths/usuarios/index.yaml"
   /usuarios/{id}:
