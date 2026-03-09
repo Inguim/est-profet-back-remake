@@ -39,7 +39,7 @@ export class SolicitacaoDTO implements ISolicitacaoDTO {
 	readonly deleted_id: string;
 	readonly creator_id: string;
 	readonly projeto_id: string;
-	readonly projeto?: TSolicitacaoProjeto | null;
+	projeto?: TSolicitacaoProjeto | null;
 
 	constructor({
 		id = null,
