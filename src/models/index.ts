@@ -10,3 +10,4 @@ export * from "./ProfessorCategoriaModel.js";
 export * from "./EstadoModel.js";
 export * from "./ProjetoModel.js";
 export * from "./UsuarioProjetoModel.js";
+export * from "./TipoNotificacaoModel.js";

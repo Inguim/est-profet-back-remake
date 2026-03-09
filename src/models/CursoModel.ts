@@ -24,7 +24,7 @@ export class CursoModel implements ICursoModel {
 		return rows.map((row) => new this.dto(row));
 	}
 
-	async get(id: string): Promise<ICursoDTO> {
+	async get(id: string): Promise<CursoDTO> {
 		const curso = await this.db.where({ id }).first();
 		return new this.dto(curso);
 	}
