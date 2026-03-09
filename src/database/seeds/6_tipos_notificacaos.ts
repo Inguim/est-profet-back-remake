@@ -1,7 +1,7 @@
 import type { Knex } from "knex";
 import { v4 as uuidV4 } from "uuid";
 // @ts-expect-error Apenas para permitir importar via Knex
-import { TIPOS_NOTIFICACAO } from "../../utils/constansts/tipos-notificacao.ts";
+import { TIPOS_NOTIFICACAO } from "../../utils/constants/tipos-notificacao.ts";
 
 export async function seed(knex: Knex): Promise<void> {
 	await knex("tipos_notificacaos").del();

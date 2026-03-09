@@ -1,5 +1,5 @@
 import type { Response } from "express";
-import { STATUS_CODE, type TStatusCode } from "../utils/constansts/status-code.js";
+import { STATUS_CODE, type TStatusCode } from "../utils/constants/status-code.js";
 
 export class BaseError extends Error {
 	status: TStatusCode;

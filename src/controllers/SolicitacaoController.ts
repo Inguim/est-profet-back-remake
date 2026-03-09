@@ -1,7 +1,7 @@
 import type { Response, NextFunction } from "express";
 import type { IAuthRequest } from "../middlewares/EnsureAuthMiddleware.js";
 import type { ISolicitacaoService } from "../services/SolicitacaoService.js";
-import { STATUS_CODE } from "../utils/constansts/status-code.js";
+import { STATUS_CODE } from "../utils/constants/status-code.js";
 import { NotFoundError } from "../errors/NotFoundError.js";
 import type { SolicitacaoDTO, TSolicitacaoStatus } from "../dto/SolicitacaoDTO.js";
 import type { TPagePagination } from "../utils/helpers/pagePaginator.js";

@@ -3,7 +3,7 @@ import request from "supertest";
 import { errorHandlingMiddleware, ValidateSolicitacaoMiddleware } from "../../src/middlewares/index.js";
 import { beforeAll, describe, expect, it } from "vitest";
 import { faker as f } from "@faker-js/faker";
-import { STATUS_CODE } from "../../src/utils/constansts/status-code.js";
+import { STATUS_CODE } from "../../src/utils/constants/status-code.js";
 import type { TCreateDTOBodySolicitacao } from "../../src/controllers/SolicitacaoController.js";
 
 const createMiddleware = ValidateSolicitacaoMiddleware.create;

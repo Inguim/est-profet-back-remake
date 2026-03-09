@@ -1,4 +1,4 @@
-import { STATUS_CODE } from "../utils/constansts/status-code.js";
+import { STATUS_CODE } from "../utils/constants/status-code.js";
 import { BaseError } from "./BaseError.js";
 
 export class UsuarioSemAutorizacaoError extends BaseError {

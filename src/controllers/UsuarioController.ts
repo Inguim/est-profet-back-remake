@@ -1,5 +1,5 @@
 import type { Request, Response, NextFunction } from "express";
-import { STATUS_CODE } from "../utils/constansts/status-code.js";
+import { STATUS_CODE } from "../utils/constants/status-code.js";
 import type { IUsuarioService, TCreateDTO as TCreateDTOUsuarioService } from "../services/UsuarioService.js";
 import { NotFoundError } from "../errors/index.js";
 import type { IAuthRequest } from "../middlewares/index.js";

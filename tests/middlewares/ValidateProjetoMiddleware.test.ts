@@ -3,7 +3,7 @@ import request from "supertest";
 import { errorHandlingMiddleware, ValidateProjetoMiddleware } from "../../src/middlewares/index.js";
 import { beforeAll, describe, expect, it } from "vitest";
 import { faker as f } from "@faker-js/faker";
-import { STATUS_CODE } from "../../src/utils/constansts/status-code.js";
+import { STATUS_CODE } from "../../src/utils/constants/status-code.js";
 import { v4 as uuidV4 } from "uuid";
 import { ProjetoFactory } from "../factories/ProjetoFactory.js";
 import type { TRequestCreateProjetoDTO, TRequestUpdateProjetoDTO } from "../../src/controllers/ProjetoController.js";

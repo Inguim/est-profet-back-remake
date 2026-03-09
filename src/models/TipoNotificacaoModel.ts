@@ -1,7 +1,7 @@
 import type { Knex } from "knex";
 import { TipoNotificacaoDTO, type ITipoNotificacaoDTO } from "../dto/index.js";
 import dbConnection from "../database/dbConfig.js";
-import type { TTiposNotificacao } from "../utils/constansts/tipos-notificacao.js";
+import type { TTiposNotificacao } from "../utils/constants/tipos-notificacao.js";
 
 export interface ITipoNotificacaoModel {
 	get(id: string): Promise<ITipoNotificacaoDTO>;

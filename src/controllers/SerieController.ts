@@ -1,6 +1,6 @@
 import type { Request, Response, NextFunction } from "express";
 import type { ISerieService } from "../services/index.js";
-import { STATUS_CODE } from "../utils/constansts/status-code.js";
+import { STATUS_CODE } from "../utils/constants/status-code.js";
 
 type TControllerConstructor = {
 	serieService: ISerieService;

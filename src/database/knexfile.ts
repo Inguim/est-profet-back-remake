@@ -2,7 +2,7 @@ import dotenv from "dotenv";
 dotenv.config({ path: "../../.env" });
 
 import path from "path";
-import dbPgConfig from "../utils/constansts/envDB.js";
+import dbPgConfig from "../utils/constants/envDB.js";
 import { fileURLToPath } from "url";
 
 const __filename = fileURLToPath(import.meta.url);

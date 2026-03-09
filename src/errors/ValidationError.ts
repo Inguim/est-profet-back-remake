@@ -1,8 +1,8 @@
 import { ZodError } from "zod";
 import { BaseError } from "./BaseError.js";
-import { STATUS_CODE } from "../utils/constansts/status-code.js";
+import { STATUS_CODE } from "../utils/constants/status-code.js";
 import { formatErrorZod } from "../utils/helpers/formatErrorZod.js";
-import { DEFAULT_CONSTRAINTS, type TDeFaultConstraints } from "../utils/constansts/default-constraints.js";
+import { DEFAULT_CONSTRAINTS, type TDeFaultConstraints } from "../utils/constants/default-constraints.js";
 import { defaultMessages as dm } from "../validators/index.js";
 
 type TConstraintError = {
