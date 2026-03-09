@@ -1,0 +1,49 @@
+type: object
+properties:
+  results:
+    type: array
+    items:
+      allOf:
+        - $ref: "./item.yaml"
+        - type: object
+          properties:
+            projeto_id:
+              deprecated: true
+            projeto:
+              type: object
+              properties:
+                id:
+                  type: string
+                  example: "uuid"
+                nome:
+                  type: string
+                  example: "Lorem"
+            status:
+              type: object
+              properties:
+                value:
+                  type: string
+                  enum:
+                    - aguardando
+                    - alterado
+                    - aprovado
+                    - recusado
+                label:
+                  type: string
+                  enum:
+                    - Aguardando
+                    - Alterado
+                    - Aprovado
+                    - Recusado
+  count:
+    type: number
+    example: 10
+  page:
+    type: number
+    example: 1
+  perPage:
+    type: number
+    example: 5
+  totalPages:
+    type: number
+    example: 2

@@ -46,3 +46,53 @@ post:
       $ref: "../../components/responses/400_validacao.yaml"
     "401":
       $ref: "../../components/responses/401_usuario_sem_autorizacao.yaml"
+
+get:
+  tags: [Solicitações]
+  summary: Retorna uma lista de Solicitações
+  security:
+    - BearerAuth: []
+  parameters:
+    - name: status
+      in: query
+      description: Status da solicitação
+      schema:
+        type: string
+        enum:
+          - aguardando
+          - alterado
+          - aprovado
+          - recusado
+    - name: page
+      in: query
+      description: Página
+      schema:
+        type: number
+        example: 1
+    - name: perPage
+      in: query
+      description: Quantidade por página
+      schema:
+        type: number
+        example: 5
+    - name: ordering
+      in: query
+      description: Ordenado por
+      schema:
+        type: string
+        enum:
+          - updated_at__asc
+        example: updated_at__asc
+  responses:
+    "200":
+      description: "Retorna uma lista de Solicitações"
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Solicitações buscadas com sucesso
+              data:
+                $ref: "../../components/schemas/solicitacao/collection.yaml"
