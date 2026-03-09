@@ -19,7 +19,7 @@ export type ModelConstructor<I> = new (fields?: any) => I;
 
 export type TUpdateModelDTO<T> = Partial<Omit<T, "id" | "created_at" | "updated_at">>;
 export type TCreateModelDTO<T> = Partial<Omit<T, "id" | "created_at" | "updated_at">>;
-export type TFindOneModelDTO<T> = Partial<Omit<T, "id" | "created_at" | "updated_at">>;
+export type TFindOneModelDTO<T> = Partial<Omit<T, "created_at" | "updated_at">>;
 
 export type TListOrderByBaseModel = "updated_at__asc" | "created_at__asc" | "created_at__desc";
 

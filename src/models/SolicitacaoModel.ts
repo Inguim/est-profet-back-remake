@@ -2,6 +2,7 @@ import type { Knex } from "knex";
 import dbConnection from "../database/dbConfig.js";
 import { SolicitacaoDTO, type ISolicitacaoDTO, type TSolicitacaoStatus } from "../dto/SolicitacaoDTO.js";
 import { BaseModel } from "./BaseModel.js";
+import type { TPagePaginatedResponse, TPagePagination } from "../utils/helpers/pagePaginator.js";
 
 export type TCreateModelSolicitacaoDTO = Required<
 	Pick<ISolicitacaoDTO, "titulo" | "descricao" | "status" | "creator_id" | "projeto_id">
@@ -23,6 +24,11 @@ export interface ISolicitacaoModel {
 	delete(id: string): Promise<ISolicitacaoDTO>;
 	populate(id: string): Promise<ISolicitacaoDTO>;
 	findOne(params: TFindOneModelSolicitacaoParams): Promise<ISolicitacaoDTO>;
+	list(
+		where?: TListWhereSolicitacao,
+		pagination?: TPagePagination,
+		orderBy?: TListOrderingSolicitacao,
+	): Promise<TPagePaginatedResponse<ISolicitacaoDTO>>;
 }
 
 export class SolicitacaoModel
