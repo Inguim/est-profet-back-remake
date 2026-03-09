@@ -7,6 +7,7 @@ import { router as serieRoutes } from "./serieRoutes.js";
 import { router as menuRoutes } from "./menuRoutes.js";
 import { router as estadoRoutes } from "./estadoRoutes.js";
 import { router as projetoRoutes } from "./projetoRoutes.js";
+import { router as solicitacaoRoutes } from "./solicitacaoRoutes.js";
 
 export const routes = (app: Express) => {
 	app.use(express.json());
@@ -17,4 +18,5 @@ export const routes = (app: Express) => {
 	app.use("/menus", menuRoutes);
 	app.use("/estados", estadoRoutes);
 	app.use("/projetos", projetoRoutes);
+	app.use("/solicitacoes", solicitacaoRoutes);
 };
