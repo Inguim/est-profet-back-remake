@@ -5,3 +5,4 @@ export * from "./SerieController.js";
 export * from "./MenuController.js";
 export * from "./EstadoController.js";
 export * from "./ProjetoController.js";
+export * from "./SolicitacaoController.js";
