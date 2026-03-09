@@ -7,6 +7,7 @@ import {
 	type TListOrderingSolicitacao,
 	type TListWhereSolicitacao,
 } from "../models/SolicitacaoModel.js";
+import type { ProjetoCompletoDTO } from "../dto/ProjetoCompletoDTO.js";
 
 type TCreateDTOSolicitacaoService = Pick<ISolicitacaoDTO, "titulo" | "descricao" | "creator_id" | "projeto_id">;
 type TUpdateDTOSolicitacaoService = Partial<Pick<ISolicitacaoDTO, "descricao" | "titulo" | "status">>;
@@ -62,5 +63,45 @@ export class SolicitacaoService
 		fields: Partial<Pick<ISolicitacaoDTO, "titulo" | "descricao" | "status">>,
 	): Promise<SolicitacaoDTO> {
 		throw Error("Metodo não implementado");
+	}
+
+	async get(id: string): Promise<SolicitacaoDTO | null> {
+		const model = new this.model();
+		const entity = await model.populate(id);
+		if (!entity.id) return null;
+		const solicitacao = await this.getProjeto(entity);
+		return solicitacao;
+	}
+
+	async list({
+		filters,
+		pagination = { page: 1, perPage: 10 },
+		ordering,
+	}: TListBaseServiceDTO<TListWhereSolicitacao, TListOrderingSolicitacao> = {}): Promise<
+		TPagePaginatedResponse<SolicitacaoDTO>
+	> {
+		const model = new this.model();
+		const { data, count, page, perPage, totalPages } = await model.list(filters, pagination, ordering);
+		const solicitacoes: SolicitacaoDTO[] = [];
+		for (const solicitacao of data) {
+			const solicitaoFull = await this.getProjeto(solicitacao);
+			solicitacoes.push(solicitaoFull);
+		}
+		return {
+			data: solicitacoes,
+			count,
+			page,
+			perPage,
+			totalPages,
+		};
+	}
+
+	private async getProjeto(solicitacao: SolicitacaoDTO): Promise<SolicitacaoDTO> {
+		const projeto = await this.projetoService.get(solicitacao.projeto_id);
+		solicitacao.projeto = {
+			id: String(projeto.id),
+			nome: projeto.nome,
+		};
+		return solicitacao;
 	}
 }
