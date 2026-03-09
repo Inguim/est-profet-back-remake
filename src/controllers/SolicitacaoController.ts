@@ -7,7 +7,7 @@ import type { SolicitacaoDTO, TSolicitacaoStatus } from "../dto/SolicitacaoDTO.j
 import type { TPagePagination } from "../utils/helpers/pagePaginator.js";
 import type { TListOrderingSolicitacao } from "../models/SolicitacaoModel.js";
 
-type TCreateDTOBody = {
+export type TCreateDTOBodySolicitacao = {
 	titulo: string;
 	descricao: string;
 	projeto_id: string;
@@ -18,7 +18,7 @@ export type TRequestListQueryParamsSolicitacao = {
 	ordering?: TListOrderingSolicitacao;
 } & Partial<TPagePagination>;
 
-type TRequestCreateSolicitacao = IAuthRequest<any, any, TCreateDTOBody>;
+export type TRequestCreateSolicitacao = IAuthRequest<any, any, TCreateDTOBodySolicitacao>;
 
 type TRequestGetSolicitacao = IAuthRequest<{ id: string }>;
 
