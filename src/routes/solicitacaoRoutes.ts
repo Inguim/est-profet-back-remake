@@ -15,6 +15,7 @@ import {
 import { ensureAuthMiddleware } from "../middlewares/EnsureAuthMiddleware.js";
 import { SolicitacaoController } from "../controllers/index.js";
 import { ensureAdminMiddleware } from "../middlewares/EnsureAdminMiddleware.js";
+import { ValidateSolicitacaoMiddleware } from "../middlewares/ValidateSolicitacaoMiddleware.js";
 
 const estadoService = new EstadoService();
 const alunoService = new AlunoService();
@@ -36,9 +37,11 @@ const solicitacaoService = new SolicitacaoService({ projetoService });
 
 const solicitacaoController = new SolicitacaoController({ solicitacaoService });
 
+const { create: createMiddleware } = ValidateSolicitacaoMiddleware;
+
 const router = Router();
 
-router.post("/", ensureAuthMiddleware, ensureAdminMiddleware, (req, res, next) =>
+router.post("/", ensureAuthMiddleware, ensureAdminMiddleware, createMiddleware, (req, res, next) =>
 	solicitacaoController.create(req, res, next),
 );
 router.get("/", ensureAuthMiddleware, ensureAdminMiddleware, (req, res, next) =>
