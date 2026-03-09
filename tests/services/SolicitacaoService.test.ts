@@ -130,6 +130,21 @@ describe("SolicitacaoService", () => {
 		expect(output?.id).toEqual(input?.id);
 	});
 
+	it("deve trazer informações do projeto ao buscar pelo ID", async () => {
+		const input = await solicitacaoService.create({
+			titulo: "asd",
+			descricao: "res",
+			creator_id: defaultCreatorId,
+			projeto_id: defaultProjetoId,
+		});
+		const output = await solicitacaoService.get(String(input.id));
+		expect(output).toBeInstanceOf(SolicitacaoDTO);
+		expect(output?.projeto).toBeDefined();
+		expect(output?.projeto).instanceOf(Object);
+		expect(output?.projeto).toHaveProperty("id");
+		expect(output?.projeto).toHaveProperty("nome");
+	});
+
 	it("deve deletar uma solicitação pelo ID", async () => {
 		const input = await solicitacaoService.create({
 			titulo: "asd",
