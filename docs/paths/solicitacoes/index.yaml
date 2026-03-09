@@ -1,0 +1,48 @@
+post:
+  tags: [Solicitações]
+  summary: Cria uma nova solicitação
+  security:
+    - BearerAuth: []
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: "../../components/schemas/solicitacao/create.yaml"
+  responses:
+    "201":
+      description: Solicitação criada com sucesso
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Solicitação criada com sucesso
+              data:
+                allOf:
+                  - $ref: "../../components/schemas/solicitacao/item.yaml"
+                  - type: object
+                    properties:
+                      status:
+                        type: object
+                        properties:
+                          value:
+                            type: string
+                            enum:
+                              - aguardando
+                              - alterado
+                              - aprovado
+                              - recusado
+                          label:
+                            type: string
+                            enum:
+                              - Aguardando
+                              - Alterado
+                              - Aprovado
+                              - Recusado
+    "400":
+      $ref: "../../components/responses/400_validacao.yaml"
+    "401":
+      $ref: "../../components/responses/401_usuario_sem_autorizacao.yaml"

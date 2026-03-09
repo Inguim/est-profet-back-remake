@@ -1,0 +1,34 @@
+type: object
+required:
+  - titulo
+  - descricao
+  - projeto_id
+properties:
+  titulo:
+    type: string
+    example: "Corrija tal"
+  descricao:
+    type: string
+    example: "lorem"
+  status:
+    type: string
+    enum:
+      - aguardando
+      - alterado
+      - aprovado
+      - recusado
+  deleted_id:
+    type: string
+    example: "uuid"
+  creator_id:
+    type: string
+    example: "uuid"
+  projeto_id:
+    type: string
+    example: "uuid"
+  created_at:
+    type: string
+    format: date-time
+  updated_at:
+    type: string
+    format: date-time

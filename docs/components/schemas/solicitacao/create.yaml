@@ -1,0 +1,15 @@
+type: object
+required:
+  - titulo
+  - descricao
+  - projeto_id
+properties:
+  titulo:
+    type: string
+    example: "Corrija tal"
+  descricao:
+    type: string
+    example: "lorem"
+  projeto_id:
+    type: string
+    example: "uuid"

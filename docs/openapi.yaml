@@ -23,6 +23,8 @@ paths:
     $ref: "./paths/projetos/_id/index.yaml"
   /series:
     $ref: "./paths/series/index.yaml"
+  /solicitacoes:
+    $ref: "./paths/solicitacoes/index.yaml"
   /usuarios:
     $ref: "./paths/usuarios/index.yaml"
   /usuarios/{id}:
@@ -52,12 +54,14 @@ components:
       $ref: "./components/schemas/menu/item.yaml"
     Serie:
       $ref: "./components/schemas/serie/item.yaml"
-    Usuario:
-      $ref: "./components/schemas/usuario/item.yaml"
     Projeto:
       $ref: "./components/schemas/projeto/item.yaml"
     ProjetoCompleto:
       $ref: "./components/schemas/projeto-completo/item.yaml"
+    Solicitacao:
+      $ref: "./components/schemas/solicitacao/item.yaml"
+    Usuario:
+      $ref: "./components/schemas/usuario/item.yaml"
     UsuarioCreate:
       type: object
       oneOf:
