@@ -11,3 +11,4 @@ export * from "./EstadoModel.js";
 export * from "./ProjetoModel.js";
 export * from "./UsuarioProjetoModel.js";
 export * from "./TipoNotificacaoModel.js";
+export * from "./NotificacaoModel.js";
