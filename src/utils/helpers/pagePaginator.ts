@@ -21,6 +21,7 @@ export class PagePaginator {
 		query: Knex.QueryBuilder,
 		page: number,
 		perPage: number = DEFAULT_PER_PAGE,
+		columnCount = "id",
 	): Promise<TPagePaginatedResponse<T>> {
 		if (perPage > DEFAULT_LIMIT_PER_PAGE) perPage = DEFAULT_LIMIT_PER_PAGE;
 		const offset = (page - 1) * perPage;
@@ -28,7 +29,7 @@ export class PagePaginator {
 		const countQuery = query.clone();
 		const dataQuery = query.clone();
 
-		const [{ count }] = await countQuery.clearOrder().clearSelect().count("id as count");
+		const [{ count }] = await countQuery.clearOrder().clearSelect().countDistinct(`${columnCount} as count`);
 		const data = await dataQuery.limit(perPage).offset(offset);
 
 		return {
