@@ -6,7 +6,7 @@ describe("NotificacaoDTO", () => {
 		const output = new NotificacaoDTO({
 			visto: false,
 			user_id: "qwe",
-			tipo: { id: "123", nome: "231" },
+			tipo_id: "qwe",
 			solicitacao: {
 				id: "123",
 				titulo: "123",
@@ -15,20 +15,24 @@ describe("NotificacaoDTO", () => {
 					value: "aguardando",
 					label: "Aguardando",
 				},
+				projeto: {
+					id: "123",
+					nome: "te",
+				},
 			},
 		});
 		expect(output).toHaveProperty("id");
 		expect(output).toHaveProperty("visto");
 		expect(output).toHaveProperty("user_id");
-		expect(output).toHaveProperty("tipo");
-		expect(output.tipo).toHaveProperty("id");
-		expect(output.tipo).toHaveProperty("nome");
+		expect(output).toHaveProperty("tipo_id");
 		expect(output.solicitacao).toHaveProperty("id");
 		expect(output.solicitacao).toHaveProperty("titulo");
 		expect(output.solicitacao).toHaveProperty("descricao");
 		expect(output.solicitacao).toHaveProperty("status");
 		expect(output.solicitacao.status).toHaveProperty("value");
 		expect(output.solicitacao.status).toHaveProperty("label");
+		expect(output.solicitacao.projeto).toHaveProperty("id");
+		expect(output.solicitacao.projeto).toHaveProperty("nome");
 		expect(output).toHaveProperty("solicitacao");
 		expect(output).toHaveProperty("created_at");
 		expect(output).toHaveProperty("updated_at");
@@ -38,7 +42,7 @@ describe("NotificacaoDTO", () => {
 		const output = new NotificacaoDTO({
 			visto: false,
 			user_id: "qwe",
-			tipo: { id: "123", nome: "231" },
+			tipo_id: "qwe",
 			solicitacao: {
 				id: "123",
 				titulo: "123",
@@ -46,6 +50,10 @@ describe("NotificacaoDTO", () => {
 				status: {
 					value: "aguardando",
 					label: "Aguardando",
+				},
+				projeto: {
+					id: "123",
+					nome: "te",
 				},
 			},
 		});
@@ -59,7 +67,7 @@ describe("NotificacaoDTO", () => {
 			id: "2123",
 			visto: true,
 			user_id: "qwe",
-			tipo: { id: "123", nome: "231" },
+			tipo_id: "qwe",
 			solicitacao: {
 				id: "123",
 				titulo: "123",
@@ -67,6 +75,10 @@ describe("NotificacaoDTO", () => {
 				status: {
 					value: "aguardando",
 					label: "Aguardando",
+				},
+				projeto: {
+					id: "123",
+					nome: "te",
 				},
 			},
 			created_at: new Date(),
