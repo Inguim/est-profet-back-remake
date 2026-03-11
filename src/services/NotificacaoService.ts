@@ -21,7 +21,7 @@ type TListNotificacaoDTO = {
 export interface INotificacaoService {
 	create(dto: TCreateServiceNoticacaoDTO): Promise<INotificacaoDTO>;
 	get(id: string): Promise<INotificacaoDTO>;
-	tornarVista(id: string): Promise<INotificacaoDTO>;
+	marcarLida(id: string): Promise<INotificacaoDTO>;
 	list(filter?: TListNotificacaoDTO): Promise<TPagePaginatedResponse<INotificacaoDTO>>;
 }
 
@@ -67,7 +67,7 @@ export class NotificacaoService implements INotificacaoService {
 		};
 	}
 
-	async tornarVista(id: string): Promise<NotificacaoDTO> {
+	async marcarLida(id: string): Promise<NotificacaoDTO> {
 		const model = new this.model();
 		const notificacaoVista = await model.update(id, { visto: true });
 		return notificacaoVista;

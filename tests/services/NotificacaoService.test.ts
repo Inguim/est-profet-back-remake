@@ -89,7 +89,7 @@ describe("NotificacaoService", () => {
 
 	it("deve marcar como visualizada uma notificação", async () => {
 		const input = await notificacaoService.create({ solicitacao_id: defaultSolicitacaoId, user_id: defaultUserId });
-		const output = await notificacaoService.tornarVista(String(input.id));
+		const output = await notificacaoService.marcarLida(String(input.id));
 		expect(output.id).toEqual(output?.id);
 		expect(output.visto).toBeTruthy();
 	});
