@@ -8,6 +8,7 @@ import { router as menuRoutes } from "./menuRoutes.js";
 import { router as estadoRoutes } from "./estadoRoutes.js";
 import { router as projetoRoutes } from "./projetoRoutes.js";
 import { router as solicitacaoRoutes } from "./solicitacaoRoutes.js";
+import { router as notificacaoRoutes } from "./notificacaoRoutes.js";
 
 export const routes = (app: Express) => {
 	app.use(express.json());
@@ -19,4 +20,5 @@ export const routes = (app: Express) => {
 	app.use("/estados", estadoRoutes);
 	app.use("/projetos", projetoRoutes);
 	app.use("/solicitacoes", solicitacaoRoutes);
+	app.use("/notificacoes", notificacaoRoutes);
 };
