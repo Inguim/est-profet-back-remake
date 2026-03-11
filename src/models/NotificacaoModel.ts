@@ -96,7 +96,7 @@ export class NotificacaoModel implements INotificaoModel {
 			.where({ id })
 			.update({ visto, updated_at: new Date() })
 			.returning("id");
-		return this.rowToDTO(updatedRowNotificacao.id);
+		return this.get(updatedRowNotificacao.id);
 	}
 
 	private applyFilters(query: Knex.QueryBuilder<any, TNotificacaoRow[]>, where?: TNotificacaoListWhere) {
