@@ -1,0 +1,22 @@
+patch:
+  tags: [Notificações]
+  summary: Marca uma Notificação pelo ID como lida
+  security:
+    - BearerAuth: []
+  responses:
+    "200":
+      description: Notificação atualizada com sucesso
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Notificação atualizada com sucesso
+              data:
+                $ref: "../../../components/schemas/notificacao/item.yaml"
+    "401":
+      $ref: "../../../components/responses/401_usuario_sem_autorizacao.yaml"
+    "404":
+      $ref: "../../../components/responses/404_not_found.yaml"

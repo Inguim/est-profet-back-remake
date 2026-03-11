@@ -21,6 +21,8 @@ paths:
     $ref: "./paths/notificacoes/index.yaml"
   /notificacoes/{id}:
     $ref: "./paths/notificacoes/_id/index.yaml"
+  /notificacoes/{id}/marcar-lida:
+    $ref: "./paths/notificacoes/_id/marcar_lida.yaml"
   /projetos:
     $ref: "./paths/projetos/index.yaml"
   /projetos/{id}:
