@@ -17,6 +17,8 @@ paths:
     $ref: "./paths/estados/index.yaml"
   /menus:
     $ref: "./paths/menus/index.yaml"
+  /notificacoes:
+    $ref: "./paths/notificacoes/index.yaml"
   /notificacoes/{id}:
     $ref: "./paths/notificacoes/_id/index.yaml"
   /projetos:

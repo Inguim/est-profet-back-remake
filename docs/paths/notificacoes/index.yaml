@@ -1,0 +1,49 @@
+get:
+  tags: [Notificações]
+  summary: Retorna uma lista de Notificações
+  security:
+    - BearerAuth: []
+  parameters:
+    - name: visto
+      in: query
+      description: Status de visualização da notificação
+      schema:
+        type: boolean
+    - name: solicitacao_id
+      in: query
+      description: Solicitação do projeto
+      schema:
+        type: string
+    - name: page
+      in: query
+      description: Página
+      schema:
+        type: number
+        example: 1
+    - name: perPage
+      in: query
+      description: Quantidade por página
+      schema:
+        type: number
+        example: 5
+    - name: ordering
+      in: query
+      description: Ordenado por
+      schema:
+        type: string
+        enum:
+          - updated_at__desc
+        example: updated_at__desc
+  responses:
+    "200":
+      description: "Retorna uma lista de Notificações"
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Notificações buscadas com sucesso
+              data:
+                $ref: "../../components/schemas/notificacao/collection.yaml"
