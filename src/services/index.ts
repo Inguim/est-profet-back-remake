@@ -14,3 +14,4 @@ export * from "./EstadoService.js";
 export * from "./UsuarioProjetoService.js";
 export * from "./ProjetoService.js";
 export * from "./SolicitacaoService.js";
+export * from "./TipoNotificacaoService.js";
