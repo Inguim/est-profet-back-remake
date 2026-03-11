@@ -1,0 +1,45 @@
+type: object
+properties:
+  visto:
+    type: boolean
+  tipo_id:
+    type: string
+    example: "uuid"
+  user_id:
+    type: string
+    example: "uuid"
+  solicitacao:
+    type: object
+    properties:
+      id:
+        type: string
+        example: "uuid"
+      titulo:
+        type: string
+      descricao:
+        type: string
+      status:
+        type: object
+        properties:
+          value:
+            type: string
+            enum:
+              - aguardando
+              - alterado
+              - aprovado
+              - recusado
+          label:
+            type: string
+            enum:
+              - Aguardando
+              - Alterado
+              - Aprovado
+              - Recusado
+      projeto:
+        type: object
+        properties:
+          id:
+            type: string
+            example: "uuid"
+          nome:
+            type: string

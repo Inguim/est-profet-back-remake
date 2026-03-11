@@ -17,6 +17,8 @@ paths:
     $ref: "./paths/estados/index.yaml"
   /menus:
     $ref: "./paths/menus/index.yaml"
+  /notificacoes/{id}:
+    $ref: "./paths/notificacoes/_id/index.yaml"
   /projetos:
     $ref: "./paths/projetos/index.yaml"
   /projetos/{id}:
@@ -54,6 +56,8 @@ components:
       $ref: "./components/schemas/estado/item.yaml"
     Menu:
       $ref: "./components/schemas/menu/item.yaml"
+    Notificacao:
+      $ref: "./components/schemas/notificacao/item.yaml"
     Serie:
       $ref: "./components/schemas/serie/item.yaml"
     Projeto:

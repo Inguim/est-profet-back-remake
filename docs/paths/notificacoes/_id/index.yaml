@@ -1,0 +1,30 @@
+get:
+  tags: [Notificações]
+  summary: Busca uma Notificação por ID
+  security:
+    - BearerAuth: []
+  parameters:
+    - name: id
+      in: path
+      required: true
+      description: ID da Notificação
+      schema:
+        type: string
+        example: "123"
+  responses:
+    "200":
+      description: Notificação encontrada com sucesso
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Notificação encontrada com sucesso
+              data:
+                $ref: "../../../components/schemas/notificacao/get.yaml"
+    "401":
+      $ref: "../../../components/responses/401_usuario_sem_autorizacao.yaml"
+    "404":
+      $ref: "../../../components/responses/404_not_found.yaml"
