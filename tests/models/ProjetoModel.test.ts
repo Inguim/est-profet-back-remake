@@ -60,7 +60,7 @@ describe("ProjetoModel", () => {
 		await projetoModel.delete(String(output.id));
 	});
 
-	it("deve atualizar o status de um projeto", async () => {
+	it("deve atualizar os campos de um projeto", async () => {
 		const { nome, resumo, introducao, objetivo, metodologia, result_disc, conclusao, status, categoria_id, estado_id } =
 			ProjetoFactory.create()
 				.withStatus("analise")
@@ -79,8 +79,24 @@ describe("ProjetoModel", () => {
 			categoria_id,
 			estado_id,
 		});
-		const output = await projetoModel.update(String(projeto.id), { status: "aprovado" });
+		const output = await projetoModel.update(String(projeto.id), {
+			status: "aprovado",
+			nome: "atualizado",
+			resumo: "atualizado",
+			introducao: "atualizado",
+			objetivo: "atualizado",
+			metodologia: "atualizado",
+			result_disc: "atualizado",
+			conclusao: "atualizado",
+		});
 		expect(output.status).toEqual("aprovado");
+		expect(output.nome).toEqual("atualizado");
+		expect(output.resumo).toEqual("atualizado");
+		expect(output.introducao).toEqual("atualizado");
+		expect(output.objetivo).toEqual("atualizado");
+		expect(output.metodologia).toEqual("atualizado");
+		expect(output.result_disc).toEqual("atualizado");
+		expect(output.conclusao).toEqual("atualizado");
 		await projetoModel.delete(String(output.id));
 	});
 

@@ -15,7 +15,12 @@ export type TProjetoListWhere = {
 };
 
 type TCreateModelDTO = Omit<IProjetoDTO, "id" | "created_at" | "updated_at">;
-type TUpdateModelDTO = Pick<IProjetoDTO, "status">;
+type TUpdateModelDTO = Partial<
+	Pick<
+		IProjetoDTO,
+		"status" | "nome" | "resumo" | "introducao" | "objetivo" | "metodologia" | "result_disc" | "conclusao"
+	>
+>;
 
 type TListModelResponse = TPagePaginatedResponse<IProjetoDTO>;
 
@@ -93,10 +98,13 @@ export class ProjetoModel implements IProjetoModel {
 	}
 
 	async update(id: string, dto: TUpdateModelDTO): Promise<ProjetoDTO> {
-		const { status } = dto;
-		const [updatedProjeto] = await this.db.where({ id }).update({ status, updated_at: new Date() }).returning("*");
+		const [{ count: existeProjeto }] = await this.db.where({ id }).count();
+		if (Number(existeProjeto) === 0) throw new NotFoundError(`${this.tableTag} de ${id} não encontrado`);
+		const [updatedProjeto] = await this.db
+			.where({ id })
+			.update({ ...dto, updated_at: new Date() })
+			.returning("*");
 		const projeto = new this.dto(updatedProjeto);
-		if (projeto.id == null) throw new NotFoundError(`${this.tableTag} de ${id} não encontrado`);
 		return projeto;
 	}
 
