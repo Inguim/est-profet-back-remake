@@ -1,6 +1,6 @@
 import type { Response, NextFunction } from "express";
 import type { IAuthRequest } from "../middlewares/EnsureAuthMiddleware.js";
-import type { ISolicitacaoService } from "../services/SolicitacaoService.js";
+import type { ISolicitacaoService, TUpdateTipoAlteracaoSolicitacaoService } from "../services/SolicitacaoService.js";
 import { STATUS_CODE } from "../utils/constants/status-code.js";
 import { NotFoundError } from "../errors/NotFoundError.js";
 import type { SolicitacaoDTO, TSolicitacaoStatus } from "../dto/SolicitacaoDTO.js";
@@ -13,12 +13,21 @@ export type TCreateDTOBodySolicitacao = {
 	projeto_id: string;
 };
 
+export type TUpdateDTOBodySolicitacao = {
+	titulo?: string;
+	descricao?: string;
+	status?: TSolicitacaoStatus;
+	tipo_alteracao: TUpdateTipoAlteracaoSolicitacaoService;
+};
+
 export type TRequestListQueryParamsSolicitacao = {
 	status?: TSolicitacaoStatus;
 	ordering?: TListOrderingSolicitacao;
 } & Partial<TPagePagination>;
 
 export type TRequestCreateSolicitacao = IAuthRequest<any, any, TCreateDTOBodySolicitacao>;
+
+export type TRequestUpdateSolicitacao = IAuthRequest<{ id: string }, any, TUpdateDTOBodySolicitacao>;
 
 type TRequestGetSolicitacao = IAuthRequest<{ id: string }>;
 
@@ -73,7 +82,20 @@ export class SolicitacaoController {
 			const solicitacao = await this.solicitacaoService.get(req.params.id);
 			if (!solicitacao) throw new NotFoundError("Solicitação não encontrada");
 			res.status(STATUS_CODE.OK).json({
-				message: "Usuário encontrado com sucesso",
+				message: "Solicitação encontrada com sucesso",
+				data: this.formatarSolicitacao(solicitacao),
+			});
+		} catch (error) {
+			next(error);
+		}
+	}
+
+	async update(req: TRequestUpdateSolicitacao, res: Response, next: NextFunction): Promise<void> {
+		try {
+			const { tipo_alteracao, ...restData } = req.body;
+			const solicitacao = await this.solicitacaoService.update(req.params.id, { tipo_alteracao, ...restData });
+			res.status(STATUS_CODE.OK).json({
+				message: "Solicitação atualizada com sucesso",
 				data: this.formatarSolicitacao(solicitacao),
 			});
 		} catch (error) {
