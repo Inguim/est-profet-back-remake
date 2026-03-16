@@ -41,7 +41,7 @@ const solicitacaoService = new SolicitacaoService({ projetoService, notificacaoS
 
 const solicitacaoController = new SolicitacaoController({ solicitacaoService });
 
-const { create: createMiddleware } = ValidateSolicitacaoMiddleware;
+const { create: createMiddleware, update: updateMiddleware } = ValidateSolicitacaoMiddleware;
 
 const router = Router();
 
@@ -52,6 +52,9 @@ router.get("/", ensureAuthMiddleware, ensureAdminMiddleware, (req, res, next) =>
 	solicitacaoController.list(req, res, next),
 );
 router.get("/:id", ensureAuthMiddleware, ensureAdminMiddleware, (req, res, next) =>
+	solicitacaoController.get(req as any, res, next),
+);
+router.patch("/:id", ensureAuthMiddleware, ensureAdminMiddleware, updateMiddleware, (req, res, next) =>
 	solicitacaoController.get(req as any, res, next),
 );
 router.delete("/:id", ensureAuthMiddleware, ensureAdminMiddleware, (req, res, next) =>

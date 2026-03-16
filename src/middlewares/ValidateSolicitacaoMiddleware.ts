@@ -2,7 +2,7 @@ import type { Response, NextFunction } from "express";
 import { solicitacaoValidator } from "../validators/index.js";
 import { ValidationError } from "../errors/ValidationError.js";
 import type { ZodError } from "zod";
-import type { TRequestCreateSolicitacao } from "../controllers/SolicitacaoController.js";
+import type { TRequestCreateSolicitacao, TRequestUpdateSolicitacao } from "../controllers/SolicitacaoController.js";
 
 function create(req: TRequestCreateSolicitacao, res: Response, next: NextFunction) {
 	const validator = new solicitacaoValidator.CreateValidator();
@@ -11,7 +11,7 @@ function create(req: TRequestCreateSolicitacao, res: Response, next: NextFunctio
 	next();
 }
 
-function update(req: TRequestCreateSolicitacao, res: Response, next: NextFunction) {
+function update(req: TRequestUpdateSolicitacao, res: Response, next: NextFunction) {
 	const validator = new solicitacaoValidator.UpdateValidator();
 	const result = validator.validate(req.body);
 	if (!result.success) throw new ValidationError(result.extra?.error as ZodError);
