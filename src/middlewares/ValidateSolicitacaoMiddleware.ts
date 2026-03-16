@@ -11,6 +11,14 @@ function create(req: TRequestCreateSolicitacao, res: Response, next: NextFunctio
 	next();
 }
 
+function update(req: TRequestCreateSolicitacao, res: Response, next: NextFunction) {
+	const validator = new solicitacaoValidator.UpdateValidator();
+	const result = validator.validate(req.body);
+	if (!result.success) throw new ValidationError(result.extra?.error as ZodError);
+	next();
+}
+
 export const ValidateSolicitacaoMiddleware = {
 	create,
+	update,
 };

@@ -1,11 +1,12 @@
 import type { Response, NextFunction } from "express";
 import type { IAuthRequest } from "../middlewares/EnsureAuthMiddleware.js";
-import type { ISolicitacaoService, TUpdateTipoAlteracaoSolicitacaoService } from "../services/SolicitacaoService.js";
+import type { ISolicitacaoService } from "../services/SolicitacaoService.js";
 import { STATUS_CODE } from "../utils/constants/status-code.js";
 import { NotFoundError } from "../errors/NotFoundError.js";
 import type { SolicitacaoDTO, TSolicitacaoStatus } from "../dto/SolicitacaoDTO.js";
 import type { TPagePagination } from "../utils/helpers/pagePaginator.js";
 import type { TListOrderingSolicitacao } from "../models/SolicitacaoModel.js";
+import type { TTipoAlteracaoSolicitacao } from "../utils/constants/tipo-alteracao-solicitacao.js";
 
 export type TCreateDTOBodySolicitacao = {
 	titulo: string;
@@ -17,7 +18,7 @@ export type TUpdateDTOBodySolicitacao = {
 	titulo?: string;
 	descricao?: string;
 	status?: TSolicitacaoStatus;
-	tipo_alteracao: TUpdateTipoAlteracaoSolicitacaoService;
+	tipo_alteracao: TTipoAlteracaoSolicitacao;
 };
 
 export type TRequestListQueryParamsSolicitacao = {
