@@ -87,6 +87,11 @@ describe("NotificacaoService", () => {
 		expect(output).toStrictEqual(input);
 	});
 
+	it("deve encontrar uma notificação pelo SOLICITACAO_ID", async () => {
+		const output = await notificacaoService.findOne({ solicitacao_id: defaultSolicitacaoId });
+		expect(output).toBeInstanceOf(NotificacaoDTO);
+	});
+
 	it("deve marcar como visualizada uma notificação", async () => {
 		const input = await notificacaoService.create({ solicitacao_id: defaultSolicitacaoId, user_id: defaultUserId });
 		const output = await notificacaoService.marcarLida(String(input.id));

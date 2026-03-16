@@ -18,9 +18,14 @@ type TListNotificacaoDTO = {
 	ordering?: TNotificacaoListOrderBy;
 };
 
+export type TFindOneNotificacaoDTO = {
+	solicitacao_id?: string;
+};
+
 export interface INotificacaoService {
 	create(dto: TCreateServiceNoticacaoDTO): Promise<INotificacaoDTO>;
 	get(id: string): Promise<INotificacaoDTO>;
+	findOne(where: TFindOneNotificacaoDTO): Promise<INotificacaoDTO>;
 	marcarLida(id: string): Promise<INotificacaoDTO>;
 	list(filter?: TListNotificacaoDTO): Promise<TPagePaginatedResponse<INotificacaoDTO>>;
 }
@@ -48,6 +53,12 @@ export class NotificacaoService implements INotificacaoService {
 	async get(id: string): Promise<NotificacaoDTO> {
 		const model = new this.model();
 		const notificacao = await model.get(id);
+		return notificacao;
+	}
+
+	async findOne(where: TFindOneNotificacaoDTO): Promise<NotificacaoDTO> {
+		const model = new this.model();
+		const notificacao = await model.findOne(where);
 		return notificacao;
 	}
 
