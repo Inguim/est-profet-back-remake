@@ -9,13 +9,13 @@ import {
 } from "../models/SolicitacaoModel.js";
 import type { INotificacaoService } from "./NotificacaoService.js";
 
-export const UPDATE_TIPO_ALTERACAO_SOLICITACAO = ["alteracao_dados", "solicitar_analise", "aprovacao"] as const;
+export const TIPO_ALTERACAO_UPDATE = ["alteracao_dados", "solicitar_analise", "aprovacao"] as const;
 
-export type TUpdateTipoAlteracaoSolicitacaoService = (typeof UPDATE_TIPO_ALTERACAO_SOLICITACAO)[number];
+export type TUpdateTipoAlteracao = (typeof TIPO_ALTERACAO_UPDATE)[number];
 
 type TCreateDTOSolicitacaoService = Pick<ISolicitacaoDTO, "titulo" | "descricao" | "creator_id" | "projeto_id">;
 type TUpdateDTOSolicitacaoService = Partial<Pick<ISolicitacaoDTO, "descricao" | "titulo" | "status">> & {
-	tipo_alteracao: TUpdateTipoAlteracaoSolicitacaoService;
+	tipo_alteracao: TUpdateTipoAlteracao;
 };
 // tipo_alteracao
 // 1 -> apenas titulo / descricao -> dados

@@ -18,4 +18,21 @@ describe("SolicitacaoValidator", () => {
 			});
 		});
 	});
+
+	describe("Update", () => {
+		const validator = new solicitacaoValidator.UpdateValidator();
+
+		it("deve requerir os campos obrigatórios", () => {
+			const input = {};
+			const output = validator.validate(input);
+			expect(output.success).toBe(false);
+			const outputErrors = formatErrorZod(output.extra?.error as any);
+			expect(outputErrors).toStrictEqual({
+				descricao: "O campo descricao é obrigatório.",
+				tipo_alteracao:
+					"O campo tipo_alteracao deve ser um dos seguintes valores: alteracao_dados, solicitar_analise, aprovacao.",
+				titulo: "O campo titulo é obrigatório.",
+			});
+		});
+	});
 });
