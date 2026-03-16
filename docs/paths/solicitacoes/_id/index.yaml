@@ -29,6 +29,45 @@ get:
     "404":
       $ref: "../../../components/responses/404_not_found.yaml"
 
+patch:
+  tags: [Solicitações]
+  summary: Atualiza uma solicitação existente
+  security:
+    - BearerAuth: []
+  parameters:
+    - name: id
+      in: path
+      required: true
+      description: ID da solicitacação
+      schema:
+        type: string
+        example: "123"
+
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: "../../../components/schemas/solicitacao/update.yaml"
+
+  responses:
+    "200":
+      description: Solicitação atualizada com sucesso
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Solicitação atualizada com sucesso
+              data:
+                $ref: "../../../components/schemas/solicitacao/get.yaml"
+    "400":
+      $ref: "../../../components/responses/400_validacao.yaml"
+    "404":
+      $ref: "../../../components/responses/404_not_found.yaml"
+
 delete:
   tags: [Solicitações]
   summary: Deleta uma solicitação

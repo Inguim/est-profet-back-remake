@@ -1,0 +1,26 @@
+type: object
+required:
+  - titulo
+  - descricao
+  - status
+  - tipo_alteracao
+properties:
+  titulo:
+    type: string
+    example: "Corrija tal"
+  descricao:
+    type: string
+    example: "lorem"
+  status:
+    type: string
+    enum:
+      - aguardando
+      - alterado
+      - aprovado
+      - recusado
+  tipo_alteracao:
+    type: string
+    enum:
+      - alteracao_dados
+      - solicitar_analise
+      - tipo_alteracao
