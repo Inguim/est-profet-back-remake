@@ -4,11 +4,13 @@ import {
 	CategoriaService,
 	CursoService,
 	EstadoService,
+	NotificacaoService,
 	ProfessorCategoriaService,
 	ProfessorService,
 	ProjetoService,
 	SerieService,
 	SolicitacaoService,
+	TipoNotificacaoService,
 	UsuarioProjetoService,
 	UsuarioService,
 } from "../services/index.js";
@@ -33,7 +35,9 @@ const usuarioService = new UsuarioService({
 });
 const usuarioProjetoService = new UsuarioProjetoService();
 const projetoService = new ProjetoService({ usuarioService, categoriaService, estadoService, usuarioProjetoService });
-const solicitacaoService = new SolicitacaoService({ projetoService });
+const tipoNotificacaoService = new TipoNotificacaoService();
+const notificacaoService = new NotificacaoService({ tipoNotificacaoService });
+const solicitacaoService = new SolicitacaoService({ projetoService, notificacaoService });
 
 const solicitacaoController = new SolicitacaoController({ solicitacaoService });
 
