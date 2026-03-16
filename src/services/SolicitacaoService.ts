@@ -1,6 +1,6 @@
 import type { IProjetoService } from "./ProjetoService.js";
 import { BaseService, type IBaseService, type TListBaseServiceDTO } from "./BaseService.js";
-import { SolicitacaoDTO, type ISolicitacaoDTO } from "../dto/SolicitacaoDTO.js";
+import { SolicitacaoDTO, type ISolicitacaoDTO, type TSolicitacaoStatus } from "../dto/SolicitacaoDTO.js";
 import type { TPagePaginatedResponse } from "../utils/helpers/pagePaginator.js";
 import {
 	SolicitacaoModel,
@@ -11,7 +11,7 @@ import type { ProjetoCompletoDTO } from "../dto/ProjetoCompletoDTO.js";
 
 type TCreateDTOSolicitacaoService = Pick<ISolicitacaoDTO, "titulo" | "descricao" | "creator_id" | "projeto_id">;
 type TUpdateDTOSolicitacaoService = Partial<Pick<ISolicitacaoDTO, "descricao" | "titulo" | "status">>;
-export type TFindOneWhereSolicitacaoService = { id?: string };
+export type TFindOneWhereSolicitacaoService = { id?: string; projeto_id?: string; status?: TSolicitacaoStatus };
 
 type TContructorService = {
 	projetoService: IProjetoService;

@@ -10,6 +10,8 @@ export type TCreateModelSolicitacaoDTO = Required<
 export type TUpdateModelSolicitacaoDTO = Partial<Pick<ISolicitacaoDTO, "descricao" | "titulo" | "status">>;
 export type TFindOneModelSolicitacaoParams = {
 	id?: string;
+	projeto_id?: string;
+	status?: TSolicitacaoStatus;
 };
 export type TListWhereSolicitacao = {
 	status?: TSolicitacaoStatus;
