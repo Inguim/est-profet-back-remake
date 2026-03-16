@@ -105,6 +105,16 @@ describe("NotificacaoModel", () => {
 		expect(output.id).toEqual(String(input.id));
 	});
 
+	it("deve encontrar uma notificação pela SOLICITACAO_ID", async () => {
+		await notificaoModel.create({
+			tipo_id: defaultTipoId,
+			solicitacao_id: defaultSolicitacaoId,
+			user_id: defaultUserId,
+		});
+		const output = await notificaoModel.findOne({ solicitacao_id: defaultSolicitacaoId });
+		expect(output).instanceOf(NotificacaoDTO);
+	});
+
 	it("deve lançar um NotFoundError caso ID inexistente ao buscar por ID", async () => {
 		const fakeId = f.string.uuid();
 		await expect(notificaoModel.get(fakeId)).rejects.toThrow(NotFoundError);

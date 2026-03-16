@@ -24,6 +24,10 @@ export type TUpdateModelNotificacaoDTO = {
 	visto: boolean;
 };
 
+export type TFindOneModelNotificacaoParams = {
+	solicitacao_id?: string;
+};
+
 type TNotificacaoRow = {
 	id: string;
 	visto: boolean;
@@ -45,6 +49,7 @@ export interface INotificaoModel {
 	create(dto: TCreateModelNotificacaoDTO): Promise<INotificacaoDTO>;
 	get(id: string): Promise<INotificacaoDTO>;
 	update(id: string, dto: TUpdateModelNotificacaoDTO): Promise<INotificacaoDTO>;
+	findOne(params: TFindOneModelNotificacaoParams): Promise<INotificacaoDTO>;
 	list(
 		where?: TNotificacaoListWhere,
 		pagination?: TPagePagination,
@@ -97,6 +102,16 @@ export class NotificacaoModel implements INotificaoModel {
 			.update({ visto, updated_at: new Date() })
 			.returning("id");
 		return this.get(updatedRowNotificacao.id);
+	}
+
+	async findOne(params: TFindOneModelNotificacaoParams): Promise<INotificacaoDTO> {
+		const data = await this.db
+			.where(params as object)
+			.orderBy("updated_at", "desc")
+			.first();
+		const entity = new this.dto(data);
+		if (entity.id == null) throw new NotFoundError(`${this.tableTag} não encontrado`);
+		return entity;
 	}
 
 	private applyFilters(query: Knex.QueryBuilder<any, TNotificacaoRow[]>, where?: TNotificacaoListWhere) {

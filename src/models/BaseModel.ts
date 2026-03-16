@@ -83,7 +83,10 @@ export abstract class BaseModel<
 	}
 
 	async findOne(params: TFINDONE_DTO): Promise<TDTO> {
-		const data = await this.db.where(params as object).first();
+		const data = await this.db
+			.where(params as object)
+			.orderBy("updated_at", "desc")
+			.first();
 		const entity = new this.dto(data);
 		if (entity.id == null) throw new NotFoundError(`${this.tableTag} não encontrado`);
 		return entity;
