@@ -7,15 +7,25 @@ import {
 	type TListOrderingSolicitacao,
 	type TListWhereSolicitacao,
 } from "../models/SolicitacaoModel.js";
-import type { ProjetoCompletoDTO } from "../dto/ProjetoCompletoDTO.js";
+import type { INotificacaoService } from "./NotificacaoService.js";
+
+export const UPDATE_TIPO_ALTERACAO_SOLICITACAO = ["alteracao_dados", "solicitar_analise", "aprovacao"] as const;
+
+export type TUpdateTipoAlteracaoSolicitacaoService = (typeof UPDATE_TIPO_ALTERACAO_SOLICITACAO)[number];
 
 type TCreateDTOSolicitacaoService = Pick<ISolicitacaoDTO, "titulo" | "descricao" | "creator_id" | "projeto_id">;
-type TUpdateDTOSolicitacaoService = Partial<Pick<ISolicitacaoDTO, "descricao" | "titulo" | "status">>;
+type TUpdateDTOSolicitacaoService = Partial<Pick<ISolicitacaoDTO, "descricao" | "titulo" | "status">> & {
+	tipo_alteracao: TUpdateTipoAlteracaoSolicitacaoService;
+};
+// tipo_alteracao
+// 1 -> apenas titulo / descricao -> dados
+// 2 -> aprovar para analise
+// 3 -> aprovar projeto
 export type TFindOneWhereSolicitacaoService = { id?: string; projeto_id?: string; status?: TSolicitacaoStatus };
 
 type TContructorService = {
 	projetoService: IProjetoService;
-	// tipo_notificao
+	notificacaoService: INotificacaoService;
 };
 
 export interface ISolicitacaoService extends IBaseService {
@@ -44,10 +54,12 @@ export class SolicitacaoService
 	protected model = SolicitacaoModel;
 	protected dto = SolicitacaoDTO;
 	private projetoService: IProjetoService;
+	private notificacaoService: INotificacaoService;
 
-	constructor({ projetoService }: TContructorService) {
+	constructor({ projetoService, notificacaoService }: TContructorService) {
 		super();
 		this.projetoService = projetoService;
+		this.notificacaoService = notificacaoService;
 	}
 
 	async create(dto: TCreateDTOSolicitacaoService): Promise<SolicitacaoDTO> {
@@ -58,11 +70,26 @@ export class SolicitacaoService
 		return solicitacao;
 	}
 
-	async update(
-		id: string,
-		fields: Partial<Pick<ISolicitacaoDTO, "titulo" | "descricao" | "status">>,
-	): Promise<SolicitacaoDTO> {
-		throw Error("Metodo não implementado");
+	async update(id: string, fields: TUpdateDTOSolicitacaoService): Promise<SolicitacaoDTO> {
+		const { tipo_alteracao } = fields;
+		const model = new this.model();
+		let solicitacao = await model.findOne({ id });
+		if (tipo_alteracao === "alteracao_dados") {
+			let { titulo, descricao } = fields;
+			if (!titulo) titulo = solicitacao.titulo;
+			if (!descricao) descricao = solicitacao.descricao;
+			return await model.update(id, { titulo, descricao });
+		}
+		const { status } = fields;
+		if (!status) return solicitacao;
+		solicitacao = await model.update(id, { status });
+		const notificacao = await this.notificacaoService.findOne({ solicitacao_id: String(solicitacao.id) });
+		if (notificacao.id !== null) {
+			await this.notificacaoService.marcarLida(String(notificacao.id));
+			const status = tipo_alteracao === "solicitar_analise" ? "analise" : "aprovado";
+			await this.projetoService.updateStatus(solicitacao.projeto_id, status);
+		}
+		return solicitacao;
 	}
 
 	async get(id: string): Promise<SolicitacaoDTO | null> {

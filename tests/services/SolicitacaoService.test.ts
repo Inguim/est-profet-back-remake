@@ -4,10 +4,12 @@ import {
 	CategoriaService,
 	CursoService,
 	EstadoService,
+	NotificacaoService,
 	ProfessorCategoriaService,
 	ProfessorService,
 	ProjetoService,
 	SerieService,
+	TipoNotificacaoService,
 	UsuarioProjetoService,
 	UsuarioService,
 } from "../../src/services/index.js";
@@ -19,6 +21,7 @@ import { SolicitacaoDTO } from "../../src/dto/SolicitacaoDTO.js";
 describe("SolicitacaoService", () => {
 	let defaultProjetoId: string;
 	let defaultCreatorId: string;
+	let defaultUserId: string;
 
 	const alunoService = new AlunoService();
 	const professorService = new ProfessorService();
@@ -41,7 +44,9 @@ describe("SolicitacaoService", () => {
 		categoriaService,
 		usuarioService,
 	});
-	const solicitacaoService = new SolicitacaoService({ projetoService });
+	const tipoNotificacaoService = new TipoNotificacaoService();
+	const notificacaoService = new NotificacaoService({ tipoNotificacaoService });
+	const solicitacaoService = new SolicitacaoService({ projetoService, notificacaoService });
 
 	const prepararDadosTest = async () => {
 		const projetoService = new ProjetoService({
@@ -62,6 +67,7 @@ describe("SolicitacaoService", () => {
 			.build();
 		const input = { nome, email, password, curso_id, serie_id, tipo: "aluno" as const };
 		const usuario = await usuarioService.create(input);
+		defaultUserId = String(usuario.id);
 
 		const {
 			nome: nomeProjeto,
@@ -143,6 +149,58 @@ describe("SolicitacaoService", () => {
 		expect(output?.projeto).instanceOf(Object);
 		expect(output?.projeto).toHaveProperty("id");
 		expect(output?.projeto).toHaveProperty("nome");
+	});
+
+	it("deve alterar apenas os dados de uma solicitação pelo ID", async () => {
+		const input = await solicitacaoService.create({
+			titulo: "asd",
+			descricao: "res",
+			creator_id: defaultCreatorId,
+			projeto_id: defaultProjetoId,
+		});
+		const output = await solicitacaoService.update(String(input.id), {
+			tipo_alteracao: "alteracao_dados",
+			titulo: "alterado",
+			descricao: "alterao",
+		});
+		expect(input.titulo).not.toEqual(output.titulo);
+		expect(input.descricao).not.toEqual(output.descricao);
+	});
+
+	it("deve alterar o STATUS do PROJETO e o VISTO da NOTIFICACAO caso a solicitacao possua NOTIFICACAO", async () => {
+		const input = await solicitacaoService.create({
+			titulo: "asd",
+			descricao: "res",
+			creator_id: defaultCreatorId,
+			projeto_id: defaultProjetoId,
+		});
+		const notificacao = await notificacaoService.create({ solicitacao_id: String(input.id), user_id: defaultUserId });
+		const outputSolicitacao = await solicitacaoService.update(String(input.id), {
+			tipo_alteracao: "solicitar_analise",
+			status: "recusado",
+		});
+		const outputProjeto = await projetoService.get(outputSolicitacao.projeto_id);
+		const notificacaoOutput = await notificacaoService.get(String(notificacao.id));
+		expect(outputSolicitacao.status).toEqual("recusado");
+		expect(outputProjeto.status.value).toEqual("analise");
+		expect(notificacaoOutput.visto).toBeTruthy();
+	});
+
+	it("deve aprovar o PROJETO ao atualizar solicitacao com usando o tipo APROVACAO", async () => {
+		const input = await solicitacaoService.create({
+			titulo: "asd",
+			descricao: "res",
+			creator_id: defaultCreatorId,
+			projeto_id: defaultProjetoId,
+		});
+		await notificacaoService.create({ solicitacao_id: String(input.id), user_id: defaultUserId });
+		const outputSolicitacao = await solicitacaoService.update(String(input.id), {
+			tipo_alteracao: "aprovacao",
+			status: "aprovado",
+		});
+		const outputProjeto = await projetoService.get(outputSolicitacao.projeto_id);
+		expect(outputSolicitacao.status).toEqual("aprovado");
+		expect(outputProjeto.status.value).toEqual("aprovado");
 	});
 
 	it("deve deletar uma solicitação pelo ID", async () => {
