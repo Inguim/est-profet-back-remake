@@ -4,12 +4,12 @@ import { faker as f } from "@faker-js/faker";
 import { formatErrorZod } from "../../src/utils/helpers/formatErrorZod.js";
 import { PROJETO_STATUS_VALUES } from "../../src/dto/ProjetoDTO.js";
 
-describe("UsuarioValidator", () => {
+describe("ProjetoValidator", () => {
 	describe("Create", () => {
 		const validator = new projetoValidator.CreateValidator();
 
 		it("deve requerir os campos obrigatórios", () => {
-			const input = { tipo: "aluno" };
+			const input = {};
 			const output = validator.validate(input);
 			expect(output.success).toBe(false);
 			const outputErrors = formatErrorZod(output.extra?.error as any);
@@ -84,6 +84,27 @@ describe("UsuarioValidator", () => {
 
 	describe("Update", () => {
 		const validator = new projetoValidator.UpdateValidator();
+
+		it("deve requerir os campos obrigatórios", () => {
+			const input = {};
+			const output = validator.validate(input);
+			expect(output.success).toBe(false);
+			const outputErrors = formatErrorZod(output.extra?.error as any);
+			expect(outputErrors).toStrictEqual({
+				nome: "O campo nome é obrigatório.",
+				resumo: "O campo resumo é obrigatório.",
+				introducao: "O campo introducao é obrigatório.",
+				objetivo: "O campo objetivo é obrigatório.",
+				metodologia: "O campo metodologia é obrigatório.",
+				result_disc: "O campo result_disc é obrigatório.",
+				conclusao: "O campo conclusao é obrigatório.",
+				status: "O campo tipo deve ser um dos seguintes valores: analise, alteracao, aprovado.",
+			});
+		});
+	});
+
+	describe("UpdateStatus", () => {
+		const validator = new projetoValidator.UpdateStatusValidator();
 
 		it.each(PROJETO_STATUS_VALUES)("deve aceitar o status de projeto válido: %s", (status) => {
 			const input = { status };

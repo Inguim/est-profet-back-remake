@@ -39,7 +39,9 @@ const createSchema = BASE_SCHEMA.extend({
 		}),
 }).omit({ status: true });
 
-const updateSchema = BASE_SCHEMA.pick({ status: true });
+const updateSchema = BASE_SCHEMA.omit({ categoria_id: true, estado_id: true });
+
+const updateStatusSchema = BASE_SCHEMA.pick({ status: true });
 
 class CreateValidator implements IBaseValidator {
 	validate(data: any): IBaseValidatorResponse<ZodSafeParseResult<any>> {
@@ -61,7 +63,18 @@ class UpdateValidator implements IBaseValidator {
 	}
 }
 
+class UpdateStatusValidator implements IBaseValidator {
+	validate(data: any): IBaseValidatorResponse<ZodSafeParseResult<any>> {
+		const result = updateStatusSchema.safeParse(data);
+		return {
+			success: result.success,
+			extra: result,
+		};
+	}
+}
+
 export const projetoValidator = {
 	CreateValidator,
 	UpdateValidator,
+	UpdateStatusValidator,
 };
