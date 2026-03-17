@@ -1,1 +1,1 @@
-import "./projetoListener.js";
+import "./solicitacaoListener.js";
