@@ -111,7 +111,7 @@ export class SolicitacaoController {
 			const filters = queryFilters || {};
 			const result = await this.solicitacaoService.list({ pagination, filters, ordering });
 			res.status(STATUS_CODE.OK).json({
-				message: "Usuários buscados com sucesso",
+				message: "Solicitações buscadas com sucesso",
 				data: {
 					results: result.data.map((solicitacao) => this.formatarSolicitacao(solicitacao)),
 					page: result.page,

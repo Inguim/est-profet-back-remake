@@ -17,7 +17,6 @@ import { ProfessorCategoriaService } from "../../src/services/ProfessorCategoria
 import { UsuarioAlunoFactory } from "../factories/UsuarioAlunoFactory.js";
 import type { CursoDTO } from "../../src/dto/CursoDTO.js";
 import type { SerieDTO } from "../../src/dto/SerieDTO.js";
-import "../../src/listeners/projetoListener.js";
 
 describe("ProjetoService", () => {
 	let defaultCategoriaId: string;
