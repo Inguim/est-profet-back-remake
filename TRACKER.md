@@ -9,9 +9,9 @@
 - [ ] Noticias
 - [ ] Contribuidores - contribuidors
 - [ ] Tipo contribuição
-- [ ] Notificações
-- [ ] Tipo notificações
-- [ ] Solicitações
+- [x] Notificações
+- [x] Tipo notificações
+- [x] Solicitações
 - [x] Menu
 - [x] Categorias
 - [x] Professores
@@ -25,7 +25,7 @@
 - [x] Aluno
   - [x] Service
 - [x] Categoria
-  - [ ] Service
+  - [] Service
 - [ ] Contribuidor
   - [ ] Service
   - [ ] Controller
@@ -41,9 +41,9 @@
 - [ ] Noticia
   - [ ] Service
   - [ ] Controller
-- [ ] Notificacao
-  - [ ] Service
-  - [ ] Controller
+- [x] Notificacao
+  - [x] Service
+  - [x] Controller
 - [x] Professor
   - [x] Service
 - [x] Professor Categoria
@@ -51,19 +51,19 @@
   - [x] Controller
 - [x] Projeto
   - [x] Model
-  - [ ] Service
-  - [ ] Controller
+  - [x] Service
+  - [x] Controller
 - [x] Serie
   - [x] Service
   - [x] Controller
-- [ ] Solicitação
-  - [ ] Service
-  - [ ] Controller
+- [x] Solicitação
+  - [x] Service
+  - [x] Controller
 - [ ] Tipo contribuição
   - [ ] Service
   - [ ] Controller
-- [ ] Tipo notificação
-  - [ ] Service
+- [x] Tipo notificação
+  - [x] Service
 - [x] User
   - [x] Service
   - [ ] Controller
@@ -79,5 +79,5 @@
 - [x] Menu
 - [x] Serie
 - [ ] Tipo contribuicao
-- [ ] Tipo notificacao
+- [x] Tipo notificacao
 - [ ] User
