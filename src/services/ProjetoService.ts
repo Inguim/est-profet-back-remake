@@ -22,6 +22,7 @@ import type { ICategoriaService } from "./CategoriaService.js";
 import type { CategoriaDTO } from "../dto/CategoriaDTO.js";
 import type { EstadoDTO } from "../dto/EstadoDTO.js";
 import type { IUsuarioService } from "./UsuarioService.js";
+import { ProjetoEvents, type IProjetoEvents } from "../events/ProjetoEvents.js";
 
 export type TCreateProjetoMembro = {
 	user_id: string;
@@ -35,6 +36,9 @@ type TListProjetoDTO = {
 };
 
 type TCreateDTO = Omit<IProjetoDTO, "id" | "created_at" | "updated_at" | "status">;
+type TUpdateDTO = Omit<IProjetoDTO, "id" | "created_at" | "updated_at" | "estado_id" | "categoria_id"> & {
+	executer_id: string;
+};
 
 type TConstructorService = {
 	connection?: Knex;
@@ -51,6 +55,7 @@ type TProjetosMembros = {
 
 export interface IProjetoService {
 	create(dto: TCreateDTO, membrosDTO: TCreateProjetoMembro[]): Promise<IProjetoDTO>;
+	update(id: string, dto: TUpdateDTO): Promise<IProjetoDTO>;
 	updateStatus(id: string, status: TProjetoStatus): Promise<IProjetoDTO>;
 	get(id: string): Promise<IProjetoCompletoDTO>;
 	delete(id: string): Promise<boolean>;
@@ -64,6 +69,7 @@ export class ProjetoService implements IProjetoService {
 	private estadoService: IEstadoService;
 	private categoriaService: ICategoriaService;
 	private usuarioService: IUsuarioService;
+	private projetoEvents: IProjetoEvents = new ProjetoEvents();
 
 	constructor({
 		usuarioProjetoService,
@@ -98,6 +104,23 @@ export class ProjetoService implements IProjetoService {
 			await this.vincularMembros(String(projeto.id), membrosDTO, trx);
 			return projeto;
 		});
+	}
+
+	async update(id: string, dto: TUpdateDTO): Promise<ProjetoDTO> {
+		const { nome, objetivo, introducao, conclusao, metodologia, result_disc, resumo, status, executer_id } = dto;
+		const model = new this.model();
+		const projeto = await model.update(id, {
+			nome,
+			objetivo,
+			introducao,
+			conclusao,
+			metodologia,
+			result_disc,
+			resumo,
+			status,
+		});
+		this.projetoEvents.updated(String(projeto.id), executer_id);
+		return projeto;
 	}
 
 	async updateStatus(id: string, status: TProjetoStatus): Promise<ProjetoDTO> {
@@ -231,4 +254,14 @@ export class ProjetoService implements IProjetoService {
 			await this.usuarioProjetoService.create({ projeto_id: projetoId, user_id, relacao }, trx);
 		}
 	}
+
+	// private async atualizarSolicitacao(projeto: ProjetoDTO, executer_id: string) {
+	// 	await this.solicitacaoService.findOne({ projeto_id: String(projeto.id) }).then(async (solicitacao) => {
+	// 		await this.solicitacaoService.update(String(solicitacao.id), {
+	// 			status: "alterado",
+	// 			tipo_alteracao: "alteracao_dados",
+	// 		});
+	// 		await this.notificacaoService.create({ solicitacao_id: String(solicitacao.id), user_id: executer_id });
+	// 	});
+	// }
 }

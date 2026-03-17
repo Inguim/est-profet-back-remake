@@ -24,6 +24,7 @@ describe("ProjetoService", () => {
 	let defaultCursoId: string;
 	let defaultSerieId: string;
 	let defaultProjetoId: string;
+	let defaultUserId: string;
 	const usuarioProjetoService = new UsuarioProjetoService();
 	const estadoService = new EstadoService();
 	const categoriaService = new CategoriaService();
@@ -76,6 +77,7 @@ describe("ProjetoService", () => {
 
 		const { nome, resumo, introducao, objetivo, conclusao, result_disc, categoria_id, estado_id, metodologia } =
 			ProjetoFactory.create()
+				.withStatus("analise")
 				.withCategoria(defaultCategoriaId)
 				.withEstado(defaultEstadoId)
 				.withUsuarios([String(usuarioProfessor.id), String(usuarioAluno.id)])
@@ -104,11 +106,34 @@ describe("ProjetoService", () => {
 			],
 		);
 		defaultProjetoId = String(id);
+		defaultUserId = String(usuarioAluno.id);
 	}
 
 	beforeAll(async () => {
 		await preencherDefaults();
 		await gerarProjetoCompleto();
+	});
+
+	it("deve atualizar as informações de um projeto", async () => {
+		const output = await projetoService.update(defaultProjetoId, {
+			nome: "alterado",
+			conclusao: "alterado",
+			introducao: "alterado",
+			metodologia: "alterado",
+			objetivo: "alterado",
+			result_disc: "alterado",
+			resumo: "alterado",
+			status: "aprovado",
+			executer_id: defaultUserId,
+		});
+		expect(output.nome).toEqual("alterado");
+		expect(output.conclusao).toEqual("alterado");
+		expect(output.introducao).toEqual("alterado");
+		expect(output.metodologia).toEqual("alterado");
+		expect(output.objetivo).toEqual("alterado");
+		expect(output.result_disc).toEqual("alterado");
+		expect(output.resumo).toEqual("alterado");
+		expect(output.status).toEqual("aprovado");
 	});
 
 	it("deve retornar uma lista de projetos paginada", async () => {
