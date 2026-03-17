@@ -27,6 +27,8 @@ paths:
     $ref: "./paths/projetos/index.yaml"
   /projetos/{id}:
     $ref: "./paths/projetos/_id/index.yaml"
+  /projetos/{id}/status:
+    $ref: "./paths/projetos/_id/update_status.yaml"
   /series:
     $ref: "./paths/series/index.yaml"
   /solicitacoes:

@@ -1,0 +1,39 @@
+patch:
+  tags: [Projetos]
+  summary: Atualiza o status de um Projeto
+  security:
+    - BearerAuth: []
+  parameters:
+    - name: id
+      in: path
+      required: true
+      description: ID do projeto
+      schema:
+        type: string
+        example: "123"
+
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: "../../../components/schemas/projeto/update-status.yaml"
+  responses:
+    "200":
+      description: Projeto atualizado com sucesso
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Projeto atualizado com sucesso
+              data:
+                $ref: "../../../components/schemas/projeto/item.yaml"
+    "400":
+      $ref: "../../../components/responses/400_validacao.yaml"
+    "401":
+      $ref: "../../../components/responses/401_usuario_sem_autorizacao.yaml"
+    "404":
+      $ref: "../../../components/responses/404_not_found.yaml"

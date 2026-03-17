@@ -1,12 +1,8 @@
-type: object
-example:
-  status: aprovado
-required:
-  - status
-properties:
-  status:
-    type: string
-    enum:
-      - analise
-      - alteracao
-      - aprovado
+allOf:
+  - $ref: "./base.yaml"
+  - type: object
+    properties:
+      categoria_id:
+        deprecated: true
+      estado_id:
+        deprecated: true

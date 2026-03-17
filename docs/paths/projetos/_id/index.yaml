@@ -25,7 +25,7 @@ get:
     "404":
       $ref: "../../../components/responses/404_not_found.yaml"
 
-patch:
+put:
   tags: [Projetos]
   summary: Atualiza um Projeto
   security:
@@ -45,7 +45,6 @@ patch:
       application/json:
         schema:
           $ref: "../../../components/schemas/projeto/update.yaml"
-
   responses:
     "200":
       description: Projeto atualizado com sucesso
