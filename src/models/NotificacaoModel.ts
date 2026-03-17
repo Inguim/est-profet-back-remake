@@ -11,6 +11,7 @@ export type TNotificacaoListOrderBy = "updated_at__desc";
 
 export type TNotificacaoListWhere = {
 	solicitacao_id?: string;
+	user_id?: string;
 	visto?: boolean;
 };
 
@@ -43,7 +44,7 @@ type TNotificacaoRow = {
 	projeto_nome: string;
 };
 
-const LIST_WHERE_KEYS = ["solicitacao_id", "visto"] as const;
+const LIST_WHERE_KEYS = ["solicitacao_id", "visto", "user_id"] as const;
 
 export interface INotificaoModel {
 	create(dto: TCreateModelNotificacaoDTO): Promise<INotificacaoDTO>;
@@ -121,6 +122,7 @@ export class NotificacaoModel implements INotificaoModel {
 				if (LIST_WHERE_KEYS.includes(key as keyof TNotificacaoListWhere)) {
 					if (key !== "visto" && !!value) {
 						if (key === "solicitacao_id") qb.where("solicitacaos.id", value);
+						else if (key === "user_id") qb.where("notificacaos.user_id", value);
 					} else if (key === "visto") qb.where("notificacaos.visto", value === true || value === "true");
 				}
 			});
