@@ -112,7 +112,7 @@ export class ProjetoController {
 				result_disc,
 				resumo,
 				status,
-				executer_id: id,
+				executer_id: String(usuarioId),
 			});
 			res.status(STATUS_CODE.OK).send({
 				message: "Projeto atualizado com sucesso",
