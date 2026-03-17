@@ -50,6 +50,11 @@ get:
       description: Estado do projeto
       schema:
         type: string
+    - name: nome__ilike
+      in: query
+      description: Nome do projeto
+      schema:
+        type: string
     - name: page
       in: query
       description: Página
