@@ -5,7 +5,7 @@ export interface ISolicitacaoEvents {
 	created(solicitacao: ISolicitacaoDTO, projetoMembrosIds: string[]): Promise<void>;
 }
 
-export class SolicitacaoEvents implements SolicitacaoEvents {
+export class SolicitacaoEvents implements ISolicitacaoEvents {
 	private eventEmitter = eventBus;
 
 	async created(solicitacao: SolicitacaoDTO, projetoMembrosIds: string[]) {
