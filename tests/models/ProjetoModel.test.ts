@@ -223,4 +223,52 @@ describe("ProjetoModel", () => {
 		expect(output.data.every((projeto) => projeto.estado_id === defaultRandomEstadoId)).toBeTruthy();
 		await projetoModel.delete(String(projeto.id));
 	});
+
+	it("deve retornar uma lista de projetos que contenham o NOME", async () => {
+		const { nome, resumo, introducao, objetivo, metodologia, result_disc, conclusao, status, categoria_id, estado_id } =
+			ProjetoFactory.create()
+				.withNome("Teste")
+				.withCategoria(defaultCategoriaId)
+				.withEstado(defaultRandomEstadoId)
+				.build();
+		const projeto = await projetoModel.create({
+			nome,
+			resumo,
+			introducao,
+			objetivo,
+			metodologia,
+			result_disc,
+			conclusao,
+			status,
+			categoria_id,
+			estado_id,
+		});
+		const output = await projetoModel.list({ nome__ilike: "Teste" });
+		expect(output.data.map((projeto) => projeto.nome)).toContain("Teste");
+		await projetoModel.delete(String(projeto.id));
+	});
+
+	it("não deve ser CASE SENSTIVIE ao busca projetos que contenham o NOME", async () => {
+		const { nome, resumo, introducao, objetivo, metodologia, result_disc, conclusao, status, categoria_id, estado_id } =
+			ProjetoFactory.create()
+				.withNome("Teste")
+				.withCategoria(defaultCategoriaId)
+				.withEstado(defaultRandomEstadoId)
+				.build();
+		const projeto = await projetoModel.create({
+			nome,
+			resumo,
+			introducao,
+			objetivo,
+			metodologia,
+			result_disc,
+			conclusao,
+			status,
+			categoria_id,
+			estado_id,
+		});
+		const output = await projetoModel.list({ nome__ilike: "teste" });
+		expect(output.data.map((projeto) => projeto.nome)).toContain("Teste");
+		await projetoModel.delete(String(projeto.id));
+	});
 });

@@ -12,6 +12,7 @@ export type TProjetoListWhere = {
 	status?: TProjetoStatus;
 	categoria_id?: string;
 	estado_id?: string;
+	nome__ilike?: string;
 };
 
 type TCreateModelDTO = Omit<IProjetoDTO, "id" | "created_at" | "updated_at">;
@@ -24,7 +25,7 @@ type TUpdateModelDTO = Partial<
 
 type TListModelResponse = TPagePaginatedResponse<IProjetoDTO>;
 
-const LIST_WHERE_KEYS = ["status", "categoria_id", "estado_id", "orderBy"] as const;
+const LIST_WHERE_KEYS = ["status", "categoria_id", "estado_id", "orderBy", "nome__ilike"] as const;
 
 export interface IProjetoModel {
 	create(dto: TCreateModelDTO): Promise<IProjetoDTO>;
@@ -70,6 +71,7 @@ export class ProjetoModel implements IProjetoModel {
 					if (key === "status") qb.where("status", value);
 					else if (key === "categoria_id") qb.where("categoria_id", value);
 					else if (key === "estado_id") qb.where("estado_id", value);
+					else if (key === "nome__ilike") qb.whereILike("nome", `%${value}%`);
 				}
 			});
 		});
