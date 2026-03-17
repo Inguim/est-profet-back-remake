@@ -8,6 +8,7 @@ import type { UsuarioProfessorDTO } from "../dto/UsuarioProfessorDTO.js";
 import type { TUsuarioStatus, TUsuarioTipo } from "../dto/UsuarioDTO.js";
 import type { TPagePagination } from "../utils/helpers/pagePaginator.js";
 import type { TListOrderingUsuario } from "../models/UsuarioModel.js";
+import type { INotificacaoService } from "../services/NotificacaoService.js";
 
 type TCreateDTOBase = {
 	confirm_password: string;
@@ -26,6 +27,8 @@ export type TRequestListQueryParamsUsuario = {
 	ordering?: TListOrderingUsuario;
 } & Partial<TPagePagination>;
 
+export type TRequestListQueryParamsUsuarioNotificacoes = Partial<TPagePagination>;
+
 type TRequestCreate = Request<any, any, TCreateDTO>;
 
 type TRequestUpdate = Request<{ id: string }, any, TUpdateDTO>;
@@ -34,15 +37,25 @@ type TRequestGet = IAuthRequest<{ id: string }>;
 
 export type TRequestListUsuario = Request<any, any, any, TRequestListQueryParamsUsuario>;
 
+export type TRequestListUsuarioNotificacaoes = IAuthRequest<
+	{ id: string },
+	any,
+	any,
+	TRequestListQueryParamsUsuarioNotificacoes
+>;
+
 type TControllerConstructor = {
 	usuarioService: IUsuarioService;
+	notificacaoService: INotificacaoService;
 };
 
 export class UsuarioController {
 	private usuarioService: IUsuarioService;
+	private notificacaoService: INotificacaoService;
 
-	constructor({ usuarioService }: TControllerConstructor) {
+	constructor({ usuarioService, notificacaoService }: TControllerConstructor) {
 		this.usuarioService = usuarioService;
+		this.notificacaoService = notificacaoService;
 	}
 
 	async create(req: TRequestCreate, res: Response, next: NextFunction): Promise<void> {
@@ -130,6 +143,31 @@ export class UsuarioController {
 			res.status(STATUS_CODE.OK).json({
 				message: "Usuário encontrado com sucesso",
 				data,
+			});
+		} catch (error) {
+			next(error);
+		}
+	}
+
+	async listNotificacoes(req: TRequestListUsuarioNotificacaoes, res: Response, next: NextFunction): Promise<void> {
+		try {
+			const { id } = req.params;
+			const { page, perPage } = req.query;
+			const pagination = { page: Number(page) || 1, perPage: Number(perPage) || 10 };
+			const result = await this.notificacaoService.list({
+				pagination,
+				filters: { user_id: id },
+				ordering: "updated_at__desc",
+			});
+			res.status(STATUS_CODE.OK).json({
+				message: "Notificações buscadas com sucesso",
+				data: {
+					results: result.data,
+					page: result.page,
+					perPage: result.perPage,
+					count: result.count,
+					totalPages: result.totalPages,
+				},
 			});
 		} catch (error) {
 			next(error);
