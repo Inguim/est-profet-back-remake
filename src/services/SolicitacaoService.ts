@@ -8,6 +8,7 @@ import {
 	type TListWhereSolicitacao,
 } from "../models/SolicitacaoModel.js";
 import type { INotificacaoService } from "./NotificacaoService.js";
+import { SolicitacaoEvents, type ISolicitacaoEvents } from "../events/SolicitacaoEvents.js";
 
 export const TIPO_ALTERACAO_UPDATE = ["alteracao_dados", "solicitar_analise", "aprovacao"] as const;
 
@@ -55,6 +56,7 @@ export class SolicitacaoService
 	protected dto = SolicitacaoDTO;
 	private projetoService: IProjetoService;
 	private notificacaoService: INotificacaoService;
+	private solicitacaoEvents: ISolicitacaoEvents = new SolicitacaoEvents();
 
 	constructor({ projetoService, notificacaoService }: TContructorService) {
 		super();
@@ -67,6 +69,9 @@ export class SolicitacaoService
 		const model = new this.model();
 		const solicitacao = await model.create({ status: "aguardando", titulo, descricao, creator_id, projeto_id });
 		await this.projetoService.updateStatus(projeto_id, "alteracao");
+		const projeto = await this.projetoService.get(projeto_id);
+		const projetoMembrosIds = [...projeto.alunos.map((a) => a.id), ...projeto.professores.map((p) => p.id)];
+		this.solicitacaoEvents.created(solicitacao, projetoMembrosIds);
 		return solicitacao;
 	}
 
