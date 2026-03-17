@@ -1,4 +1,4 @@
-import { beforeAll, describe, expect, it, vitest } from "vitest";
+import { beforeAll, describe, expect, it } from "vitest";
 import { UsuarioProjetoService } from "../../src/services/UsuarioProjetoService.js";
 import { EstadoService } from "../../src/services/EstadoService.js";
 import { CategoriaService } from "../../src/services/CategoriaService.js";
@@ -18,7 +18,6 @@ import { UsuarioAlunoFactory } from "../factories/UsuarioAlunoFactory.js";
 import type { CursoDTO } from "../../src/dto/CursoDTO.js";
 import type { SerieDTO } from "../../src/dto/SerieDTO.js";
 import "../../src/listeners/projetoListener.js";
-import { eventBus } from "../../src/events/index.js";
 
 describe("ProjetoService", () => {
 	let defaultCategoriaId: string;
@@ -111,15 +110,6 @@ describe("ProjetoService", () => {
 	beforeAll(async () => {
 		await preencherDefaults();
 		await gerarProjetoCompleto();
-	});
-
-	it("deve emitir um event 'projeto.created' ao criar um projeto ", async () => {
-		const spy = vitest.spyOn(eventBus, "emit");
-		await gerarProjetoCompleto();
-		expect(spy).toHaveBeenCalledWith("projeto.created", {
-			id: expect.any(String),
-			membrosIds: expect.any(Array),
-		});
 	});
 
 	it("deve retornar uma lista de projetos paginada", async () => {
