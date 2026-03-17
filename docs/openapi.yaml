@@ -39,6 +39,8 @@ paths:
     $ref: "./paths/usuarios/index.yaml"
   /usuarios/{id}:
     $ref: "./paths/usuarios/_id/index.yaml"
+  /usuarios/{id}/notificacoes:
+    $ref: "./paths/usuarios/_id/notificacoes.yaml"
 
 components:
   securitySchemes:
