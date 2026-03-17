@@ -6,11 +6,16 @@ import { faker as f } from "@faker-js/faker";
 import { STATUS_CODE } from "../../src/utils/constants/status-code.js";
 import { v4 as uuidV4 } from "uuid";
 import { ProjetoFactory } from "../factories/ProjetoFactory.js";
-import type { TRequestCreateProjetoDTO, TRequestUpdateProjetoDTO } from "../../src/controllers/ProjetoController.js";
+import type {
+	TRequestCreateProjetoDTO,
+	TRequestUpdateProjetoDTO,
+	TRequestUpdateStatusProjetoDTO,
+} from "../../src/controllers/ProjetoController.js";
 import type { TCreateProjetoMembro } from "../../src/services/ProjetoService.js";
 
 const createMiddleware = ValidateProjetoMiddleware.create;
 const updateMiddleware = ValidateProjetoMiddleware.update;
+const updateStatusMiddleware = ValidateProjetoMiddleware.updateStatus;
 
 function createTestApp(middleware: RequestHandler) {
 	const app = express();
@@ -88,8 +93,49 @@ describe("ValidateUsuarioMiddleware", () => {
 
 		it("deve tornar 200 para dados válidos", async () => {
 			const inputId = uuidV4();
+			const { nome, objetivo, introducao, conclusao, metodologia, result_disc, resumo, status } =
+				ProjetoFactory.create().build();
+			const output = await makeRequest<TRequestUpdateProjetoDTO>(inputId, {
+				nome,
+				objetivo,
+				introducao,
+				conclusao,
+				metodologia,
+				result_disc,
+				resumo,
+				status,
+			});
+			expect(output.status).toBe(STATUS_CODE.OK);
+			expect(output.body.ok).toBe(true);
+		});
+
+		it("deve retornar 400 para dados inválidos", async () => {
+			const inputId = uuidV4();
+			const output = await makeRequest<object>(inputId, {});
+			expect(output.body).toMatchObject({
+				message: expect.any(String),
+				status: STATUS_CODE.BAD_REQUEST,
+				errors: expect.any(Object),
+			});
+		});
+	});
+
+	describe("UpdateStatus", () => {
+		const makeRequest = <T>(id: string, data: T) => {
+			return request(app)
+				.patch(`/projeto/${id}`)
+				.set("Content-Type", "application/json")
+				.send(data as object);
+		};
+
+		beforeAll(() => {
+			app = createTestApp(updateStatusMiddleware as RequestHandler);
+		});
+
+		it("deve tornar 200 para dados válidos", async () => {
+			const inputId = uuidV4();
 			const { status } = ProjetoFactory.create().build();
-			const output = await makeRequest<TRequestUpdateProjetoDTO>(inputId, { status });
+			const output = await makeRequest<TRequestUpdateStatusProjetoDTO>(inputId, { status });
 			expect(output.status).toBe(STATUS_CODE.OK);
 			expect(output.body.ok).toBe(true);
 		});

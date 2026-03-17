@@ -14,7 +14,11 @@ import {
 } from "../services/index.js";
 import { ensureAuthMiddleware, ValidateProjetoMiddleware } from "../middlewares/index.js";
 
-const { create: createMiddleware, update: updateMiddleware } = ValidateProjetoMiddleware;
+const {
+	create: createMiddleware,
+	update: updateMiddleware,
+	updateStatus: updateStatusMiddleware,
+} = ValidateProjetoMiddleware;
 
 const estadoService = new EstadoService();
 const alunoService = new AlunoService();
@@ -41,11 +45,13 @@ router.post("/", ensureAuthMiddleware, createMiddleware, (req, res, next) =>
 );
 router.get("/", (req, res, next) => projetoController.list(req, res, next));
 
-router.put("/:id", ensureAuthMiddleware, (req, res, next) => projetoController.update(req as any, res, next));
+router.put("/:id", ensureAuthMiddleware, updateMiddleware, (req, res, next) =>
+	projetoController.update(req, res, next),
+);
 router.get("/:id", (req, res, next) => projetoController.get(req, res, next));
 router.delete("/:id", ensureAuthMiddleware, (req, res, next) => projetoController.delete(req as any, res, next));
 
-router.patch("/:id/status", ensureAuthMiddleware, updateMiddleware, (req, res, next) =>
+router.patch("/:id/status", ensureAuthMiddleware, updateStatusMiddleware, (req, res, next) =>
 	projetoController.updateStatus(req, res, next),
 );
 

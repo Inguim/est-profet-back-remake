@@ -19,7 +19,15 @@ function update(req: TRequestUpdateProjeto, res: Response, next: NextFunction) {
 	next();
 }
 
+function updateStatus(req: TRequestUpdateProjeto, res: Response, next: NextFunction) {
+	const validator = new projetoValidator.UpdateStatusValidator();
+	const result = validator.validate(req.body);
+	if (!result.success) throw new ValidationError(result.extra?.error as ZodError);
+	next();
+}
+
 export const ValidateProjetoMiddleware = {
 	create,
 	update,
+	updateStatus,
 };
