@@ -22,6 +22,7 @@ import type { ICategoriaService } from "./CategoriaService.js";
 import type { CategoriaDTO } from "../dto/CategoriaDTO.js";
 import type { EstadoDTO } from "../dto/EstadoDTO.js";
 import type { IUsuarioService } from "./UsuarioService.js";
+import { eventBus } from "../events/index.js";
 
 export type TCreateProjetoMembro = {
 	user_id: string;
@@ -64,6 +65,7 @@ export class ProjetoService implements IProjetoService {
 	private estadoService: IEstadoService;
 	private categoriaService: ICategoriaService;
 	private usuarioService: IUsuarioService;
+	private eventDispatcher = eventBus;
 
 	constructor({
 		usuarioProjetoService,
@@ -96,6 +98,11 @@ export class ProjetoService implements IProjetoService {
 				status: "analise",
 			});
 			await this.vincularMembros(String(projeto.id), membrosDTO, trx);
+			this.eventDispatcher.emit("projeto.created", {
+				id: String(projeto.id),
+				membrosIds: membrosDTO.map((membro) => membro.user_id),
+			});
+			console.log("aqui");
 			return projeto;
 		});
 	}
