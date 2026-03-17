@@ -7,6 +7,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 import SwaggerParser from "@apidevtools/swagger-parser";
 import { getEnv } from "./utils/helpers/getEnv.js";
+import "./listeners/index.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
