@@ -1,3 +1,3 @@
 export type TEvents = {
-	"projeto.created": { id: string; membrosIds: string[] };
+	"solicitacao.created": { solicitacaoId: string; projetoMembrosIds: string[] };
 };
