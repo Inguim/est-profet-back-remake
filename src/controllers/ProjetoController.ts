@@ -12,9 +12,14 @@ export type TRequestCreateProjetoDTO = {
 	membros: TCreateProjetoMembro[];
 };
 
-export type TRequestUpdateProjetoDTO = {
+export type TRequestUpdateStatusProjetoDTO = {
 	status: TProjetoStatus;
 };
+
+export type TRequestUpdateProjetoDTO = Pick<
+	IProjetoDTO,
+	"nome" | "resumo" | "introducao" | "objetivo" | "metodologia" | "result_disc" | "conclusao" | "status"
+>;
 
 export type TRequestListQueryParamsProjeto = {
 	status?: TProjetoStatus;
@@ -26,6 +31,8 @@ export type TRequestListQueryParamsProjeto = {
 export type TRequestCreateProjeto = IAuthRequest<any, any, TRequestCreateProjetoDTO>;
 
 type TRequestGetProjeto = Request<{ id: string }>;
+
+export type TRequestUpdateStatusProjeto = IAuthRequest<{ id: string }, any, TRequestUpdateStatusProjetoDTO>;
 
 export type TRequestUpdateProjeto = IAuthRequest<{ id: string }, any, TRequestUpdateProjetoDTO>;
 
@@ -91,6 +98,44 @@ export class ProjetoController {
 	}
 
 	async update(req: TRequestUpdateProjeto, res: Response, next: NextFunction): Promise<void> {
+		try {
+			const { id } = req.params;
+			const { nome, objetivo, introducao, conclusao, metodologia, result_disc, resumo, status } = req.body;
+			const { usuarioId, usuarioAdmin } = req;
+			await this.validarAutorizacao(String(usuarioId), id, usuarioAdmin as boolean);
+			const projeto = await this.projetoService.update(id, {
+				nome,
+				objetivo,
+				introducao,
+				conclusao,
+				metodologia,
+				result_disc,
+				resumo,
+				status,
+				executer_id: id,
+			});
+			res.status(STATUS_CODE.OK).send({
+				message: "Projeto atualizado com sucesso",
+				data: {
+					id: projeto.id,
+					nome: projeto.nome,
+					resumo: projeto.resumo,
+					introducao: projeto.introducao,
+					objetivo: projeto.objetivo,
+					metodologia: projeto.metodologia,
+					result_disc: projeto.result_disc,
+					conclusao: projeto.conclusao,
+					status: projeto.status,
+					categoria_id: projeto.categoria_id,
+					estado_id: projeto.estado_id,
+				},
+			});
+		} catch (error) {
+			next(error);
+		}
+	}
+
+	async updateStatus(req: TRequestUpdateStatusProjeto, res: Response, next: NextFunction): Promise<void> {
 		try {
 			const { id } = req.params;
 			const { status } = req.body;
