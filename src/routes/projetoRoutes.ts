@@ -41,10 +41,12 @@ router.post("/", ensureAuthMiddleware, createMiddleware, (req, res, next) =>
 );
 router.get("/", (req, res, next) => projetoController.list(req, res, next));
 
-router.patch("/:id", ensureAuthMiddleware, updateMiddleware, (req, res, next) =>
-	projetoController.update(req, res, next),
-);
+router.put("/:id", ensureAuthMiddleware, (req, res, next) => projetoController.update(req as any, res, next));
 router.get("/:id", (req, res, next) => projetoController.get(req, res, next));
 router.delete("/:id", ensureAuthMiddleware, (req, res, next) => projetoController.delete(req as any, res, next));
+
+router.patch("/:id/status", ensureAuthMiddleware, updateMiddleware, (req, res, next) =>
+	projetoController.updateStatus(req, res, next),
+);
 
 export { router };
