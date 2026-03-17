@@ -16,3 +16,4 @@ export * from "./ProjetoCompletoDTO.js";
 export * from "./SolicitacaoDTO.js";
 export * from "./TipoNotificacaoDTO.js";
 export * from "./NotificacaoDTO.js";
+export * from "./TipoContribuicaoDTO.js";
