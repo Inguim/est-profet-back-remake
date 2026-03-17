@@ -80,10 +80,11 @@ export class SolicitacaoService
 		const model = new this.model();
 		let solicitacao = await model.findOne({ id });
 		if (tipo_alteracao === "alteracao_dados") {
-			let { titulo, descricao } = fields;
+			let { titulo, descricao, status } = fields;
 			if (!titulo) titulo = solicitacao.titulo;
 			if (!descricao) descricao = solicitacao.descricao;
-			return await model.update(id, { titulo, descricao });
+			if (!status) status = solicitacao.status;
+			return await model.update(id, { titulo, descricao, status });
 		}
 		const { status } = fields;
 		if (!status) return solicitacao;
