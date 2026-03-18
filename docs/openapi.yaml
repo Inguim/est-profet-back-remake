@@ -13,6 +13,8 @@ paths:
     $ref: "./paths/auth.yaml"
   /contribuidores:
     $ref: "./paths/contribuidores/index.yaml"
+  /contribuidores/{id}:
+    $ref: "./paths/contribuidores/_id/index.yaml"
   /cursos:
     $ref: "./paths/cursos/index.yaml"
   /estados:

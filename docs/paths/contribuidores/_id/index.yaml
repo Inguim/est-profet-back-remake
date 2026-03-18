@@ -1,0 +1,43 @@
+put:
+  tags: [Contribuidores]
+  summary: Atualiza um contribuidor existente
+  security:
+    - BearerAuth: []
+  parameters:
+    - name: id
+      in: path
+      required: true
+      description: ID do contribuidor
+      schema:
+        type: string
+        example: "123"
+
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: "../../../components/schemas/contribuidor/update.yaml"
+
+  responses:
+    "200":
+      description: Contribuidor atualizado com sucesso
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Contribuidor atualizado com sucesso
+              data:
+                allOf:
+                  - $ref: "../../../components/schemas/contribuidor/item.yaml"
+                  - type: object
+                    properties:
+                      github_dados:
+                        deprecated: true
+    "400":
+      $ref: "../../../components/responses/400_validacao.yaml"
+    "404":
+      $ref: "../../../components/responses/404_not_found.yaml"
