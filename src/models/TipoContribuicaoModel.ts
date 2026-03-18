@@ -2,7 +2,7 @@ import { TipoContribuicaoDTO, type ITipoContribuicaoDTO } from "../dto/TipoContr
 import dbConnection from "../database/dbConfig.js";
 import { NotFoundError } from "../errors/NotFoundError.js";
 import type { Knex } from "knex";
-import type { TTiposContribuicao } from "../utils/constants/tipos-contribuicao.js";
+import { TIPOS_CONTRUIBUICAO, type TTiposContribuicao } from "../utils/constants/tipos-contribuicao.js";
 
 export interface ITipoContribuicaoModel {
 	get(id: TTiposContribuicao): Promise<ITipoContribuicaoDTO>;
@@ -20,7 +20,7 @@ export class TipoContribuicaoModel implements ITipoContribuicaoModel {
 	constructor(private readonly connection: Knex = dbConnection) {}
 
 	async get(nome: TTiposContribuicao): Promise<TipoContribuicaoDTO> {
-		const row = await await this.db.where({ nome }).count();
+		const row = await await this.db.where({ nome: TIPOS_CONTRUIBUICAO[nome] }).first();
 		if (!row) throw new NotFoundError(`${this.tableTag} não encontrado`);
 		return new this.dto(row);
 	}
