@@ -1,4 +1,4 @@
-import type { NextFunction, Response } from "express";
+import type { NextFunction, Response, Request } from "express";
 import type { IAuthRequest } from "../middlewares/EnsureAuthMiddleware.js";
 import type { IContribuidorService } from "../services/ContribuidorService.js";
 import { STATUS_CODE } from "../utils/constants/status-code.js";
@@ -15,6 +15,8 @@ export type TRequestUpdateContribuidorDTO = {
 };
 
 export type TRequestCreateContribuidor = IAuthRequest<any, any, TRequestCreateContribuidorDTO>;
+
+export type TRequestGetContribuidor = Request<{ id: string }>;
 
 type TControllerConstructor = {
 	contribuidorService: IContribuidorService;
@@ -48,6 +50,19 @@ export class ContribuidorController {
 					usuario,
 					github_username: github_name,
 				},
+			});
+		} catch (error) {
+			next(error);
+		}
+	}
+
+	async get(req: TRequestGetContribuidor, res: Response, next: NextFunction): Promise<void> {
+		try {
+			const { id } = req.params;
+			const contribuidor = await this.contribuidorService.get(id);
+			res.status(STATUS_CODE.OK).json({
+				message: "Contribuidor encontrado com sucesso",
+				data: contribuidor,
 			});
 		} catch (error) {
 			next(error);

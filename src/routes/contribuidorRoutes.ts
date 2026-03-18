@@ -18,5 +18,8 @@ const router = Router();
 router.post("/", ensureAuthMiddleware, ensureAdminMiddleware, createMiddleware, (req, res, next) =>
 	contribuidorController.create(req, res, next),
 );
+router.get("/:id", ensureAuthMiddleware, ensureAdminMiddleware, (req, res, next) =>
+	contribuidorController.get(req as any, res, next),
+);
 
 export { router };
