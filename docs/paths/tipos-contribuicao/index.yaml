@@ -1,0 +1,16 @@
+get:
+  tags: [Tipos contribuicão]
+  summary: Retorna uma lista de Tipos de Contribuição
+  responses:
+    "200":
+      description: Retorna uma lista de tipos de contribuição
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Tipos de contribuição buscados com sucesso
+              data:
+                $ref: "../../components/schemas/tipo-contribuicao/collection.yaml"
