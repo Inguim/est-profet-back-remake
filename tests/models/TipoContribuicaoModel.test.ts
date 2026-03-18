@@ -9,4 +9,11 @@ describe("TipoContribuicaoModel", () => {
 		expect(output).toBeInstanceOf(TipoContribuicaoDTO);
 		expect(output?.id).toBeDefined();
 	});
+
+	it("deve retornar uma lista de TipoContribuicaoDTO", async () => {
+		const model = new TipoContribuicaoModel();
+		const output = await model.list();
+		expect(output).toBeInstanceOf(Array);
+		expect(output.at(0)).toBeInstanceOf(TipoContribuicaoDTO);
+	});
 });

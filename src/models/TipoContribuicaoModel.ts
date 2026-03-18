@@ -6,6 +6,7 @@ import { TIPOS_CONTRUIBUICAO, type TTiposContribuicao } from "../utils/constants
 
 export interface ITipoContribuicaoModel {
 	get(id: TTiposContribuicao): Promise<ITipoContribuicaoDTO>;
+	list(): Promise<ITipoContribuicaoDTO[]>;
 }
 
 export class TipoContribuicaoModel implements ITipoContribuicaoModel {
@@ -23,5 +24,10 @@ export class TipoContribuicaoModel implements ITipoContribuicaoModel {
 		const row = await await this.db.where({ nome: TIPOS_CONTRUIBUICAO[nome] }).first();
 		if (!row) throw new NotFoundError(`${this.tableTag} não encontrado`);
 		return new this.dto(row);
+	}
+
+	async list(): Promise<TipoContribuicaoDTO[]> {
+		const rows = await this.db.select<TipoContribuicaoDTO[]>("*").orderBy("nome", "asc");
+		return rows.map((row) => new this.dto(row));
 	}
 }
