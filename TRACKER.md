@@ -7,8 +7,8 @@
 - [x] Series
 - [x] Alunos
 - [ ] Noticias
-- [ ] Contribuidores - contribuidors
-- [ ] Tipo contribuição
+- [x] Contribuidores - contribuidors
+- [x] Tipo contribuição
 - [x] Notificações
 - [x] Tipo notificações
 - [x] Solicitações
@@ -25,10 +25,10 @@
 - [x] Aluno
   - [x] Service
 - [x] Categoria
-  - [] Service
-- [ ] Contribuidor
-  - [ ] Service
-  - [ ] Controller
+  - [x] Service
+- [x] Contribuidor
+  - [x] Service
+  - [x] Controller
 - [x] Curso
   - [x] Service
   - [x] Controller
@@ -59,9 +59,9 @@
 - [x] Solicitação
   - [x] Service
   - [x] Controller
-- [ ] Tipo contribuição
-  - [ ] Service
-  - [ ] Controller
+- [x] Tipo contribuição
+  - [x] Service
+  - [x] Controller
 - [x] Tipo notificação
   - [x] Service
 - [x] User
@@ -69,7 +69,7 @@
   - [ ] Controller
 - [x] Usuario projeto
   - [x] Model
-  - [ ] Service
+  - [x] Service
 
 ### Seeders
 
@@ -78,6 +78,6 @@
 - [x] Estado
 - [x] Menu
 - [x] Serie
-- [ ] Tipo contribuicao
+- [x] Tipo contribuicao
 - [x] Tipo notificacao
 - [ ] User
