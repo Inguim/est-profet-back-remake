@@ -2,6 +2,7 @@ import type { NextFunction, Response, Request } from "express";
 import type { IAuthRequest } from "../middlewares/EnsureAuthMiddleware.js";
 import type { IContribuidorService } from "../services/ContribuidorService.js";
 import { STATUS_CODE } from "../utils/constants/status-code.js";
+import type { TPagePagination } from "../utils/helpers/pagePaginator.js";
 
 export type TRequestCreateContribuidorDTO = {
 	github_username: string;
@@ -14,11 +15,15 @@ export type TRequestUpdateContribuidorDTO = {
 	tipo_contribuicao_id: string;
 };
 
+export type TRequestListQueryParamsContribuidor = Partial<TPagePagination>;
+
 export type TRequestCreateContribuidor = IAuthRequest<any, any, TRequestCreateContribuidorDTO>;
 
 export type TRequestUpdateContribuidor = IAuthRequest<{ id: string }, any, TRequestUpdateContribuidorDTO>;
 
 export type TRequestGetContribuidor = Request<{ id: string }>;
+
+export type TRequestListContribuidor = Request<any, any, any, TRequestListQueryParamsContribuidor>;
 
 type TControllerConstructor = {
 	contribuidorService: IContribuidorService;
@@ -92,6 +97,26 @@ export class ContribuidorController {
 					tipo_contribuicao,
 					usuario,
 					github_username: github_name,
+				},
+			});
+		} catch (error) {
+			next(error);
+		}
+	}
+
+	async list(req: TRequestListContribuidor, res: Response, next: NextFunction): Promise<void> {
+		try {
+			const { page, perPage } = req.query;
+			const pagination = { page: Number(page) || 1, perPage: Number(perPage) || 5 };
+			const result = await this.contribuidorService.list({ pagination });
+			res.status(STATUS_CODE.OK).json({
+				message: "Contribuidores buscados com sucesso",
+				data: {
+					results: result.data,
+					page: result.page,
+					perPage: result.perPage,
+					count: result.count,
+					totalPages: result.totalPages,
 				},
 			});
 		} catch (error) {
