@@ -11,12 +11,15 @@ const contribuidorService = new ContribuidorService({ gitHubProvider });
 
 const contribuidorController = new ContribuidorController({ contribuidorService });
 
-const { create: createMiddleware } = ValidateContribuidorMiddleware;
+const { create: createMiddleware, update: updateMiddleware } = ValidateContribuidorMiddleware;
 
 const router = Router();
 
 router.post("/", ensureAuthMiddleware, ensureAdminMiddleware, createMiddleware, (req, res, next) =>
 	contribuidorController.create(req, res, next),
+);
+router.put("/:id", ensureAuthMiddleware, ensureAdminMiddleware, updateMiddleware, (req, res, next) =>
+	contribuidorController.update(req, res, next),
 );
 router.get("/:id", ensureAuthMiddleware, ensureAdminMiddleware, (req, res, next) =>
 	contribuidorController.get(req as any, res, next),

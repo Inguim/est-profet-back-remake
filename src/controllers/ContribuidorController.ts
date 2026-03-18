@@ -16,6 +16,8 @@ export type TRequestUpdateContribuidorDTO = {
 
 export type TRequestCreateContribuidor = IAuthRequest<any, any, TRequestCreateContribuidorDTO>;
 
+export type TRequestUpdateContribuidor = IAuthRequest<{ id: string }, any, TRequestUpdateContribuidorDTO>;
+
 export type TRequestGetContribuidor = Request<{ id: string }>;
 
 type TControllerConstructor = {
@@ -63,6 +65,34 @@ export class ContribuidorController {
 			res.status(STATUS_CODE.OK).json({
 				message: "Contribuidor encontrado com sucesso",
 				data: contribuidor,
+			});
+		} catch (error) {
+			next(error);
+		}
+	}
+
+	async update(req: TRequestUpdateContribuidor, res: Response, next: NextFunction): Promise<void> {
+		try {
+			const { id } = req.params;
+			const { github_username, tipo_contribuicao_id } = req.body;
+			const {
+				id: contribuidorId,
+				created_at,
+				updated_at,
+				github_username: github_name,
+				tipo_contribuicao,
+				usuario,
+			} = await this.contribuidorService.update(id, { github_username, tipo_contribuicao_id });
+			res.status(STATUS_CODE.OK).send({
+				message: "Contribuição atualizado com sucesso",
+				data: {
+					id: contribuidorId,
+					created_at,
+					updated_at,
+					tipo_contribuicao,
+					usuario,
+					github_username: github_name,
+				},
 			});
 		} catch (error) {
 			next(error);
