@@ -158,6 +158,6 @@ describe("ContribuidorService", () => {
 			github_username: "teste",
 		});
 		const output = await contribuidorService.delete(String(input.id));
-		expect(output.id).toBeNull();
+		expect(output).toBeTruthy();
 	});
 });

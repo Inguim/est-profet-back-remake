@@ -26,7 +26,7 @@ export interface IContribuidorService {
 	create(dto: TCreateDTOContribuidorService): Promise<IContribuidorDTO>;
 	get(id: string): Promise<IContribuidorDTO>;
 	update(id: string, dto: TUpdateDTOContribuidorService): Promise<IContribuidorDTO>;
-	delete(id: string): Promise<IContribuidorDTO>;
+	delete(id: string): Promise<boolean>;
 	list(filter?: TListDTOContribuidorService): Promise<TPagePaginatedResponse<IContribuidorDTO>>;
 }
 
@@ -59,10 +59,10 @@ export class ContribuidorService implements IContribuidorService {
 		return contribuidor;
 	}
 
-	async delete(id: string): Promise<ContribuidorDTO> {
+	async delete(id: string): Promise<boolean> {
 		const model = new this.model();
 		const contribuidor = await model.delete(id);
-		return contribuidor;
+		return !contribuidor.id;
 	}
 
 	async list({ pagination = { page: 1, perPage: 5 } }: TListDTOContribuidorService = {}): Promise<
