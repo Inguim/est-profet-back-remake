@@ -27,4 +27,8 @@ router.get("/:id", ensureAuthMiddleware, ensureAdminMiddleware, (req, res, next)
 	contribuidorController.get(req as any, res, next),
 );
 
+router.delete("/:id", ensureAuthMiddleware, ensureAdminMiddleware, (req, res, next) =>
+	contribuidorController.delete(req as any, res, next),
+);
+
 export { router };

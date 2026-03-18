@@ -23,6 +23,8 @@ export type TRequestUpdateContribuidor = IAuthRequest<{ id: string }, any, TRequ
 
 export type TRequestGetContribuidor = Request<{ id: string }>;
 
+export type TRequestDeleteContruibuidor = IAuthRequest<{ id: string }>;
+
 export type TRequestListContribuidor = Request<any, any, any, TRequestListQueryParamsContribuidor>;
 
 type TControllerConstructor = {
@@ -99,6 +101,17 @@ export class ContribuidorController {
 					github_username: github_name,
 				},
 			});
+		} catch (error) {
+			next(error);
+		}
+	}
+
+	async delete(req: TRequestDeleteContruibuidor, res: Response, next: NextFunction): Promise<void> {
+		try {
+			const { id } = req.params;
+			const foiDeletado = await this.contribuidorService.delete(id);
+			if (foiDeletado) res.status(STATUS_CODE.NO_CONTENT).send();
+			else res.status(STATUS_CODE.BAD_REQUEST).json({ message: "Erro ao deletar o projeto" });
 		} catch (error) {
 			next(error);
 		}
