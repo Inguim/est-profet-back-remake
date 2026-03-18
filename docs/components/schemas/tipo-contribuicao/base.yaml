@@ -1,0 +1,6 @@
+type: object
+required:
+  - nome
+properties:
+  nome:
+    type: string

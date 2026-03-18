@@ -1,11 +1,9 @@
 import { describe, expect, it } from "vitest";
-import { TipoNotificacaoDTO, type ITipoNotificacaoDTO } from "../../src/dto/TipoNotificacaoDTO.js";
+import { TipoContribuicaoDTO, type ITipoContribuicaoDTO } from "../../src/dto/index.js";
 
-describe("TipoNotificacaoDTO", () => {
-	it("deve conter as propriedades de ITipoNotificacaoDTO", () => {
-		const output = new TipoNotificacaoDTO({
-			nome: "teste",
-		});
+describe("TipoContribuicaoDTO", () => {
+	it("deve conter as propriedades de ITipoContribuicaoDTO", () => {
+		const output = new TipoContribuicaoDTO({ nome: "teste" });
 		expect(output).toHaveProperty("id");
 		expect(output).toHaveProperty("nome");
 		expect(output).toHaveProperty("created_at");
@@ -13,22 +11,20 @@ describe("TipoNotificacaoDTO", () => {
 	});
 
 	it("deve preencher automaticamente os campos não parciais", () => {
-		const output = new TipoNotificacaoDTO({
-			nome: "teste",
-		});
+		const output = new TipoContribuicaoDTO({ nome: "teste" });
 		expect(output.id).toBeNull();
 		expect(output.created_at).toBeUndefined();
 		expect(output.updated_at).toBeUndefined();
 	});
 
 	it("deve preencher corretamente os campos", () => {
-		const input: ITipoNotificacaoDTO = {
-			id: "123123",
-			nome: "Categoria teste",
+		const input: ITipoContribuicaoDTO = {
+			id: "id123",
+			nome: "teste",
 			created_at: new Date(),
 			updated_at: new Date(),
 		};
-		const output = new TipoNotificacaoDTO(input);
+		const output = new TipoContribuicaoDTO(input);
 		expect(output).toEqual(input);
 	});
 });

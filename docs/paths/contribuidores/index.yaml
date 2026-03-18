@@ -1,0 +1,63 @@
+post:
+  tags: [Contribuidores]
+  summary: Cria um novo Contribuidor
+  security:
+    - BearerAuth: []
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: "../../components/schemas/contribuidor/create.yaml"
+  responses:
+    "201":
+      description: Contribuidor criado com sucesso
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Contribuidor criado com sucesso
+              data:
+                allOf:
+                  - $ref: "../../components/schemas/contribuidor/item.yaml"
+                  - type: object
+                    properties:
+                      github_dados:
+                        deprecated: true
+    "400":
+      $ref: "../../components/responses/400_validacao.yaml"
+    "401":
+      $ref: "../../components/responses/401_usuario_sem_autorizacao.yaml"
+
+get:
+  tags: [Contribuidores]
+  summary: Retorna uma lista de Contribuidores
+  parameters:
+    - name: page
+      in: query
+      description: Página
+      schema:
+        type: number
+        example: 1
+    - name: perPage
+      in: query
+      description: Quantidade por página
+      schema:
+        type: number
+        example: 5
+  responses:
+    "200":
+      description: Retorna uma lista de contribuidores
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Contribuidores buscados com sucesso
+              data:
+                $ref: "../../components/schemas/solicitacao/collection.yaml"

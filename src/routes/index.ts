@@ -9,6 +9,8 @@ import { router as estadoRoutes } from "./estadoRoutes.js";
 import { router as projetoRoutes } from "./projetoRoutes.js";
 import { router as solicitacaoRoutes } from "./solicitacaoRoutes.js";
 import { router as notificacaoRoutes } from "./notificacaoRoutes.js";
+import { router as contribuidorRoutes } from "./contribuidorRoutes.js";
+import { router as tipoContribuicaoRoutes } from "./tipoContribuicaoRoutes.js";
 
 export const routes = (app: Express) => {
 	app.use(express.json());
@@ -21,4 +23,6 @@ export const routes = (app: Express) => {
 	app.use("/projetos", projetoRoutes);
 	app.use("/solicitacoes", solicitacaoRoutes);
 	app.use("/notificacoes", notificacaoRoutes);
+	app.use("/contribuidores", contribuidorRoutes);
+	app.use("/tipos-contribuicao", tipoContribuicaoRoutes);
 };

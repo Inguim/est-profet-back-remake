@@ -88,7 +88,7 @@ export class NotificacaoModel implements INotificaoModel {
 	}
 
 	async get(id: string): Promise<NotificacaoDTO> {
-		const querySelect = this.formatatedSelectQuery();
+		const querySelect = this.formatedSelectQuery();
 		const rowNotificacao = await querySelect.where("notificacaos.id", id).first();
 		if (!rowNotificacao) throw new NotFoundError(`${this.tableTag} não encontrado`);
 		return this.rowToDTO(rowNotificacao);
@@ -135,7 +135,7 @@ export class NotificacaoModel implements INotificaoModel {
 		orderBy: TNotificacaoListOrderBy = this.DEFAULT_ORDERING,
 	): Promise<TPagePaginatedResponse<NotificacaoDTO>> {
 		const { column, sort } = formatOrderBy<TNotificacaoListOrderBy>(orderBy);
-		let query = this.formatatedSelectQueryArray();
+		let query = this.formatedSelectQueryArray();
 		query = this.applyFilters(query, where).orderBy(column, sort);
 		const { data, count, page, perPage, totalPages } = await this.paginationHandler.execute<TNotificacaoRow>(
 			query,
@@ -152,7 +152,7 @@ export class NotificacaoModel implements INotificaoModel {
 		};
 	}
 
-	private formatatedSelectQuery(): Knex.QueryBuilder<any, TNotificacaoRow> {
+	private formatedSelectQuery(): Knex.QueryBuilder<any, TNotificacaoRow> {
 		return this.db
 			.select<TNotificacaoRow>(
 				"notificacaos.id",
@@ -172,7 +172,7 @@ export class NotificacaoModel implements INotificaoModel {
 			.join("projetos", "solicitacaos.projeto_id", "projetos.id");
 	}
 
-	private formatatedSelectQueryArray(): Knex.QueryBuilder<any, TNotificacaoRow[]> {
+	private formatedSelectQueryArray(): Knex.QueryBuilder<any, TNotificacaoRow[]> {
 		return this.db
 			.select<
 				TNotificacaoRow[]

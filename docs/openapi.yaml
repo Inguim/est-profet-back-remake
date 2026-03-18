@@ -11,6 +11,10 @@ servers:
 paths:
   /auth/login:
     $ref: "./paths/auth.yaml"
+  /contribuidores:
+    $ref: "./paths/contribuidores/index.yaml"
+  /contribuidores/{id}:
+    $ref: "./paths/contribuidores/_id/index.yaml"
   /cursos:
     $ref: "./paths/cursos/index.yaml"
   /estados:
@@ -35,6 +39,8 @@ paths:
     $ref: "./paths/solicitacoes/index.yaml"
   /solicitacoes/{id}:
     $ref: "./paths/solicitacoes/_id/index.yaml"
+  /tipos-contribuicao:
+    $ref: "./paths/tipos-contribuicao/index.yaml"
   /usuarios:
     $ref: "./paths/usuarios/index.yaml"
   /usuarios/{id}:
@@ -58,6 +64,8 @@ components:
     "404NotFound":
       $ref: "./components/responses/404_not_found.yaml"
   schemas:
+    Contribuidor:
+      $ref: "./components/schemas/contribuidor/item.yaml"
     Curso:
       $ref: "./components/schemas/curso/item.yaml"
     Estado:
@@ -74,6 +82,8 @@ components:
       $ref: "./components/schemas/projeto-completo/item.yaml"
     Solicitacao:
       $ref: "./components/schemas/solicitacao/item.yaml"
+    TipoContribuicao:
+      $ref: "./components/schemas/tipo-contribuicao/item.yaml"
     Usuario:
       $ref: "./components/schemas/usuario/item.yaml"
     UsuarioCreate:

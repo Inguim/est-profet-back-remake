@@ -1,0 +1,33 @@
+type: object
+required:
+  - github_username
+  - tipo_contribuicao
+  - usuario
+properties:
+  github_username:
+    type: string
+  tipo_contribuicao:
+    type: object
+    properties:
+      id:
+        type: string
+      nome:
+        type: string
+  usuario:
+    type: object
+    properties:
+      id:
+        type: string
+      nome:
+        type: string
+  github_dados:
+    type: object
+    properties:
+      username:
+        type: string
+      bio:
+        type: string
+      git:
+        type: string
+      cover_url:
+        type: string

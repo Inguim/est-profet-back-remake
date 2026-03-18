@@ -1,0 +1,9 @@
+type: object
+required:
+  - github_username
+  - tipo_contribuicao_id
+properties:
+  github_username:
+    type: string
+  tipo_contribuicao_id:
+    type: string

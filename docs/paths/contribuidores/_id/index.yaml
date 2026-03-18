@@ -1,44 +1,13 @@
-get:
-  tags: [Solicitações]
-  summary: Busca uma solicitação por ID
+put:
+  tags: [Contribuidores]
+  summary: Atualiza um contribuidor existente
   security:
     - BearerAuth: []
   parameters:
     - name: id
       in: path
       required: true
-      description: ID do solicitação
-      schema:
-        type: string
-        example: "123"
-  responses:
-    "200":
-      description: Solicitação encontrada com sucesso
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              message:
-                type: string
-                example: Solicitação encontrada com sucesso
-              data:
-                $ref: "../../../components/schemas/solicitacao/get.yaml"
-    "401":
-      $ref: "../../../components/responses/401_usuario_sem_autorizacao.yaml"
-    "404":
-      $ref: "../../../components/responses/404_not_found.yaml"
-
-patch:
-  tags: [Solicitações]
-  summary: Atualiza uma solicitação existente
-  security:
-    - BearerAuth: []
-  parameters:
-    - name: id
-      in: path
-      required: true
-      description: ID da solicitacação
+      description: ID do contribuidor
       schema:
         type: string
         example: "123"
@@ -48,11 +17,11 @@ patch:
     content:
       application/json:
         schema:
-          $ref: "../../../components/schemas/solicitacao/update.yaml"
+          $ref: "../../../components/schemas/contribuidor/update.yaml"
 
   responses:
     "200":
-      description: Solicitação atualizada com sucesso
+      description: Contribuidor atualizado com sucesso
       content:
         application/json:
           schema:
@@ -60,24 +29,60 @@ patch:
             properties:
               message:
                 type: string
-                example: Solicitação atualizada com sucesso
+                example: Contribuidor atualizado com sucesso
               data:
-                $ref: "../../../components/schemas/solicitacao/get.yaml"
+                allOf:
+                  - $ref: "../../../components/schemas/contribuidor/item.yaml"
+                  - type: object
+                    properties:
+                      github_dados:
+                        deprecated: true
     "400":
       $ref: "../../../components/responses/400_validacao.yaml"
     "404":
       $ref: "../../../components/responses/404_not_found.yaml"
 
-delete:
-  tags: [Solicitações]
-  summary: Deleta uma solicitação
+get:
+  tags: [Contribuidores]
+  summary: Busca um contribuidor por ID
   security:
     - BearerAuth: []
   parameters:
     - name: id
       in: path
       required: true
-      description: ID da solicitação
+      description: ID do contribuidor
+      schema:
+        type: string
+        example: "123"
+  responses:
+    "200":
+      description: Contribuidor encontrada com sucesso
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Contribuidor encontrada com sucesso
+              data:
+                $ref: "../../../components/schemas/contribuidor/get.yaml"
+    "401":
+      $ref: "../../../components/responses/401_usuario_sem_autorizacao.yaml"
+    "404":
+      $ref: "../../../components/responses/404_not_found.yaml"
+
+delete:
+  tags: [Contribuidores]
+  summary: Deleta um contribuidor
+  security:
+    - BearerAuth: []
+  parameters:
+    - name: id
+      in: path
+      required: true
+      description: ID do contribuidor
       schema:
         type: string
         example: "123"
