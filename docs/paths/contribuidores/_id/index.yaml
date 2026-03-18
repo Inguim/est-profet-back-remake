@@ -41,3 +41,32 @@ put:
       $ref: "../../../components/responses/400_validacao.yaml"
     "404":
       $ref: "../../../components/responses/404_not_found.yaml"
+
+get:
+  tags: [Contribuidores]
+  summary: Busca um contribuidor por ID
+  security:
+    - BearerAuth: []
+  parameters:
+    - name: id
+      in: path
+      required: true
+      description: ID do contribuidor
+      schema:
+        type: string
+        example: "123"
+  responses:
+    "200":
+      description: Contribuidor encontrada com sucesso
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Contribuidor encontrada com sucesso
+              data:
+                $ref: "../../../components/schemas/contribuidor/get.yaml"
+    "404":
+      $ref: "../../../components/responses/404_not_found.yaml"
