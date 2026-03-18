@@ -11,6 +11,8 @@ servers:
 paths:
   /auth/login:
     $ref: "./paths/auth.yaml"
+  /contribuidores:
+    $ref: "./paths/contribuidores/index.yaml"
   /cursos:
     $ref: "./paths/cursos/index.yaml"
   /estados:
@@ -58,6 +60,8 @@ components:
     "404NotFound":
       $ref: "./components/responses/404_not_found.yaml"
   schemas:
+    Contribuidor:
+      $ref: "./components/schemas/contribuidor/item.yaml"
     Curso:
       $ref: "./components/schemas/curso/item.yaml"
     Estado:
