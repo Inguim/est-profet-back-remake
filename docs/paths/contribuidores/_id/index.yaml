@@ -68,5 +68,28 @@ get:
                 example: Contribuidor encontrada com sucesso
               data:
                 $ref: "../../../components/schemas/contribuidor/get.yaml"
+    "401":
+      $ref: "../../../components/responses/401_usuario_sem_autorizacao.yaml"
+    "404":
+      $ref: "../../../components/responses/404_not_found.yaml"
+
+delete:
+  tags: [Contribuidores]
+  summary: Deleta um contribuidor
+  security:
+    - BearerAuth: []
+  parameters:
+    - name: id
+      in: path
+      required: true
+      description: ID do contribuidor
+      schema:
+        type: string
+        example: "123"
+  responses:
+    "204":
+      $ref: "../../../components/responses/204_no_content.yaml"
+    "401":
+      $ref: "../../../components/responses/401_usuario_sem_autorizacao.yaml"
     "404":
       $ref: "../../../components/responses/404_not_found.yaml"
