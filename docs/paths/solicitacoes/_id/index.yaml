@@ -21,7 +21,7 @@ get:
             properties:
               message:
                 type: string
-                example: Solicitação criada com sucesso
+                example: Solicitação encontrada com sucesso
               data:
                 $ref: "../../../components/schemas/solicitacao/get.yaml"
     "401":
