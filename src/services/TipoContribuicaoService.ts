@@ -4,6 +4,7 @@ import type { TTiposContribuicao } from "../utils/constants/tipos-contribuicao.j
 
 export interface ITipoContribuicaoService {
 	get(nome: TTiposContribuicao): Promise<ITipoContribuicaoDTO>;
+	list(): Promise<ITipoContribuicaoDTO[]>;
 }
 
 export class TipoContribuicaoService implements ITipoContribuicaoService {
@@ -13,5 +14,11 @@ export class TipoContribuicaoService implements ITipoContribuicaoService {
 		const model = new this.model();
 		const tipoNotificacao = await model.get(nome);
 		return tipoNotificacao;
+	}
+
+	async list(): Promise<TipoContribuicaoDTO[]> {
+		const model = new this.model();
+		const tiposContribuicao = await model.list();
+		return tiposContribuicao;
 	}
 }

@@ -9,4 +9,11 @@ describe("TipoContribuicaoService", () => {
 		expect(output).toBeInstanceOf(TipoContribuicaoDTO);
 		expect(output?.id).toBeDefined();
 	});
+
+	it("deve retornar uma lista de tipos de contribuição", async () => {
+		const service = new TipoContribuicaoService();
+		const output = await service.list();
+		expect(output).toBeInstanceOf(Array);
+		expect(output.at(0)).toBeInstanceOf(TipoContribuicaoDTO);
+	});
 });
