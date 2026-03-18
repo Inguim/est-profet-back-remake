@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { TipoNotificacaoDTO, type ITipoNotificacaoDTO } from "../../src/dto/TipoNotificacaoDTO.js";
 
-describe("ITipoNotificacaoDTO", () => {
+describe("TipoNotificacaoDTO", () => {
 	it("deve conter as propriedades de ITipoNotificacaoDTO", () => {
 		const output = new TipoNotificacaoDTO({
 			nome: "teste",
