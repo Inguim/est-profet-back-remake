@@ -17,3 +17,4 @@ export * from "./SolicitacaoService.js";
 export * from "./TipoNotificacaoService.js";
 export * from "./NotificacaoService.js";
 export * from "./TipoContribuicaoService.js";
+export * from "./ContribuidorService.js";
