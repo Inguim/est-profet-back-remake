@@ -7,3 +7,4 @@ export * from "./EstadoController.js";
 export * from "./ProjetoController.js";
 export * from "./SolicitacaoController.js";
 export * from "./NotificacaoController.js";
+export * from "./ContribuidorController.js";
