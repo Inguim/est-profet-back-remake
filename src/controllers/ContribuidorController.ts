@@ -9,6 +9,11 @@ export type TRequestCreateContribuidorDTO = {
 	user_id: string;
 };
 
+export type TRequestUpdateContribuidorDTO = {
+	github_username: string;
+	tipo_contribuicao_id: string;
+};
+
 export type TRequestCreateContribuidor = IAuthRequest<any, any, TRequestCreateContribuidorDTO>;
 
 type TControllerConstructor = {
