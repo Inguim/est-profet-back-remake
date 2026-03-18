@@ -27,7 +27,7 @@ export class TipoContribuicaoModel implements ITipoContribuicaoModel {
 	}
 
 	async list(): Promise<TipoContribuicaoDTO[]> {
-		const rows = await this.db.select<TipoContribuicaoDTO[]>("*").orderBy("nome", "asc");
+		const rows = await this.db.select<TipoContribuicaoDTO[]>("id", "nome").orderBy("nome", "asc");
 		return rows.map((row) => new this.dto(row));
 	}
 }
