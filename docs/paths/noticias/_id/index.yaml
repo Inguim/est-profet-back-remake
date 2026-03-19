@@ -1,0 +1,26 @@
+get:
+  tags: [Notícias]
+  summary: Busca uma notícia por ID
+  parameters:
+    - name: id
+      in: path
+      required: true
+      description: ID da notícia
+      schema:
+        type: string
+        example: "123"
+  responses:
+    "200":
+      description: Notícia encontrada com sucesso
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Notícia encontrada com sucesso
+              data:
+                $ref: "../../../components/schemas/noticia/get.yaml"
+    "404":
+      $ref: "../../../components/responses/404_not_found.yaml"

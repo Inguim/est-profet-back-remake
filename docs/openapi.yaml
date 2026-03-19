@@ -23,6 +23,8 @@ paths:
     $ref: "./paths/menus/index.yaml"
   /noticias:
     $ref: "./paths/noticias/index.yaml"
+  /noticias/{id}:
+    $ref: "./paths/noticias/_id/index.yaml"
   /notificacoes:
     $ref: "./paths/notificacoes/index.yaml"
   /notificacoes/{id}:
