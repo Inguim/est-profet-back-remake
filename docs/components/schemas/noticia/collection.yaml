@@ -1,0 +1,18 @@
+type: object
+properties:
+  results:
+    type: array
+    items:
+      $ref: "./item.yaml"
+  count:
+    type: number
+    example: 1
+  page:
+    type: number
+    example: 1
+  perPage:
+    type: number
+    example: 10
+  totalPages:
+    type: number
+    example: 2
