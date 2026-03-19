@@ -11,6 +11,7 @@ import { router as solicitacaoRoutes } from "./solicitacaoRoutes.js";
 import { router as notificacaoRoutes } from "./notificacaoRoutes.js";
 import { router as contribuidorRoutes } from "./contribuidorRoutes.js";
 import { router as tipoContribuicaoRoutes } from "./tipoContribuicaoRoutes.js";
+import { router as noticiaRoutes } from "./noticiaRoutes.js";
 
 export const routes = (app: Express) => {
 	app.use(express.json());
@@ -25,4 +26,5 @@ export const routes = (app: Express) => {
 	app.use("/notificacoes", notificacaoRoutes);
 	app.use("/contribuidores", contribuidorRoutes);
 	app.use("/tipos-contribuicao", tipoContribuicaoRoutes);
+	app.use("/noticias", noticiaRoutes);
 };
