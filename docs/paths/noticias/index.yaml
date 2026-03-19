@@ -1,0 +1,29 @@
+post:
+  tags: [Notícias]
+  summary: Cria uma nova notícia
+  security:
+    - BearerAuth: []
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: "../../components/schemas/noticia/create.yaml"
+  responses:
+    "201":
+      description: Notícia criada com sucesso
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Notícia criada com sucesso
+              data:
+                $ref: "../../components/schemas/noticia/item.yaml"
+
+    "400":
+      $ref: "../../components/responses/400_validacao.yaml"
+    "401":
+      $ref: "../../components/responses/401_usuario_sem_autorizacao.yaml"

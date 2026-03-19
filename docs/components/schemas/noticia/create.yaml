@@ -1,0 +1,9 @@
+type: object
+required:
+  - nome
+  - link
+properties:
+  nome:
+    type: string
+  link:
+    type: string
