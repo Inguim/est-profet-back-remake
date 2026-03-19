@@ -66,13 +66,13 @@ export abstract class BaseModel<
 
 	async update(id: string, dto: TUPDATE_DTO): Promise<TDTO> {
 		const hookedDto = await this.beforeUpdate(dto);
+		const [{ count: existeEntity }] = await this.db.where({ id }).count();
+		if (Number(existeEntity) === 0) throw new NotFoundError(`${this.tableTag} de ${id} não encontrado`);
 		const [updatedRecord] = await this.db
 			.where({ id })
 			.update({ ...hookedDto, updated_at: new Date() })
 			.returning("*");
-		const entity = new this.dto(updatedRecord);
-		if (entity.id == null) throw new NotFoundError(`${this.tableTag} de ${id} não encontrado`);
-		return entity;
+		return new this.dto(updatedRecord);
 	}
 
 	async delete(id: string): Promise<TDTO> {
