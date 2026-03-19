@@ -6,7 +6,7 @@
 - [x] Cursos
 - [x] Series
 - [x] Alunos
-- [ ] Noticias
+- [x] Noticias
 - [x] Contribuidores - contribuidors
 - [x] Tipo contribuição
 - [x] Notificações
@@ -38,9 +38,9 @@
 - [x] Menu
   - [x] Service
   - [x] Controller
-- [ ] Noticia
-  - [ ] Service
-  - [ ] Controller
+- [x] Noticia
+  - [x] Service
+  - [x] Controller
 - [x] Notificacao
   - [x] Service
   - [x] Controller
@@ -66,7 +66,7 @@
   - [x] Service
 - [x] User
   - [x] Service
-  - [ ] Controller
+  - [x] Controller
 - [x] Usuario projeto
   - [x] Model
   - [x] Service
