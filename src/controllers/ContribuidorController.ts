@@ -111,7 +111,7 @@ export class ContribuidorController {
 			const { id } = req.params;
 			const foiDeletado = await this.contribuidorService.delete(id);
 			if (foiDeletado) res.status(STATUS_CODE.NO_CONTENT).send();
-			else res.status(STATUS_CODE.BAD_REQUEST).json({ message: "Erro ao deletar o projeto" });
+			else res.status(STATUS_CODE.BAD_REQUEST).json({ message: "Erro ao deletar o contribuidor" });
 		} catch (error) {
 			next(error);
 		}
