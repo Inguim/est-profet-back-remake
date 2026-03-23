@@ -19,3 +19,4 @@ export * from "./NotificacaoDTO.js";
 export * from "./TipoContribuicaoDTO.js";
 export * from "./ContribuidorDTO.js";
 export * from "./NoticiaDTO.js";
+export * from "./PasswordResetDTO.js";
