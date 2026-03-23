@@ -8,6 +8,7 @@ export type TCreateModelUsuarioDTO = Required<Omit<IUsuarioDTO, "id" | "created_
 export type TUpdateModelUsuarioDTO = Partial<Pick<IUsuarioDTO, "nome" | "admin" | "password" | "email" | "status">>;
 export type TFindOneModelUsuarioParams = {
 	id?: string;
+	email?: string;
 };
 export type TListWhereUsuario = {
 	nome__ilike?: string;

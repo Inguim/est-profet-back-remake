@@ -16,7 +16,10 @@ export type TCreateDTOProfessor = { tipo: "professor" } & { categoriaIds: string
 
 export type TCreateDTO = TCreateDTOBase & (TCreateDTOAluno | TCreateDTOProfessor);
 type TUpdateDTO = Partial<Pick<IUsuarioDTO, "nome" | "email" | "tipo">>;
-export type TFindOneDTO = Partial<Pick<IUsuarioDTO, "email">>;
+export type TFindOneDTO = {
+	id?: string;
+	email?: string;
+};
 
 type TUsuarioPorTipo = UsuarioAlunoDTO | UsuarioProfessorDTO;
 
