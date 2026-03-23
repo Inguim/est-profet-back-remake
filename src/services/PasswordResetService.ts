@@ -47,6 +47,7 @@ export class PasswordResetService implements IPasswordResetService {
 		const usuario = await this.usuarioService.findOne({ email });
 		if (!usuario) return false;
 		await this.usuarioService.updatePassword(String(usuario.id), password);
+		await model.delete(reset.email, reset.token);
 		return true;
 	}
 
