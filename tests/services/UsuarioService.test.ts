@@ -29,7 +29,7 @@ describe("UsuarioService", () => {
 		professor: { tipo: "professor" } as TCreateDTOProfessor, // adicionar categorias
 	};
 	const TIPOS = [...USUARIO_TIPOS];
-	const WHERE_PARAMS = ["email"];
+	const WHERE_PARAMS = ["email", "id"];
 
 	const alunoService = new AlunoService();
 	const categoriaService = new CategoriaService();
@@ -132,6 +132,17 @@ describe("UsuarioService", () => {
 		expect(output?.tipo).toBe("professor");
 	});
 
+	it("deve atualizar a senha do usuário", async () => {
+		const { nome, email, password, curso_id, serie_id } = UsuarioAlunoFactory.create()
+			.withCurso(cursoId)
+			.withSerie(serieId)
+			.build();
+		const usuario = { nome, email, password, curso_id, serie_id, tipo: "aluno" as const };
+		const input = await service.create(usuario);
+		const output = await service.updatePassword(input.id as string, "novaSenha");
+		expect(output?.password).not.toEqual(input?.password);
+	});
+
 	it("deve não atualizar usuário inexistente", async () => {
 		const fakeID = uuidV4();
 		await expect(service.update(fakeID, { nome: "", email: "", tipo: "professor" })).rejects.toBeInstanceOf(
@@ -171,13 +182,15 @@ describe("UsuarioService", () => {
 		async (campo, index) => {
 			const input = {
 				email: `emailusuarioservice${index}@mail.com`,
+				id: "",
 			};
 			const { nome, email, password, curso_id, serie_id } = UsuarioAlunoFactory.create()
 				.withEmail(input["email"])
 				.withCurso(cursoId)
 				.withSerie(serieId)
 				.build();
-			await service.create({ nome, email, password, curso_id, serie_id, tipo: "aluno" as const });
+			const usuario = await service.create({ nome, email, password, curso_id, serie_id, tipo: "aluno" as const });
+			input.id = String(usuario.id);
 			const filter = { [String(campo)]: input[campo as keyof TFindOneDTO] };
 			const output = await service.findOne(filter);
 			expect(output.id).not.toBeNull();

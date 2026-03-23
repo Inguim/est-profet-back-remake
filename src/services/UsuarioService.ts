@@ -35,6 +35,7 @@ type TContructorService = {
 export interface IUsuarioService extends IBaseService {
 	create(fields: TCreateDTO): Promise<IUsuarioDTO>;
 	update(id: string, fields: TUpdateDTO): Promise<IUsuarioDTO>;
+	updatePassword(id: string, newPassword: string): Promise<IUsuarioDTO>;
 	delete(id: string): Promise<boolean>;
 	get(id: string): Promise<TUsuarioPorTipo | null>;
 	findOne(where: TFindOneDTO): Promise<IUsuarioDTO>;
@@ -110,6 +111,12 @@ export class UsuarioService
 			return this.getProfessor(entity);
 		}
 		return null;
+	}
+
+	async updatePassword(id: string, newPassword: string): Promise<UsuarioDTO> {
+		const model = new this.model();
+		const usuario = await model.update(id, { password: newPassword });
+		return usuario;
 	}
 
 	private async getAluno(usuario: UsuarioDTO): Promise<UsuarioAlunoDTO> {
