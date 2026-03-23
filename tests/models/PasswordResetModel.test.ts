@@ -21,6 +21,14 @@ describe("PasswordResetModel", () => {
 		expect(output.created_at).instanceOf(Date);
 	});
 
+	it("deve retornar um PasswordResetDTO pelo EMAIL", async () => {
+		const input = await model.create({ email: f.internet.email() });
+		const output = await model.findOne(input.email);
+		expect(output).toBeInstanceOf(PasswordResetDTO);
+		expect(output?.email).toEqual(input.email);
+		expect(output?.token).toEqual(input.token);
+	});
+
 	it("deve retornar um PasswordResetDTO pelo EMAIL e TOKEN", async () => {
 		const input = await model.create({ email: f.internet.email() });
 		const output = await model.findOne(input.email, input.token);

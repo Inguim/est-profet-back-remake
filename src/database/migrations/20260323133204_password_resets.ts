@@ -3,7 +3,7 @@ import type { Knex } from "knex";
 export async function up(knex: Knex): Promise<void> {
 	await knex.schema.createTable("password_resets", (table) => {
 		table.string("email", 255);
-		table.string("token", 6);
+		table.string("token", 6); // seria interessante uma string maior para hashear o token
 
 		table.timestamp("created_at").defaultTo(knex.fn.now());
 	});

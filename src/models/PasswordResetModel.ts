@@ -26,13 +26,17 @@ export class PasswordResetModel implements IPasswordResetModel {
 
 	async create(dto: TCreateModelPasswordReset): Promise<IPasswordResetDTO> {
 		const { email } = dto;
+		// para melhor segurança seria melhor hashear o token antes de armazena-lo
 		const token = generateNumberString();
 		const [newReset] = await this.db.insert({ email, token, created_at: new Date() }).returning("*");
 		return new this.dto(newReset);
 	}
 
-	async findOne(email: string, token: string): Promise<IPasswordResetDTO | null> {
-		const reset = await this.db.select("*").where({ email, token }).first();
+	async findOne(email: string, token?: string): Promise<IPasswordResetDTO | null> {
+		const reset = await this.db
+			.select("*")
+			.where({ email, ...(token ? { token } : {}) })
+			.first();
 		if (!reset) return null;
 		return new this.dto(reset);
 	}
