@@ -3,6 +3,7 @@ import { PasswordResetModel } from "../models/PasswordResetModel.js";
 import { dataExpirada } from "../utils/helpers/dataExpirada.js";
 import type { IUsuarioService } from "./UsuarioService.js";
 import { ExpiredTokenError } from "../errors/ExpiredTokenError.js";
+import { PasswordResetEvents, type IPasswordResetEvents } from "../events/PasswordResetEvents.js";
 
 export interface IPasswordResetService {
 	create(email: string): Promise<IPasswordResetDTO | null>;
@@ -16,6 +17,7 @@ type TConstructorService = {
 export class PasswordResetService implements IPasswordResetService {
 	protected model = PasswordResetModel;
 	private usuarioService: IUsuarioService;
+	private passwordResetEvents: IPasswordResetEvents = new PasswordResetEvents();
 	private EXPIRES_IN = 15 * 60 * 1_000; // 15 minutos
 
 	constructor({ usuarioService }: TConstructorService) {
@@ -32,6 +34,7 @@ export class PasswordResetService implements IPasswordResetService {
 		if (usuario === null) return null;
 		const model = new this.model();
 		const passwordReset = await model.create({ email });
+		this.passwordResetEvents.sendEmail(usuario.email, passwordReset.token);
 		return passwordReset;
 	}
 
