@@ -53,6 +53,12 @@ describe("PasswordResetService", () => {
 		expect(output).instanceof(PasswordResetDTO);
 	});
 
+	it("não deve criar um novo PasswordResetDTO caso já exista um gerado com EMAIL informado", async () => {
+		const input = await passwordResetService.create(defaultEmail);
+		const output = await passwordResetService.create(defaultEmail);
+		expect(output).toStrictEqual(input);
+	});
+
 	it("deve retornar NULL ao solicitar um reset a um EMAIL inexistente", async () => {
 		const input = f.internet.email();
 		const output = await passwordResetService.create(input);
@@ -71,6 +77,7 @@ describe("PasswordResetService", () => {
 		await expect(passwordResetService.reset(String(input?.email), String(input?.token), "nova")).rejects.toBeInstanceOf(
 			ExpiredTokenError,
 		);
+		vi.useRealTimers();
 	});
 
 	it("deve retornar FALSE ao atualizar se o usuário não existir", async () => {

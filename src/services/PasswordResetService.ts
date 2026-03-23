@@ -33,6 +33,8 @@ export class PasswordResetService implements IPasswordResetService {
 		}
 		if (usuario === null) return null;
 		const model = new this.model();
+		const tokenExistente = await model.findOne(email);
+		if (tokenExistente !== null) return tokenExistente;
 		const passwordReset = await model.create({ email });
 		this.passwordResetEvents.sendEmail(usuario.email, passwordReset.token);
 		return passwordReset;
@@ -43,6 +45,7 @@ export class PasswordResetService implements IPasswordResetService {
 		const reset = await model.findOne(email, token);
 		if (reset === null) return false;
 		const tokenExpirou = this.tokenExpirou(reset.created_at);
+		await model.delete(reset.email, reset.token);
 		if (tokenExpirou) throw new ExpiredTokenError();
 		const usuario = await this.usuarioService.findOne({ email });
 		if (!usuario) return false;
