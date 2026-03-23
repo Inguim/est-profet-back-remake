@@ -60,4 +60,4 @@ get:
                 type: string
                 example: Contribuidores buscados com sucesso
               data:
-                $ref: "../../components/schemas/solicitacao/collection.yaml"
+                $ref: "../../components/schemas/contribuidor/collection.yaml"
