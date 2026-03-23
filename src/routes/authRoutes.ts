@@ -5,6 +5,7 @@ import {
 	AlunoService,
 	CategoriaService,
 	CursoService,
+	PasswordResetService,
 	PasswordService,
 	ProfessorCategoriaService,
 	ProfessorService,
@@ -30,10 +31,13 @@ const usuarioService = new UsuarioService({
 });
 
 const authService = new AuthService({ passwordService, tokenService, usuarioService });
-const authController = new AuthController(authService);
+const passwordResetService = new PasswordResetService({ usuarioService });
+const authController = new AuthController(authService, passwordResetService);
 
 const router = Router();
 
 router.post("/login", (req, res, next) => authController.login(req, res, next));
+router.post("/password-reset", (req, res, next) => authController.solicitarResetPassword(req, res, next));
+router.patch("/password-reset", (req, res, next) => authController.efetuarResetPassword(req, res, next));
 
 export { router };
