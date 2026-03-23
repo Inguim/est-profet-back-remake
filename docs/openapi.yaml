@@ -10,7 +10,9 @@ servers:
 
 paths:
   /auth/login:
-    $ref: "./paths/auth.yaml"
+    $ref: "./paths/auth/index.yaml"
+  /auth/password-reset:
+    $ref: "./paths/auth/password-reset.yaml"
   /contribuidores:
     $ref: "./paths/contribuidores/index.yaml"
   /contribuidores/{id}:
