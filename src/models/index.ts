@@ -15,3 +15,4 @@ export * from "./NotificacaoModel.js";
 export * from "./TipoContribuicaoModel.js";
 export * from "./ContribuidorModel.js";
 export * from "./NoticiaModel.js";
+export * from "./PasswordResetModel.js";
