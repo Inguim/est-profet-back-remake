@@ -4,7 +4,7 @@ import { generateNumberString } from "../../src/utils/helpers/generateNumberStri
 describe("generateNumberString", () => {
 	it("deve retornar uma string", () => {
 		const code = generateNumberString();
-		expect(typeof code).toBe("string");
+		expect(code).toBeTypeOf("string");
 	});
 
 	it("deve sempre retornar 6 caracteres", () => {
