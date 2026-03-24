@@ -9,12 +9,14 @@ describe("ProfessorService", () => {
 	const usuarioModel = new UsuarioModel();
 
 	it("deve criar um professor", async () => {
-		const { nome, email, password } = UsuarioProfessorFactory.create().build();
+		const { nome, email, password, admin, tipo, status } = UsuarioProfessorFactory.create().build();
 		const usuario = await usuarioModel.create({
-			tipo: "professor",
+			tipo,
 			nome,
 			email,
 			password,
+			admin,
+			status,
 		});
 		const input: IProfessorDTO = {
 			user_id: String(usuario.id),
@@ -25,12 +27,14 @@ describe("ProfessorService", () => {
 	});
 
 	it("deve encontrar um professor pelo USER_ID", async () => {
-		const { nome, email, password } = UsuarioProfessorFactory.create().build();
+		const { nome, email, password, admin, tipo, status } = UsuarioProfessorFactory.create().build();
 		const usuario = await usuarioModel.create({
-			tipo: "professor",
+			tipo,
 			nome,
 			email,
 			password,
+			admin,
+			status,
 		});
 		const input: IProfessorDTO = {
 			user_id: String(usuario.id),

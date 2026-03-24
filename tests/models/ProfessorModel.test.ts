@@ -8,12 +8,14 @@ describe("ProfessorModel", () => {
 	const professorModel = new ProfessorModel();
 
 	it("deve retornar um ProfessorDTO ao criar", async () => {
-		const { nome, email, tipo, password } = UsuarioProfessorFactory.create().build();
+		const { nome, email, tipo, password, admin, status } = UsuarioProfessorFactory.create().build();
 		const usuario = await usuarioModel.create({
 			nome,
 			email,
 			tipo,
 			password,
+			admin,
+			status,
 		});
 		const input: IProfessorDTO = {
 			user_id: String(usuario.id),
@@ -23,12 +25,14 @@ describe("ProfessorModel", () => {
 	});
 
 	it("retornar um ProfessorDTO preenchido corretamente ao criar", async () => {
-		const { nome, email, tipo, password } = UsuarioProfessorFactory.create().build();
+		const { nome, email, tipo, password, admin, status } = UsuarioProfessorFactory.create().build();
 		const usuario = await usuarioModel.create({
 			nome,
 			email,
 			tipo,
 			password,
+			admin,
+			status,
 		});
 		const input: IProfessorDTO = {
 			user_id: String(usuario.id),
@@ -38,12 +42,14 @@ describe("ProfessorModel", () => {
 	});
 
 	it("retornar encontrar um professor por USER_ID", async () => {
-		const { nome, email, tipo, password } = UsuarioProfessorFactory.create().build();
+		const { nome, email, tipo, password, admin, status } = UsuarioProfessorFactory.create().build();
 		const usuario = await usuarioModel.create({
 			nome,
 			email,
 			tipo,
 			password,
+			admin,
+			status,
 		});
 		const input: IProfessorDTO = {
 			user_id: String(usuario.id),

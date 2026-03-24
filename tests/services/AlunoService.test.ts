@@ -21,15 +21,17 @@ describe("AlunoService", () => {
 	});
 
 	it("deve criar um aluno", async () => {
-		const { nome, email, password, curso_id, serie_id } = UsuarioAlunoFactory.create()
+		const { nome, email, password, curso_id, serie_id, tipo, admin, status } = UsuarioAlunoFactory.create()
 			.withCurso(cursoId)
 			.withSerie(serieId)
 			.build();
 		const usuario = await usuarioModel.create({
-			tipo: "aluno",
+			tipo,
 			nome,
 			email,
 			password,
+			admin,
+			status,
 		});
 		const input: IAlunoDTO = {
 			user_id: String(usuario.id),
@@ -42,15 +44,17 @@ describe("AlunoService", () => {
 	});
 
 	it("deve encontrar um aluno pelo USER_ID", async () => {
-		const { nome, email, password, curso_id, serie_id } = UsuarioAlunoFactory.create()
+		const { nome, email, password, curso_id, serie_id, tipo, admin, status } = UsuarioAlunoFactory.create()
 			.withCurso(cursoId)
 			.withSerie(serieId)
 			.build();
 		const usuario = await usuarioModel.create({
-			tipo: "aluno",
+			tipo,
 			nome,
 			email,
 			password,
+			admin,
+			status,
 		});
 		const input: IAlunoDTO = {
 			user_id: String(usuario.id),

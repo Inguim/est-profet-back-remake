@@ -18,12 +18,14 @@ describe("AlunoModel", () => {
 	});
 
 	it("deve retornar um AlunoDTO ao criar", async () => {
-		const { nome, email, tipo, password } = UsuarioAlunoFactory.create().build();
+		const { nome, email, tipo, password, admin, status } = UsuarioAlunoFactory.create().build();
 		const usuario = await usuarioModel.create({
 			nome,
 			email,
 			tipo,
 			password,
+			admin,
+			status,
 		});
 		const input: IAlunoDTO = {
 			user_id: String(usuario.id),
@@ -35,12 +37,14 @@ describe("AlunoModel", () => {
 	});
 
 	it("retornar um AlunoDTO preenchido corretamente ao criar", async () => {
-		const { nome, email, tipo, password } = UsuarioAlunoFactory.create().build();
+		const { nome, email, tipo, password, admin, status } = UsuarioAlunoFactory.create().build();
 		const usuario = await usuarioModel.create({
 			nome,
 			email,
 			tipo,
 			password,
+			admin,
+			status,
 		});
 		const input: IAlunoDTO = {
 			user_id: String(usuario.id),
@@ -54,12 +58,14 @@ describe("AlunoModel", () => {
 	});
 
 	it("retornar encontrar um aluno por USER_ID", async () => {
-		const { nome, email, tipo, password } = UsuarioAlunoFactory.create().build();
+		const { nome, email, tipo, password, admin, status } = UsuarioAlunoFactory.create().build();
 		const usuario = await usuarioModel.create({
 			nome,
 			email,
 			tipo,
 			password,
+			admin,
+			status,
 		});
 		const input: IAlunoDTO = {
 			user_id: String(usuario.id),

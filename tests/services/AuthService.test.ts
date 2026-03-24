@@ -2,8 +2,11 @@ import { beforeAll, describe, expect, it } from "vitest";
 import {
 	AlunoService,
 	AuthService,
+	CategoriaService,
 	CursoService,
 	PasswordService,
+	ProfessorCategoriaService,
+	ProfessorService,
 	SerieService,
 	TokenService,
 	UsuarioService,
@@ -15,7 +18,18 @@ describe("AuthService", () => {
 	const passwordService = new PasswordService();
 	const tokenService = new TokenService();
 	const alunoService = new AlunoService();
-	const usuarioService = new UsuarioService({ alunoService });
+	const categoriaService = new CategoriaService();
+	const professorService = new ProfessorService();
+	const professorCategoriaService = new ProfessorCategoriaService({ categoriaService });
+	const cursoService = new CursoService();
+	const serieService = new SerieService();
+	const usuarioService = new UsuarioService({
+		alunoService,
+		professorService,
+		cursoService,
+		serieService,
+		professorCategoriaService,
+	});
 	const authService = new AuthService({ passwordService, tokenService, usuarioService });
 
 	beforeAll(async () => {

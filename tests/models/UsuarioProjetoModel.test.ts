@@ -33,6 +33,8 @@ describe("UsuarioProjetoModel", () => {
 			email: usuarioFake.email,
 			tipo: usuarioFake.tipo,
 			password: usuarioFake.password,
+			status: usuarioFake.status,
+			admin: usuarioFake.admin,
 		});
 		const projetoFake = ProjetoFactory.create()
 			.withCategoria(defaultCategoriaId)
@@ -68,6 +70,8 @@ describe("UsuarioProjetoModel", () => {
 			email: usuarioFake.email,
 			tipo: usuarioFake.tipo,
 			password: usuarioFake.password,
+			status: usuarioFake.status,
+			admin: usuarioFake.admin,
 		});
 		const projetoFake = ProjetoFactory.create()
 			.withCategoria(defaultCategoriaId)

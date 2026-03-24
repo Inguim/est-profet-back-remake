@@ -16,7 +16,7 @@ describe("ProfessorCategoriaModel", () => {
 
 	it("deve vincular uma categoria a um professor", async () => {
 		const categoriaId = String(defaultCategorias.at(0)?.id);
-		const { nome, email, tipo, password, categorias } = UsuarioProfessorFactory.create()
+		const { nome, email, tipo, password, categorias, admin, status } = UsuarioProfessorFactory.create()
 			.withCategorias([categoriaId])
 			.build();
 		const usuario = await usuarioModel.create({
@@ -24,6 +24,8 @@ describe("ProfessorCategoriaModel", () => {
 			email,
 			tipo,
 			password,
+			admin,
+			status,
 		});
 		const input: IProfessorDTO = {
 			user_id: String(usuario.id),
@@ -42,7 +44,7 @@ describe("ProfessorCategoriaModel", () => {
 	it("deve permitir vincular mais de uma categoria a um professor", async () => {
 		const duasPrimeirasCategorias = defaultCategorias.slice(0, -(defaultCategorias.length - 2));
 		const categoriaIds = duasPrimeirasCategorias.map((c) => String(c.id));
-		const { nome, email, tipo, password, categorias } = UsuarioProfessorFactory.create()
+		const { nome, email, tipo, password, categorias, admin, status } = UsuarioProfessorFactory.create()
 			.withCategorias(categoriaIds)
 			.build();
 		const usuario = await usuarioModel.create({
@@ -50,6 +52,8 @@ describe("ProfessorCategoriaModel", () => {
 			email,
 			tipo,
 			password,
+			admin,
+			status,
 		});
 		const input: IProfessorDTO = {
 			user_id: String(usuario.id),
@@ -63,12 +67,16 @@ describe("ProfessorCategoriaModel", () => {
 	it("deve listar as categorias vinculadas a um professor pelo PROFESSOR_ID", async () => {
 		const duasPrimeirasCategorias = defaultCategorias.slice(0, -(defaultCategorias.length - 2));
 		const categoriaIds = duasPrimeirasCategorias.map((c) => String(c.id));
-		const { nome, email, tipo, password } = UsuarioProfessorFactory.create().withCategorias(categoriaIds).build();
+		const { nome, email, tipo, password, admin, status } = UsuarioProfessorFactory.create()
+			.withCategorias(categoriaIds)
+			.build();
 		const usuario = await usuarioModel.create({
 			nome,
 			email,
 			tipo,
 			password,
+			admin,
+			status,
 		});
 		const input: IProfessorDTO = {
 			user_id: String(usuario.id),
