@@ -7,4 +7,4 @@ O intuito desse projeto e reescrever um antigo projeto que está com a sua codeb
 - MVC: branch responsável por conter um versão escrita na arquitetura de MVC respeitando o projeto original.
 - CA: branch responsável por conter uma versão escrita com os principios de Clean Architecture.
 
-> Ambas versões são apenas uma forma de **prestar um tributo** ao primeiro projeto que desenvolvi em minha carreira, **sem intenções de ganhos ou de ter essa versão disponibilizada do produto para uso**.
+> Ambas versões são apenas uma forma de **prestar tributo** ao primeiro projeto que desenvolvi em minha carreira, **sem intenções de ganhos ou de ter essa versão disponibilizada do produto para uso**.
