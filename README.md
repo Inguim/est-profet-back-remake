@@ -69,10 +69,10 @@ src/
 - **events / listeners**
   - Implementação de arquitetura orientada a eventos
 
-- **observers**
+- **observers/**
   - Reação a mudanças de estado (inspirado no Laravel)
 
-- **providers**
+- **providers/**
   - Injeção/configuração de dependências
 
 - **errors/**
@@ -197,9 +197,7 @@ Foi um projeto que, inicialmente, parecia simples, mas acabou exigindo certo esf
 
 Com o avanço do desenvolvimento, as coisas começaram a se alinhar, e fui relembrando como tudo funcionava. Inclusive, encontrei a documentação original (UML, casos de uso, etc.), o que facilitou bastante.
 
-Em relação a código, foi relativamente tranquilo fazer o mapeamento de um projeto para o outro, principalmente por não estar preso a um framework robusto que impõe padrões rígidos. No entanto, vale destacar que a implementação de Events e Observers foi desafiadora, já que optei por construir isso manualmente ao invés de utilizar o módulo nativo de eventos do Node.js — diferente do Laravel, que já oferece essa estrutura pronta.
-
-No geral, sendo um projeto criado no início da minha carreira, havia muito a evoluir. Ainda assim, tenho orgulho do resultado. A versão remake reflete melhor meu nível atual, com melhorias como testes automatizados, melhor separação de responsabilidades, uso de injeção de dependências e validações mais robustas e uma melhor documentação do projeto.
+Em relação a código, foi relativamente tranquilo fazer o mapeamento de um projeto para o outro, principalmente por não estar preso a um framework robusto que impõe padrões rígidos. No entanto, vale destacar que a implementação de Events e Observers foi divertida, já que optei por construir isso manualmente ao invés de utilizar o módulo nativo de eventos do Node.js — diferente do Laravel, que já oferece essa estrutura pronta.
 
 ---
 
