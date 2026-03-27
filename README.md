@@ -1,5 +1,7 @@
 # 💡 Profet: Backend Remake MVC
 
+> Read in [English](https://github.com/Inguim/est-profet-back-remake/tree/mvc/README-en-US.md)
+
 > Projeto original [Profet](https://github.com/Inguim/profet)
 
 Reescrita de um backend originalmente desenvolvido em Laravel, utilizando Node.js e TypeScript com uma arquitetura MVC.
