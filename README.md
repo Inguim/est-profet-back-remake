@@ -11,7 +11,7 @@ já existia. Porém, este projeto ignora completamente a camada View, lidando ap
 
 ## 🚀 Motivação
 
-Quando a ideia do projeto original foi concebida, houve uma versão escrita com AdonisJS. Porém, com o tempo, surgiu a possibilidade de migrar para o framework Laravel pois, facilitaria o processo de disponibilização da plataforma. Ainda assim, eu sempre me perguntei como teria ficado esse projeto em Typescript/Javascript, dai então que surgiu a ideia deste projeto.
+Quando a ideia do projeto original foi concebida, houve uma versão escrita com AdonisJS. Porém, com o tempo, surgiu a possibilidade de migrar para o framework Laravel, pois facilitaria o processo de disponibilização da plataforma. Ainda assim, eu sempre me perguntei como teria ficado esse projeto em Typescript/Javascript, dai então que surgiu a ideia deste projeto.
 
 ---
 
